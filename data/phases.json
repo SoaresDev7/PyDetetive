@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "nome": "Fase 1",
+    "descricao": "Aprende os conceitos básicos: print, variáveis e input",
+    "missoes": [
+      {
+        "id": 1,
+        "titulo": "Olá Mundo",
+        "descricao": "Usa print() para exibir uma mensagem",
+        "codigo": "print(\"Olá, Mundo!\")",
+        "esperado": "Olá, Mundo!",
+        "creditos": 10
+      },
+      {
+        "id": 2,
+        "titulo": "Trabalhar com Variáveis",
+        "descricao": "Cria variáveis e exibe o seu conteúdo",
+        "codigo": "nome = \"Lumi\"\nprint(f\"O robô é: {nome}\")",
+        "esperado": "O robô é: Lumi",
+        "creditos": 10
+      },
+      {
+        "id": 3,
+        "titulo": "Operações Matemáticas",
+        "descricao": "Realiza cálculos simples",
+        "codigo": "x = 5\ny = 3\nprint(f\"Soma: {x + y}\")\nprint(f\"Produto: {x * y}\")",
+        "esperado": "Soma: 8\nProduto: 15",
+        "creditos": 15
+      },
+      {
+        "id": 4,
+        "titulo": "Tipos de Dados",
+        "descricao": "Trabalha com diferentes tipos de dados",
+        "codigo": "inteiro = 42\nfloat_num = 3.14\ntexto = \"Python\"\nprint(f\"Inteiro: {inteiro}, Float: {float_num}, Texto: {texto}\")",
+        "esperado": "Inteiro: 42, Float: 3.14, Texto: Python",
+        "creditos": 15
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nome": "Fase 2",
+    "descricao": "Aprende operadores, condições e estruturas de controle",
+    "missoes": [
+      {
+        "id": 5,
+        "titulo": "Operadores Relacionais",
+        "descricao": "Usa operadores para comparar valores",
+        "codigo": "a = 10\nb = 5\nprint(f\"a > b: {a > b}\")\nprint(f\"a == b: {a == b}\")\nprint(f\"a != b: {a != b}\")",
+        "esperado": "a > b: True\na == b: False\na != b: True",
+        "creditos": 10
+      },
+      {
+        "id": 6,
+        "titulo": "Estrutura IF",
+        "descricao": "Usa if para tomar decisões",
+        "codigo": "idade = 20\nif idade >= 18:\n    print(\"Você é maior de idade\")\nelse:\n    print(\"Você é menor de idade\")",
+        "esperado": "Você é maior de idade",
+        "creditos": 15
+      },
+      {
+        "id": 7,
+        "titulo": "Laço FOR",
+        "descricao": "Usa for para repetir ações",
+        "codigo": "for i in range(1, 6):\n    print(f\"Número: {i}\")",
+        "esperado": "Número: 1\nNúmero: 2\nNúmero: 3\nNúmero: 4\nNúmero: 5",
+        "creditos": 15
+      },
+      {
+        "id": 8,
+        "titulo": "Listas",
+        "descricao": "Trabalha com listas e seus elementos",
+        "codigo": "lista = [\"Ana\", \"Bruno\", \"Carlos\", \"Diana\"]\nprint(f\"Primeiro: {lista[0]}\")\nprint(f\"Último: {lista[-1]}\")\nprint(f\"Tamanho: {len(lista)}\")",
+        "esperado": "Primeiro: Ana\nÚltimo: Diana\nTamanho: 4",
+        "creditos": 20
+      }
+    ]
+  }
+]
