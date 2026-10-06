@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyDetetive - Semana 1</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --success: #51cf66;
+            --danger: #ff6b6b;
+            --bg-light: #f8f9fa;
+            --border: #e0e0e0;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .credits {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .phase-info {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .phase-selector {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .phase-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .phase-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .phase-btn.active {
+            background: white;
+            color: var(--primary);
+            border-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: var(--bg-light);
+        }
+
+        .sidebar-section {
+            padding: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mission {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f1f4 100%);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .mission:hover {
+            background: linear-gradient(135deg, #f0f1f4 0%, #e8eaef 100%);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .mission strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mission p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .mission.completed {
+            border-left-color: var(--success);
+        }
+
+        .variables-list {
+            font-size: 12px;
+        }
+
+        .variable {
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            font-family: monospace;
+            color: var(--text-dark);
+        }
+
+        .editor-output {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .output-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: var(--bg-light);
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-dark);
+            letter-spacing: 0.3px;
+        }
+
+        #editor {
+            flex: 1;
+            padding: 18px;
+            font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            border: none;
+            resize: none;
+            background: #fafbfc;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        #editor:focus {
+            background: white;
+            outline: none;
+        }
+
+        #output {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-top: 1px solid var(--border);
+        }
+
+        #output::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #output::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #output::-webkit-scrollbar-thumb {
+            background: rgba(226, 232, 240, 0.2);
+            border-radius: 4px;
+        }
+
+        #output::-webkit-scrollbar-thumb:hover {
+            background: rgba(226, 232, 240, 0.4);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #runBtn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            flex: 1;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        #runBtn:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #4a52c7 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        #runBtn:active {
+            transform: translateY(-1px);
+        }
+
+        #clearBtn {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+        }
+
+        #clearBtn:hover {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .error {
+            color: var(--danger);
+            font-weight: 500;
+        }
+
+        .success {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        #creditsValue {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .editor-panel {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1>🔍 PyDetetive</h1>
+                <div class="credits">
+                    <span>Créditos: </span><span id="creditsValue">0</span>
+                </div>
+            </div>
+            <p>Descubra quem levou o robô Lumi! Completa as missões e desenvolve tuas habilidades em Python.</p>
+
+            <div class="phase-info" id="phaseInfo">
+                Selecione uma fase para começar
+            </div>
+
+            <div class="phase-selector" id="phaseSelector"></div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Missões</div>
+                    <div id="missionsList"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Variáveis</div>
+                    <div class="variables-list" id="variablesList"></div>
+                </div>
+            </div>
+
+            <div class="editor-output">
+                <div class="editor-panel">
+                    <div class="panel-header">Editor Python</div>
+                    <textarea id="editor" placeholder="Escreva seu código aqui..."></textarea>
+                </div>
+                <div class="output-panel">
+                    <div class="panel-header">Saída</div>
+                    <div id="output">Clique em Executar para ver o resultado...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="runBtn">▶ Executar</button>
+            <button id="clearBtn">🗑 Limpar</button>
+        </div>
+    </div>
+
+    <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script>
+        // Configuração de Fases e Missões
+        const phases = [
+            {
+                id: 1,
+                nome: "Fase 1",
+                descricao: "Aprende os conceitos básicos: print, variáveis e input",
+                missoes: [
+                    {
+                        id: 1,
+                        titulo: "Olá Mundo",
+                        descricao: "Usa print() para exibir uma mensagem",
+                        codigo: "print(\"Olá, Mundo!\")",
+                        esperado: "Olá, Mundo!",
+                        creditos: 10
+                    },
+                    {
+                        id: 2,
+                        titulo: "Trabalhar com Variáveis",
+                        descricao: "Cria variáveis e exibe o seu conteúdo",
+                        codigo: "nome = \"Lumi\"\nprint(f\"O robô é: {nome}\")",
+                        esperado: "O robô é: Lumi",
+                        creditos: 10
+                    },
+                    {
+                        id: 3,
+                        titulo: "Operações Matemáticas",
+                        descricao: "Realiza cálculos simples",
+                        codigo: "x = 5\ny = 3\nprint(f\"Soma: {x + y}\")\nprint(f\"Produto: {x * y}\")",
+                        esperado: "Soma: 8\nProduto: 15",
+                        creditos: 15
+                    },
+                    {
+                        id: 4,
+                        titulo: "Tipos de Dados",
+                        descricao: "Trabalha com diferentes tipos de dados",
+                        codigo: "inteiro = 42\nfloat_num = 3.14\ntexto = \"Python\"\nprint(f\"Inteiro: {inteiro}, Float: {float_num}, Texto: {texto}\")",
+                        esperado: "Inteiro: 42, Float: 3.14, Texto: Python",
+                        creditos: 15
+                    }
+                ]
+            },
+            {
+                id: 2,
+                nome: "Fase 2",
+                descricao: "Aprende operadores, condições e estruturas de controle",
+                missoes: [
+                    {
+                        id: 5,
+                        titulo: "Operadores Relacionais",
+                        descricao: "Usa operadores para comparar valores",
+                        codigo: "a = 10\nb = 5\nprint(f\"a > b: {a > b}\")\nprint(f\"a == b: {a == b}\")\nprint(f\"a != b: {a != b}\")",
+                        esperado: "a > b: True\na == b: False\na != b: True",
+                        creditos: 10
+                    },
+                    {
+                        id: 6,
+                        titulo: "Estrutura IF",
+                        descricao: "Usa if para tomar decisões",
+                        codigo: "idade = 20\nif idade >= 18:\n    print(\"Você é maior de idade\")\nelse:\n    print(\"Você é menor de idade\")",
+                        esperado: "Você é maior de idade",
+                        creditos: 15
+                    },
+                    {
+                        id: 7,
+                        titulo: "Laço FOR",
+                        descricao: "Usa for para repetir ações",
+                        codigo: "for i in range(1, 6):\n    print(f\"Número: {i}\")",
+                        esperado: "Número: 1\nNúmero: 2\nNúmero: 3\nNúmero: 4\nNúmero: 5",
+                        creditos: 15
+                    },
+                    {
+                        id: 8,
+                        titulo: "Listas",
+                        descricao: "Trabalha com listas e seus elementos",
+                        codigo: "lista = [\"Ana\", \"Bruno\", \"Carlos\", \"Diana\"]\nprint(f\"Primeiro: {lista[0]}\")\nprint(f\"Último: {lista[-1]}\")\nprint(f\"Tamanho: {len(lista)}\")",
+                        esperado: "Primeiro: Ana\nÚltimo: Diana\nTamanho: 4",
+                        creditos: 20
+                    }
+                ]
+            }
+        ];
+
+        // Estado da aplicação
+        let pyodideReady = false;
+        let currentPhase = null;
+        let credits = 0;
+
+        // Inicializar Pyodide
+        async function initPyodide() {
+            try {
+                await loadPyodide();
+                pyodideReady = true;
+                updateOutput('✓ Python pronto! Selecione uma fase para começar.');
+            } catch (e) {
+                updateOutput('✗ Erro ao carregar Python: ' + e.message);
+            }
+        }
+
+        // Renderizar seletor de fases
+        function renderPhaseSelector() {
+            const selector = document.getElementById('phaseSelector');
+            selector.innerHTML = '';
+
+            phases.forEach(phase => {
+                const btn = document.createElement('button');
+                btn.className = 'phase-btn';
+                btn.textContent = phase.nome;
+                btn.onclick = () => switchPhase(phase, btn);
+                selector.appendChild(btn);
+            });
+        }
+
+        // Trocar de fase
+        function switchPhase(phase, btn) {
+            currentPhase = phase;
+
+            // Atualizar botões ativos
+            document.querySelectorAll('.phase-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            // Atualizar informações da fase
+            document.getElementById('phaseInfo').textContent = phase.descricao;
+
+            // Renderizar missões
+            renderMissions();
+
+            // Carregar primeiro código de exemplo
+            if (phase.missoes.length > 0) {
+                document.getElementById('editor').value = phase.missoes[0].codigo;
+                document.getElementById('output').textContent = '';
+            }
+        }
+
+        // Renderizar missões na sidebar
+        function renderMissions() {
+            const missionsList = document.getElementById('missionsList');
+            missionsList.innerHTML = '';
+
+            if (!currentPhase) return;
+
+            currentPhase.missoes.forEach((mission, index) => {
+                const div = document.createElement('div');
+                div.className = 'mission';
+                div.innerHTML = `
+                    <strong>${index + 1}. ${mission.titulo}</strong>
+                    <p>${mission.descricao}</p>
+                `;
+                div.onclick = () => {
+                    document.getElementById('editor').value = mission.codigo;
+                    document.getElementById('output').textContent = '';
+                };
+                missionsList.appendChild(div);
+            });
+        }
+
+        // Atualizar output
+        function updateOutput(text) {
+            document.getElementById('output').textContent = text;
+        }
+
+        // Executar código Python
+        async function executarCodigo() {
+            if (!pyodideReady) {
+                updateOutput('✗ Python não está pronto. Aguarde...');
+                return;
+            }
+
+            const code = document.getElementById('editor').value;
+            if (!code.trim()) {
+                updateOutput('✗ Escreva algum código para executar.');
+                return;
+            }
+
+            updateOutput('⏳ Executando...');
+
+            try {
+                const result = await pyodide.runPythonAsync(code);
+                const output = result || '(sem saída)';
+                updateOutput('✓ Executado com sucesso!\n\n' + output);
+
+                // Adicionar créditos se há missão ativa
+                if (currentPhase) {
+                    credits += 10;
+                    const creditElement = document.getElementById('creditsValue');
+                    creditElement.textContent = credits;
+                    creditElement.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        creditElement.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            } catch (e) {
+                updateOutput('✗ Erro:\n' + e.message);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('runBtn').addEventListener('click', executarCodigo);
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.getElementById('output').textContent = '';
+        });
+
+        // Inicializar ao carregar a página
+        window.addEventListener('load', () => {
+            initPyodide();
+            renderPhaseSelector();
+        });
+
+        // Suporte a Enter no editor
+        document.getElementById('editor').addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                executarCodigo();
+            }
+        });
+    </script>
+</body>
+</html>
