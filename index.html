@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyDetetive</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1>🔍 PyDetetive</h1>
+                <div class="credits">
+                    <span>Créditos: </span><span id="creditsValue">0</span>
+                </div>
+            </div>
+            <p>Descubra quem levou o robô Lumi! Completa as missões e desenvolve tuas habilidades em Python.</p>
+
+            <div class="phase-info" id="phaseInfo">
+                Selecione uma fase para começar
+            </div>
+
+            <div class="phase-selector" id="phaseSelector"></div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Missões</div>
+                    <div id="missionsList"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Variáveis</div>
+                    <div class="variables-list" id="variablesList"></div>
+                </div>
+            </div>
+
+            <div class="editor-output">
+                <div class="editor-panel">
+                    <div class="panel-header">Editor Python</div>
+                    <textarea id="editor" placeholder="Escreva seu código aqui..."></textarea>
+                </div>
+                <div class="output-panel">
+                    <div class="panel-header">Saída</div>
+                    <div id="output">Clique em Executar para ver o resultado...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="runBtn">▶ Executar</button>
+            <button id="clearBtn">🗑 Limpar</button>
+        </div>
+    </div>
+
+    <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
