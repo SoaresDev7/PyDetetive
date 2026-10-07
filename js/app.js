@@ -1,14 +1,23 @@
-let pyodideReady = false;
+// Instâncias globais
+let pyodideManager = null;
+let missionValidator = null;
 let currentPhase = null;
+let currentMission = null;
 let phases = [];
 let credits = 0;
+let attemptCount = 0;
 
-// Inicializar Pyodide
+// Inicializar Pyodide com novo gerenciador
 async function initPyodide() {
     try {
-        await loadPyodide();
-        pyodideReady = true;
-        updateOutput('✓ Python pronto! Selecione uma fase para começar.');
+        pyodideManager = new PyodideManager();
+        const result = await pyodideManager.init();
+
+        if (result.success) {
+            updateOutput('✓ ' + result.message);
+        } else {
+            updateOutput('✗ ' + result.message);
+        }
     } catch (e) {
         updateOutput('✗ Erro ao carregar Python: ' + e.message);
     }
@@ -19,6 +28,15 @@ async function loadPhases() {
     try {
         const response = await fetch('data/phases.json');
         phases = await response.json();
+
+        // Inicializar validador
+        missionValidator = new MissionValidator();
+
+        // Recuperar créditos salvos
+        const savedCredits = await missionValidator.storage.getCredits();
+        credits = savedCredits;
+        document.getElementById('creditsValue').textContent = credits;
+
         renderPhaseSelector();
     } catch (e) {
         updateOutput('✗ Erro ao carregar as fases: ' + e.message);
@@ -34,20 +52,22 @@ function renderPhaseSelector() {
         const btn = document.createElement('button');
         btn.className = 'phase-btn';
         btn.textContent = phase.nome;
-        btn.onclick = () => switchPhase(phase);
+        btn.onclick = () => switchPhase(phase, btn);
         selector.appendChild(btn);
     });
 }
 
 // Trocar de fase
-function switchPhase(phase) {
+async function switchPhase(phase, btn) {
     currentPhase = phase;
+    currentMission = null;
+    attemptCount = 0;
 
     // Atualizar botões ativos
-    document.querySelectorAll('.phase-btn').forEach(btn => {
-        btn.classList.remove('active');
+    document.querySelectorAll('.phase-btn').forEach(b => {
+        b.classList.remove('active');
     });
-    event.target.classList.add('active');
+    btn.classList.add('active');
 
     // Atualizar informações da fase
     document.getElementById('phaseInfo').textContent = phase.descricao;
@@ -55,28 +75,48 @@ function switchPhase(phase) {
     // Renderizar missões
     renderMissions();
 
-    // Limpar editor
-    document.getElementById('editor').value = phase.missoes[0]?.codigo || '';
-    document.getElementById('output').textContent = '';
+    // Limpar estado do Pyodide
+    if (pyodideManager && pyodideManager.isReady) {
+        await pyodideManager.clearState();
+    }
+
+    // Carregar primeiro código de exemplo
+    if (phase.missoes.length > 0) {
+        currentMission = phase.missoes[0];
+        document.getElementById('editor').value = currentMission.codigo;
+        document.getElementById('output').textContent = '';
+    }
 }
 
 // Renderizar missões na sidebar
-function renderMissions() {
+async function renderMissions() {
     const missionsList = document.getElementById('missionsList');
     missionsList.innerHTML = '';
 
     if (!currentPhase) return;
 
+    const completedMissions = missionValidator ?
+        await missionValidator.storage.getCompletedMissions() : [];
+
     currentPhase.missoes.forEach((mission, index) => {
         const div = document.createElement('div');
-        div.className = 'mission';
+        const isCompleted = completedMissions.includes(mission.id);
+
+        div.className = 'mission' + (isCompleted ? ' completed' : '');
         div.innerHTML = `
-            <strong>${index + 1}. ${mission.titulo}</strong>
+            <strong>${isCompleted ? '✓ ' : ''}${index + 1}. ${mission.titulo}</strong>
             <p>${mission.descricao}</p>
         `;
-        div.onclick = () => {
+        div.onclick = async () => {
+            currentMission = mission;
+            attemptCount = 0;
             document.getElementById('editor').value = mission.codigo;
             document.getElementById('output').textContent = '';
+
+            // Limpar estado do Pyodide
+            if (pyodideManager && pyodideManager.isReady) {
+                await pyodideManager.clearState();
+            }
         };
         missionsList.appendChild(div);
     });
@@ -89,7 +129,7 @@ function updateOutput(text) {
 
 // Executar código Python
 async function executarCodigo() {
-    if (!pyodideReady) {
+    if (!pyodideManager || !pyodideManager.isReady) {
         updateOutput('✗ Python não está pronto. Aguarde...');
         return;
     }
@@ -101,19 +141,62 @@ async function executarCodigo() {
     }
 
     updateOutput('⏳ Executando...');
+    attemptCount++;
 
     try {
-        const result = await pyodide.runPythonAsync(code);
-        const output = result || '(sem saída)';
-        updateOutput('✓ Executado com sucesso!\n\n' + output);
+        // Executar com novo gerenciador
+        const result = await pyodideManager.runCode(code);
 
-        // Adicionar créditos se há missão ativa
-        if (currentPhase) {
-            credits += 10;
-            document.getElementById('creditsValue').textContent = credits;
+        if (result.error) {
+            updateOutput('✗ Erro:\n' + result.error);
+
+            // Oferecer dica se há missão ativa
+            if (currentMission && missionValidator) {
+                const hint = missionValidator.getHint(currentMission, attemptCount);
+                updateOutput(`✗ Erro:\n${result.error}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`);
+            }
+            return;
         }
+
+        const output = result.output;
+
+        // Se há missão ativa, validar resultado
+        if (currentMission && missionValidator) {
+            const validation = await missionValidator.validate(
+                output,
+                currentMission.esperado,
+                currentMission.id
+            );
+
+            updateOutput(validation.feedback);
+
+            // Se passou, adicionar créditos
+            if (validation.passed) {
+                const newCredits = await missionValidator.completeMission(
+                    currentMission.id,
+                    currentMission.creditos
+                );
+                credits = newCredits;
+                document.getElementById('creditsValue').textContent = credits;
+
+                // Animar
+                const creditElement = document.getElementById('creditsValue');
+                creditElement.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    creditElement.style.transform = 'scale(1)';
+                }, 300);
+            } else if (attemptCount < 3) {
+                // Oferecer próxima dica
+                const hint = missionValidator.getHint(currentMission, attemptCount + 1);
+                updateOutput(`${validation.feedback}\n\n💡 Próxima dica:\n${hint}`);
+            }
+        } else {
+            // Sem missão ativa, apenas mostrar resultado
+            updateOutput(`✓ Executado com sucesso!\n\n${output}`);
+        }
+
     } catch (e) {
-        updateOutput('✗ Erro:\n' + e.message);
+        updateOutput('✗ Erro inesperado:\n' + e.message);
     }
 }
 
