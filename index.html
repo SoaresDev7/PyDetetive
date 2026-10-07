@@ -3,62 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyDetetive</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap">
+    <title>PyDetetive - Descubra quem levou o Lumi!</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&family=Fredoka:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-top">
-                <h1>🔍 PyDetetive</h1>
-                <div class="credits">
-                    <span>Créditos: </span><span id="creditsValue">0</span>
+    <!-- Screen 1: Intro Sequence -->
+    <div id="introScreen" class="screen active">
+        <div class="intro-container">
+            <div class="intro-panels">
+                <div class="intro-panel active" data-panel="0">
+                    <div class="panel-content">
+                        <div class="panel-header">PyDetetive: O Roubo do Lumi</div>
+                        <div class="panel-illustration">
+                            <svg viewBox="0 0 400 300" class="intro-svg">
+                                <!-- Scene 1: Detective Office -->
+                                <rect width="400" height="300" fill="#2C2416"/>
+                                <rect x="10" y="180" width="380" height="110" fill="#8B7355" stroke="#000" stroke-width="2"/>
+                                <rect x="30" y="50" width="100" height="120" fill="#654321" stroke="#000" stroke-width="2"/>
+                                <circle cx="80" cy="70" r="8" fill="#FFD700"/>
+                                <text x="200" y="150" text-anchor="middle" fill="#FFF" font-size="24" font-weight="bold">?</text>
+                            </svg>
+                        </div>
+                        <div class="panel-dialog">
+                            <p><strong>Helena:</strong> "Alguém levou o robô Lumi! Preciso da tua ajuda para resolver este mistério..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="intro-panel" data-panel="1">
+                    <div class="panel-content">
+                        <div class="panel-header">O Caso do Lumi Desaparecido</div>
+                        <div class="panel-illustration">
+                            <svg viewBox="0 0 400 300" class="intro-svg">
+                                <!-- Scene 2: Crime Scene -->
+                                <rect width="400" height="300" fill="#1A1410"/>
+                                <circle cx="200" cy="150" r="80" fill="none" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="5,5"/>
+                                <text x="200" y="160" text-anchor="middle" fill="#FF6B6B" font-size="32">Lumi</text>
+                                <text x="50" y="50" fill="#FFF" font-size="16">CRIME SCENE</text>
+                            </svg>
+                        </div>
+                        <div class="panel-dialog">
+                            <p><strong>Caio:</strong> "Temos algumas pistas. Precisamos analisar o código que foi deixado no local do roubo..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="intro-panel" data-panel="2">
+                    <div class="panel-content">
+                        <div class="panel-header">Vamos Começar!</div>
+                        <div class="panel-illustration">
+                            <svg viewBox="0 0 400 300" class="intro-svg">
+                                <!-- Scene 3: Partnership -->
+                                <rect width="400" height="300" fill="#2C3E50"/>
+                                <circle cx="120" cy="150" r="40" fill="#3498DB" stroke="#000" stroke-width="2"/>
+                                <circle cx="280" cy="150" r="40" fill="#E74C3C" stroke="#000" stroke-width="2"/>
+                                <line x1="160" y1="150" x2="240" y2="150" stroke="#F39C12" stroke-width="4"/>
+                                <text x="200" y="280" text-anchor="middle" fill="#F1C40F" font-size="18" font-weight="bold">×</text>
+                            </svg>
+                        </div>
+                        <div class="panel-dialog">
+                            <p><strong>Bia:</strong> "Juntos conseguiremos! Completa as missões, aprenda Python e desvendar o mistério!"</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p>Descubra quem levou o robô Lumi! Completa as missões e desenvolve tuas habilidades em Python.</p>
 
-            <div class="phase-info" id="phaseInfo">
-                Selecione uma fase para começar
+            <div class="intro-navigation">
+                <button id="introPrevBtn" class="intro-nav-btn">← Voltar</button>
+                <div class="intro-indicators">
+                    <span class="indicator active" data-panel="0"></span>
+                    <span class="indicator" data-panel="1"></span>
+                    <span class="indicator" data-panel="2"></span>
+                </div>
+                <button id="introNextBtn" class="intro-nav-btn">Próximo →</button>
             </div>
-
-            <div class="phase-selector" id="phaseSelector"></div>
-        </div>
-
-        <div class="main-content">
-            <div class="sidebar">
-                <div class="sidebar-section">
-                    <div class="sidebar-title">Missões</div>
-                    <div id="missionsList"></div>
-                </div>
-
-                <div class="sidebar-section">
-                    <div class="sidebar-title">Variáveis</div>
-                    <div class="variables-list" id="variablesList"></div>
-                </div>
-            </div>
-
-            <div class="editor-output">
-                <div class="editor-panel">
-                    <div class="panel-header">Editor Python</div>
-                    <textarea id="editor" placeholder="Escreva seu código aqui..."></textarea>
-                </div>
-                <div class="output-panel">
-                    <div class="panel-header">Saída</div>
-                    <div id="output">Clique em Executar para ver o resultado...</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button id="runBtn">▶ Executar</button>
-            <button id="clearBtn">🗑 Limpar</button>
+            <button id="introSkipBtn" class="skip-intro-btn">Pular Intro</button>
         </div>
     </div>
 
+    <!-- Screen 2: Main Application -->
+    <div id="appScreen" class="screen">
+        <!-- Header -->
+        <header class="header sticky">
+            <div class="header-left">
+                <h1 class="app-title">🔍 PyDetetive</h1>
+            </div>
+            <div class="header-center">
+                <div class="phase-display">
+                    <span id="currentPhaseDisplay">Fase 1</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="credits-display">
+                    <span class="credits-label">Créditos:</span>
+                    <span id="creditsValue" class="credits-count">0</span>
+                </div>
+                <button id="navTeacherBtn" class="nav-btn">👨‍🏫 Professor</button>
+                <button id="navManualBtn" class="nav-btn">📖 Manual</button>
+                <button id="themeToggleBtn" class="nav-btn">🌙 Tema</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="app-content">
+            <!-- Sidebar: Phases and Missions -->
+            <aside class="sidebar">
+                <div class="sidebar-section phases-section">
+                    <h3 class="sidebar-title">Fases</h3>
+                    <div id="phaseSelector" class="phases-list"></div>
+                </div>
+
+                <div class="sidebar-section missions-section">
+                    <h3 class="sidebar-title">Missões</h3>
+                    <div id="missionsList" class="missions-list"></div>
+                </div>
+
+                <div class="sidebar-section variables-section">
+                    <h3 class="sidebar-title">Variáveis</h3>
+                    <div id="variablesList" class="variables-list"></div>
+                </div>
+            </aside>
+
+            <!-- Main Editor and Output Area -->
+            <main class="main-area">
+                <!-- Cork Board - Mission Info -->
+                <div class="mission-info cork-board">
+                    <div class="cork-content">
+                        <div class="mission-header">
+                            <h2 id="missionTitle">Selecione uma missão</h2>
+                        </div>
+                        <div class="mission-description">
+                            <p id="missionDescription">Escolha uma missão na lista ao lado para começar</p>
+                        </div>
+                        <div class="mission-code-template">
+                            <strong>Código Template:</strong>
+                            <pre id="codeTemplate"></pre>
+                        </div>
+                        <div class="mission-expected">
+                            <strong>Saída Esperada:</strong>
+                            <pre id="expectedOutput"></pre>
+                        </div>
+                        <div class="mission-credits">
+                            <strong id="missionCreditsLabel">Créditos:</strong> <span id="missionCreditsValue">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor and Output Panels -->
+                <div class="editor-output">
+                    <!-- Python Code Editor -->
+                    <div class="editor-panel">
+                        <div class="panel-title">
+                            <span>📝 Editor Python</span>
+                            <span class="line-count">Linhas: <span id="lineCount">0</span></span>
+                        </div>
+                        <div class="editor-wrapper">
+                            <div class="editor-gutter" id="editorGutter"></div>
+                            <textarea
+                                id="editor"
+                                class="code-editor"
+                                placeholder="Escreva seu código Python aqui..."
+                                spellcheck="false"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Output Console -->
+                    <div class="output-panel">
+                        <div class="panel-title">
+                            <span>💻 Saída / Resultado</span>
+                            <button id="clearOutputBtn" class="clear-btn">✕</button>
+                        </div>
+                        <div id="output" class="output-console">
+                            <p class="output-placeholder">Clique em "Executar" para ver o resultado...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls-bar">
+                    <button id="runBtn" class="btn btn-primary">▶ Executar Código</button>
+                    <button id="clearBtn" class="btn btn-secondary">🗑 Limpar Editor</button>
+                    <button id="hintBtn" class="btn btn-info">💡 Pedir Dica</button>
+                    <div class="controls-spacer"></div>
+                    <span id="statusMessage" class="status-message"></span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Screen 3: Teacher Dashboard -->
+    <div id="teacherScreen" class="screen">
+        <header class="header sticky">
+            <div class="header-left">
+                <h1 class="app-title">👨‍🏫 Painel do Professor</h1>
+            </div>
+            <div class="header-right">
+                <button id="backFromTeacherBtn" class="nav-btn">← Voltar</button>
+            </div>
+        </header>
+
+        <div class="teacher-content">
+            <div class="teacher-panel access-control">
+                <h2>Verificação de Acesso</h2>
+                <p>Digite o código de acesso do professor:</p>
+                <input type="password" id="accessCode" placeholder="Código de acesso" class="access-input">
+                <button id="verifyAccessBtn" class="btn btn-primary">Verificar</button>
+                <div id="accessMessage" class="access-message"></div>
+            </div>
+
+            <div id="teacherDashboard" class="teacher-dashboard hidden">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Progresso Geral</h3>
+                        <div class="progress-stats">
+                            <div class="stat">
+                                <span class="stat-label">Missões Completadas:</span>
+                                <span id="totalMissionsCompleted">0/12</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Total de Créditos:</span>
+                                <span id="totalCreditsEarned">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Tentativas Totais:</span>
+                                <span id="totalAttempts">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>Histórico de Missões</h3>
+                        <div id="missionsHistory" class="missions-history">
+                            <p>Nenhuma missão completada ainda.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>Ações do Professor</h3>
+                        <div class="teacher-actions">
+                            <button id="exportDataBtn" class="btn btn-secondary">📥 Exportar Dados</button>
+                            <button id="resetProgressBtn" class="btn btn-secondary">🔄 Resetar Progresso</button>
+                            <button id="viewCreditsBtn" class="btn btn-secondary">💰 Ver Créditos</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 4: Student Manual -->
+    <div id="manualScreen" class="screen">
+        <header class="header sticky">
+            <div class="header-left">
+                <h1 class="app-title">📖 Manual do Aluno</h1>
+            </div>
+            <div class="header-right">
+                <button id="backFromManualBtn" class="nav-btn">← Voltar</button>
+            </div>
+        </header>
+
+        <div class="manual-content">
+            <div class="manual-sidebar">
+                <div class="manual-sections">
+                    <h3>Seções</h3>
+                    <button class="manual-section-btn active" data-section="0">Bem-vindo</button>
+                    <button class="manual-section-btn" data-section="1">Como Usar</button>
+                    <button class="manual-section-btn" data-section="2">Python Básico</button>
+                    <button class="manual-section-btn" data-section="3">Dicas e Truques</button>
+                    <button class="manual-section-btn" data-section="4">FAQ</button>
+                </div>
+            </div>
+
+            <div class="manual-main">
+                <!-- Section 0: Welcome -->
+                <div class="manual-section active" data-section="0">
+                    <h2>Bem-vindo ao PyDetetive! 🔍</h2>
+                    <p>Olá aluno! Bem-vindo a uma aventura incrível no mundo da programação Python.</p>
+                    <h3>O que é PyDetetive?</h3>
+                    <p>PyDetetive é um jogo educacional onde você aprenderá Python resolvendo mistérios e completando missões de programação. Você será ajudado por vários personagens que o guiarão através de diferentes fases.</p>
+                    <h3>Como Funciona?</h3>
+                    <p>O jogo tem 3 fases, cada uma com 4 missões. Conforme você avança, as missões ficam mais desafiadoras. Complete as missões para ganhar créditos e desvendar o mistério!</p>
+                </div>
+
+                <!-- Section 1: How to Use -->
+                <div class="manual-section" data-section="1">
+                    <h2>Como Usar PyDetetive</h2>
+                    <h3>Passo 1: Selecione uma Fase</h3>
+                    <p>Na barra lateral, clique em uma das fases disponíveis (Fase 1, 2 ou 3).</p>
+                    <h3>Passo 2: Escolha uma Missão</h3>
+                    <p>Selecione uma missão da lista de missões. Você verá a descrição, código template e saída esperada.</p>
+                    <h3>Passo 3: Escreva o Código</h3>
+                    <p>No editor Python, escreva seu código. Você pode usar o código template como base.</p>
+                    <h3>Passo 4: Execute e Veja o Resultado</h3>
+                    <p>Clique em "▶ Executar Código" para rodar seu código e ver se está correto.</p>
+                    <h3>Passo 5: Ganhe Créditos!</h3>
+                    <p>Se seu código estiver correto, você ganhará créditos e completará a missão.</p>
+                </div>
+
+                <!-- Section 2: Python Basics -->
+                <div class="manual-section" data-section="2">
+                    <h2>Python Básico</h2>
+                    <h3>Print - Exibindo Texto</h3>
+                    <pre><code>print("Olá, Mundo!")</code></pre>
+                    <h3>Variáveis</h3>
+                    <pre><code>nome = "Alice"
+idade = 15
+print(nome)</code></pre>
+                    <h3>Operações Matemáticas</h3>
+                    <pre><code>soma = 5 + 3
+resultado = 10 * 2
+divisao = 20 / 4</code></pre>
+                    <h3>Condições (if/else)</h3>
+                    <pre><code>idade = 18
+if idade >= 18:
+    print("Você é maior de idade")
+else:
+    print("Você é menor de idade")</code></pre>
+                    <h3>Loops (for)</h3>
+                    <pre><code>for i in range(5):
+    print(i)</code></pre>
+                </div>
+
+                <!-- Section 3: Tips and Tricks -->
+                <div class="manual-section" data-section="3">
+                    <h2>Dicas e Truques</h2>
+                    <h3>💡 Use Variáveis Descritivas</h3>
+                    <p>Use nomes que deixem claro o que a variável armazena: <code>nome_aluno</code> em vez de <code>x</code>.</p>
+                    <h3>💡 Indentação é Importante</h3>
+                    <p>Python é sensível à indentação. Sempre use 4 espaços para indentar código dentro de blocos.</p>
+                    <h3>💡 Peça Dicas</h3>
+                    <p>Se estiver preso, clique em "💡 Pedir Dica" para receber orientação.</p>
+                    <h3>💡 Teste Incrementalmente</h3>
+                    <p>Não escreva todo o código de uma vez. Teste pequenas partes conforme avança.</p>
+                    <h3>💡 Leia as Mensagens de Erro</h3>
+                    <p>As mensagens de erro costumam dizer exatamente o que deu errado. Leia-as com atenção!</p>
+                </div>
+
+                <!-- Section 4: FAQ -->
+                <div class="manual-section" data-section="4">
+                    <h2>Perguntas Frequentes</h2>
+                    <h3>P: O que acontece se eu escrever código errado?</h3>
+                    <p>R: Você receberá uma mensagem de erro explicando o que deu errado. Corrija e tente novamente!</p>
+                    <h3>P: Posso resetar uma missão e tentar novamente?</h3>
+                    <p>R: Sim! Você pode tentar uma missão quantas vezes quiser até acertar.</p>
+                    <h3>P: Como desbloquear as próximas fases?</h3>
+                    <p>R: Você precisa completar todas as missões da fase atual para desbloquear a próxima.</p>
+                    <h3>P: Os créditos servem para algo?</h3>
+                    <p>R: Os créditos mostram seu progresso e pontuação no jogo. Quanto mais você completar, mais créditos ganhará!</p>
+                    <h3>P: Posso pedir ajuda?</h3>
+                    <p>R: Sim! Use o botão "💡 Pedir Dica" para receber dicas progressivas sobre a missão.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
     <script src="js/pyodide-manager.js"></script>
     <script src="js/mission-validator.js"></script>
+    <script src="js/ui-manager.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
