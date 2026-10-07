@@ -556,6 +556,7 @@ body {
     display: flex;
     position: relative;
     overflow: hidden;
+    background: var(--bg-light);
 }
 
 .editor-gutter {
@@ -579,9 +580,11 @@ body {
     font-size: 13px;
     line-height: 1.6;
     resize: none;
-    background: var(--bg-light);
+    background: transparent;
     color: var(--text-dark);
     outline: none;
+    position: relative;
+    z-index: 2;
 }
 
 /* Output Console */
