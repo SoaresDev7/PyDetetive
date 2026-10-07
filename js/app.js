@@ -1,235 +1,271 @@
-// Instâncias globais
+/**
+ * PyDetetive Main Application
+ * Orquestra a integração de todas as funcionalidades
+ */
+
+// Global instances
 let pyodideManager = null;
 let missionValidator = null;
 let currentPhase = null;
 let currentMission = null;
 let phases = [];
-let credits = 0;
 let attemptCount = 0;
+let appReady = false;
 
-// Inicializar Pyodide com novo gerenciador
-async function initPyodide() {
+/**
+ * Inicializa Pyodide e carrega as fases
+ */
+async function initApp() {
     try {
+        // Inicializar UIManager
+        uiManager.loadTheme();
+
+        // Inicializar Pyodide
+        uiManager.showStatus('Carregando Python...');
         pyodideManager = new PyodideManager();
         const result = await pyodideManager.init();
 
-        if (result.success) {
-            updateOutput('✓ ' + result.message);
-        } else {
-            updateOutput('✗ ' + result.message);
+        if (!result.success) {
+            uiManager.showFeedback('Erro ao carregar Python: ' + result.message, 'error');
+            return;
         }
+
+        uiManager.showStatus('Python carregado com sucesso! ✓');
+
+        // Inicializar Mission Validator
+        missionValidator = new MissionValidator();
+
+        // Carregar fases
+        await loadPhases();
+
+        // Marcar app como pronto
+        appReady = true;
+
+        // Event listeners
+        setupEventListeners();
+
+        uiManager.showStatus('Aplicação pronta!');
     } catch (e) {
-        updateOutput('✗ Erro ao carregar Python: ' + e.message);
+        uiManager.showFeedback('Erro ao inicializar: ' + e.message, 'error');
+        console.error('Init error:', e);
     }
 }
 
-// Carregar fases do arquivo JSON
+/**
+ * Carrega as fases do arquivo JSON
+ */
 async function loadPhases() {
     try {
         const response = await fetch('data/phases.json');
         phases = await response.json();
 
-        // Inicializar validador
-        missionValidator = new MissionValidator();
-
         // Recuperar créditos salvos
         const savedCredits = await missionValidator.storage.getCredits();
-        credits = savedCredits;
-        document.getElementById('creditsValue').textContent = credits;
+        uiManager.updateCredits(savedCredits, false);
 
-        renderPhaseSelector();
+        // Renderizar fases
+        uiManager.renderPhases(phases);
+
+        // Selecionar primeira fase
+        if (phases.length > 0) {
+            uiManager.selectPhase(0, phases[0]);
+        }
     } catch (e) {
-        updateOutput('✗ Erro ao carregar as fases: ' + e.message);
+        uiManager.showFeedback('Erro ao carregar fases: ' + e.message, 'error');
     }
 }
 
-// Renderizar seletor de fases
-function renderPhaseSelector() {
-    const selector = document.getElementById('phaseSelector');
-    selector.innerHTML = '';
+/**
+ * Configura event listeners
+ */
+function setupEventListeners() {
+    // Run button
+    document.getElementById('runBtn')?.addEventListener('click', executarCodigo);
 
-    phases.forEach(phase => {
-        const btn = document.createElement('button');
-        btn.className = 'phase-btn';
-        btn.textContent = phase.nome;
-        btn.onclick = () => switchPhase(phase, btn);
-        selector.appendChild(btn);
+    // Clear editor button
+    document.getElementById('clearBtn')?.addEventListener('click', () => {
+        if (confirm('Deseja limpar o editor?')) {
+            document.getElementById('editor').value = '';
+            uiManager.updateLineNumbers();
+        }
+    });
+
+    // Hint button
+    document.getElementById('hintBtn')?.addEventListener('click', solicitarDica);
+
+    // Phase selection event
+    window.addEventListener('phaseSelected', (e) => {
+        currentPhase = e.detail.phase;
+        currentMission = null;
+        attemptCount = 0;
+        if (pyodideManager && pyodideManager.isReady) {
+            pyodideManager.clearState();
+        }
+    });
+
+    // Mission selection event
+    window.addEventListener('missionSelected', (e) => {
+        currentMission = e.detail.mission;
+        attemptCount = 0;
+        document.getElementById('output').innerHTML = '<p class="output-placeholder">Clique em "Executar" para testar seu código...</p>';
+        if (pyodideManager && pyodideManager.isReady) {
+            pyodideManager.clearState();
+        }
     });
 }
 
-// Trocar de fase
-async function switchPhase(phase, btn) {
-    currentPhase = phase;
-    currentMission = null;
-    attemptCount = 0;
-
-    // Atualizar botões ativos
-    document.querySelectorAll('.phase-btn').forEach(b => {
-        b.classList.remove('active');
-    });
-    btn.classList.add('active');
-
-    // Atualizar informações da fase
-    document.getElementById('phaseInfo').textContent = phase.descricao;
-
-    // Renderizar missões
-    renderMissions();
-
-    // Limpar estado do Pyodide
-    if (pyodideManager && pyodideManager.isReady) {
-        await pyodideManager.clearState();
-    }
-
-    // Carregar primeiro código de exemplo
-    if (phase.missoes.length > 0) {
-        currentMission = phase.missoes[0];
-        document.getElementById('editor').value = currentMission.codigo;
-        document.getElementById('output').textContent = '';
-    }
-}
-
-// Renderizar missões na sidebar
-async function renderMissions() {
-    const missionsList = document.getElementById('missionsList');
-    missionsList.innerHTML = '';
-
-    if (!currentPhase) return;
-
-    const completedMissions = missionValidator ?
-        await missionValidator.storage.getCompletedMissions() : [];
-
-    currentPhase.missoes.forEach((mission, index) => {
-        const div = document.createElement('div');
-        const isCompleted = completedMissions.includes(mission.id);
-
-        div.className = 'mission' + (isCompleted ? ' completed' : '');
-        div.innerHTML = `
-            <strong>${isCompleted ? '✓ ' : ''}${index + 1}. ${mission.titulo}</strong>
-            <p>${mission.descricao}</p>
-        `;
-        div.onclick = async () => {
-            currentMission = mission;
-            attemptCount = 0;
-            document.getElementById('editor').value = mission.codigo;
-            document.getElementById('output').textContent = '';
-
-            // Limpar estado do Pyodide
-            if (pyodideManager && pyodideManager.isReady) {
-                await pyodideManager.clearState();
-            }
-        };
-        missionsList.appendChild(div);
-    });
-}
-
-// Atualizar output
-function updateOutput(text) {
-    document.getElementById('output').textContent = text;
-}
-
-// Executar código Python
+/**
+ * Executa código Python
+ */
 async function executarCodigo() {
-    if (!pyodideManager || !pyodideManager.isReady) {
-        updateOutput('✗ Python não está pronto. Aguarde...');
+    if (!appReady || !pyodideManager || !pyodideManager.isReady) {
+        uiManager.showFeedback('Python não está pronto. Aguarde...', 'error');
         return;
     }
 
     const code = document.getElementById('editor').value;
     if (!code.trim()) {
-        updateOutput('✗ Escreva algum código para executar.');
+        uiManager.showFeedback('Escreva algum código para executar.', 'error');
         return;
     }
 
-    updateOutput('⏳ Executando...');
+    uiManager.showStatus('⏳ Executando código...');
     attemptCount++;
 
     try {
-        // Executar com novo gerenciador
+        // Executar código
         const result = await pyodideManager.runCode(code);
 
+        // Atualizar variáveis
         if (result.error) {
-            updateOutput('✗ Erro:\n' + result.error);
+            // Erro na execução
+            uiManager.showFeedback(`❌ Erro:\n${result.error}`, 'error');
 
-            // Oferecer dica se há missão ativa
+            // Oferecer dica
             if (currentMission && missionValidator) {
                 const hint = missionValidator.getHint(currentMission, attemptCount);
-                updateOutput(`✗ Erro:\n${result.error}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`);
+                uiManager.showFeedback(
+                    `❌ Erro:\n${result.error}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`,
+                    'error'
+                );
             }
             return;
         }
 
         const output = result.output;
 
-        // Se há missão ativa, validar resultado
+        // Atualizar display de variáveis
+        const variables = await pyodideManager.getLocalVariables();
+        uiManager.updateVariablesDisplay(variables);
+
+        // Validar resultado se houver missão ativa
         if (currentMission && missionValidator) {
-            // Análise estática do código
+            // Análise estática
             const codeAnalysis = missionValidator.analyzeCode(code);
 
+            // Validação
             const validation = await missionValidator.validate(
                 output,
                 currentMission.esperado,
                 currentMission.id
             );
 
-            // Calcular score de similaridade (0-100%)
+            // Calcular similaridade
             const similarityScore = missionValidator.calculateSimilarity(
                 output,
                 currentMission.esperado
             );
 
-            // Feedback com score
+            // Construir feedback
             let feedback = validation.feedback;
-            if (!validation.passed && similarityScore > 0) {
-                feedback += `\n📊 Similaridade: ${similarityScore}%`;
-            }
 
-            updateOutput(feedback);
-
-            // Se passou, adicionar créditos
             if (validation.passed) {
+                // Missão completada!
                 const newCredits = await missionValidator.completeMission(
                     currentMission.id,
                     currentMission.creditos
                 );
-                credits = newCredits;
-                document.getElementById('creditsValue').textContent = credits;
 
-                // Animar
+                uiManager.updateCredits(newCredits);
+                uiManager.markMissionCompleted(currentMission.id);
+                uiManager.showFeedback(`✅ Parabéns! Você ganhou ${currentMission.creditos} créditos!`, 'success');
+
+                // Animação
                 const creditElement = document.getElementById('creditsValue');
-                creditElement.style.transform = 'scale(1.2)';
-                setTimeout(() => {
-                    creditElement.style.transform = 'scale(1)';
-                }, 300);
-            } else if (attemptCount < 3) {
-                // Análise e sugestão de correção
-                const suggestion = missionValidator.suggestFix(code, currentMission.esperado);
-
-                // Oferecer próxima dica
-                const hint = missionValidator.getHint(currentMission, attemptCount + 1);
-                updateOutput(`${feedback}\n\n${suggestion}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`);
+                if (creditElement) {
+                    creditElement.classList.add('animate-jump');
+                    setTimeout(() => creditElement.classList.remove('animate-jump'), 400);
+                }
             } else {
-                // Mostrar sugestão quando não há mais dicas
-                const suggestion = missionValidator.suggestFix(code, currentMission.esperado);
-                updateOutput(`${feedback}\n\n${suggestion}`);
+                // Missão não completada
+                feedback += `\n📊 Similaridade: ${similarityScore}%`;
+
+                if (attemptCount < 3) {
+                    // Oferecer sugestão e dica
+                    const suggestion = missionValidator.suggestFix(code, currentMission.esperado);
+                    const hint = missionValidator.getHint(currentMission, attemptCount);
+                    feedback += `\n\n${suggestion}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`;
+                }
+
+                uiManager.showFeedback(feedback, 'error');
             }
         } else {
-            // Sem missão ativa, apenas mostrar resultado
-            updateOutput(`✓ Executado com sucesso!\n\n${output}`);
+            // Sem missão ativa
+            uiManager.showFeedback(`✓ Executado com sucesso!\n\n${output}`, 'success');
         }
 
     } catch (e) {
-        updateOutput('✗ Erro inesperado:\n' + e.message);
+        uiManager.showFeedback(`Erro inesperado: ${e.message}`, 'error');
+        console.error('Execution error:', e);
+    } finally {
+        uiManager.showStatus('');
     }
 }
 
-// Event listeners
-document.getElementById('runBtn').addEventListener('click', executarCodigo);
-document.getElementById('clearBtn').addEventListener('click', () => {
-    document.getElementById('output').textContent = '';
+/**
+ * Solicita dica
+ */
+async function solicitarDica() {
+    if (!currentMission || !missionValidator) {
+        uiManager.showFeedback('Selecione uma missão primeiro', 'error');
+        return;
+    }
+
+    if (attemptCount === 0) {
+        uiManager.showFeedback('Faça uma tentativa antes de pedir dica!', 'info');
+        return;
+    }
+
+    if (attemptCount >= 3) {
+        uiManager.showFeedback('Você já recebeu todas as dicas!', 'info');
+        return;
+    }
+
+    const hint = missionValidator.getHint(currentMission, attemptCount + 1);
+    uiManager.showFeedback(`💡 Dica ${attemptCount + 1}/${3}:\n${hint}`, 'info');
+}
+
+/**
+ * Atualiza metrics display
+ */
+function updateMetrics() {
+    if (!pyodideManager) return;
+
+    const metrics = pyodideManager.getMetrics();
+    console.log('Execution metrics:', metrics);
+}
+
+/**
+ * Inicializa quando documento estiver pronto
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔍 PyDetetive iniciando...');
+    initApp();
 });
 
-// Inicializar ao carregar a página
-window.addEventListener('load', () => {
-    initPyodide();
-    loadPhases();
-});
+/**
+ * Exportar para acesso global
+ */
+window.executarCodigo = executarCodigo;
+window.solicitarDica = solicitarDica;
+window.updateMetrics = updateMetrics;
