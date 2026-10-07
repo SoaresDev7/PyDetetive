@@ -162,13 +162,28 @@ async function executarCodigo() {
 
         // Se há missão ativa, validar resultado
         if (currentMission && missionValidator) {
+            // Análise estática do código
+            const codeAnalysis = missionValidator.analyzeCode(code);
+
             const validation = await missionValidator.validate(
                 output,
                 currentMission.esperado,
                 currentMission.id
             );
 
-            updateOutput(validation.feedback);
+            // Calcular score de similaridade (0-100%)
+            const similarityScore = missionValidator.calculateSimilarity(
+                output,
+                currentMission.esperado
+            );
+
+            // Feedback com score
+            let feedback = validation.feedback;
+            if (!validation.passed && similarityScore > 0) {
+                feedback += `\n📊 Similaridade: ${similarityScore}%`;
+            }
+
+            updateOutput(feedback);
 
             // Se passou, adicionar créditos
             if (validation.passed) {
@@ -186,9 +201,16 @@ async function executarCodigo() {
                     creditElement.style.transform = 'scale(1)';
                 }, 300);
             } else if (attemptCount < 3) {
+                // Análise e sugestão de correção
+                const suggestion = missionValidator.suggestFix(code, currentMission.esperado);
+
                 // Oferecer próxima dica
                 const hint = missionValidator.getHint(currentMission, attemptCount + 1);
-                updateOutput(`${validation.feedback}\n\n💡 Próxima dica:\n${hint}`);
+                updateOutput(`${feedback}\n\n${suggestion}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`);
+            } else {
+                // Mostrar sugestão quando não há mais dicas
+                const suggestion = missionValidator.suggestFix(code, currentMission.esperado);
+                updateOutput(`${feedback}\n\n${suggestion}`);
             }
         } else {
             // Sem missão ativa, apenas mostrar resultado
