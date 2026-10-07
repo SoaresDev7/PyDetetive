@@ -76,11 +76,27 @@ html, body {
     overflow: hidden;
 }
 
+html[data-theme="dark"] {
+    --bg-light: #1A1A1A;
+    --bg-secondary: #2D2D2D;
+    --text-dark: #E0E0E0;
+    --text-light: #A0A0A0;
+    --border-color: #404040;
+}
+
+html[data-theme="light"] {
+    --bg-light: #FFFFFF;
+    --bg-secondary: #F8F9FA;
+    --text-dark: #2D3748;
+    --text-light: #718096;
+    --border-color: #E0E0E0;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, var(--primary-noir) 0%, var(--primary-accent) 100%);
     color: var(--text-dark);
-    transition: background-color var(--transition-normal);
+    transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 @media (prefers-color-scheme: dark) {
