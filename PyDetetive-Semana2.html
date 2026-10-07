@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyDetetive - Semana 2</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --success: #51cf66;
+            --danger: #ff6b6b;
+            --bg-light: #f8f9fa;
+            --border: #e0e0e0;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .credits {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .phase-info {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .phase-selector {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .phase-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .phase-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .phase-btn.active {
+            background: white;
+            color: var(--primary);
+            border-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: var(--bg-light);
+        }
+
+        .sidebar-section {
+            padding: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mission {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f1f4 100%);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .mission:hover {
+            background: linear-gradient(135deg, #f0f1f4 0%, #e8eaef 100%);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .mission.completed {
+            border-left-color: var(--success);
+        }
+
+        .variables-list {
+            font-size: 12px;
+        }
+
+        .variable {
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            font-family: monospace;
+        }
+
+        .editor-output {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .output-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: var(--bg-light);
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-dark);
+            letter-spacing: 0.3px;
+        }
+
+        #editor {
+            flex: 1;
+            padding: 18px;
+            font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            border: none;
+            resize: none;
+            background: #fafbfc;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        #editor:focus {
+            background: white;
+            outline: none;
+        }
+
+        #output {
+            flex: 1;
+            padding: 18px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-top: 1px solid var(--border);
+        }
+
+        #output::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #output::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #output::-webkit-scrollbar-thumb {
+            background: rgba(226, 232, 240, 0.2);
+            border-radius: 4px;
+        }
+
+        #output::-webkit-scrollbar-thumb:hover {
+            background: rgba(226, 232, 240, 0.4);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #runBtn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            flex: 1;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        #runBtn:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #4a52c7 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        #runBtn:active {
+            transform: translateY(-1px);
+        }
+
+        #clearBtn {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+        }
+
+        #clearBtn:hover {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .error {
+            color: var(--danger);
+            font-weight: 500;
+        }
+
+        .success {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        #creditsValue {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .editor-panel {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1>🔍 PyDetetive</h1>
+                <div class="credits">
+                    <span>Créditos: </span><span id="creditsValue">0</span>
+                </div>
+            </div>
+            <p>Descubra quem levou o robô Lumi! Completa as missões e desenvolve tuas habilidades em Python.</p>
+
+            <div class="phase-info" id="phaseInfo">
+                Selecione uma fase para começar
+            </div>
+
+            <div class="phase-selector" id="phaseSelector"></div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Missões</div>
+                    <div id="missionsList"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Variáveis</div>
+                    <div class="variables-list" id="variablesList"></div>
+                </div>
+            </div>
+
+            <div class="editor-output">
+                <div class="editor-panel">
+                    <div class="panel-header">Editor Python</div>
+                    <textarea id="editor" placeholder="Escreva seu código aqui..."></textarea>
+                </div>
+                <div class="output-panel">
+                    <div class="panel-header">Saída</div>
+                    <div id="output">Clique em Executar para ver o resultado...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="runBtn">▶ Executar</button>
+            <button id="clearBtn">🗑 Limpar</button>
+        </div>
+    </div>
+
+    <script async src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script>
+        /**
+         * PyodideManager - Gerencia instância do Pyodide
+         * Responsável por:
+         * - Captura de output
+         * - Tratamento de erros
+         * - Timeout e interrupts
+         * - Limpeza de estado
+         */
+
+        class PyodideManager {
+            constructor() {
+                this.py = null;
+                this.isReady = false;
+                this.isExecuting = false;
+                this.timeout = 5000; // 5 segundos
+                this.outputBuffer = '';
+            }
+
+            /**
+             * Inicializa Pyodide
+             */
+            async init() {
+                try {
+                    // Carrega Pyodide
+                    this.py = await loadPyodide();
+
+                    // Configura redirecionamento de stdout
+                    this.setupIO();
+
+                    this.isReady = true;
+                    return { success: true, message: 'Python pronto!' };
+                } catch (error) {
+                    return {
+                        success: false,
+                        message: `Erro ao carregar Python: ${error.message}`
+                    };
+                }
+            }
+
+            /**
+             * Configura captura de input/output
+             */
+            setupIO() {
+                // Executa código para redirecionar stdout
+                try {
+                    this.py.runPython(`
+import sys
+import io
+
+# Criar StringIO para capturar output
+_output_buffer = io.StringIO()
+_original_stdout = sys.stdout
+sys.stdout = _output_buffer
+
+def get_output():
+    global _output_buffer
+    content = _output_buffer.getvalue()
+    # Limpar para próxima execução
+    _output_buffer = io.StringIO()
+    sys.stdout = _output_buffer
+    return content
+
+def clear_output():
+    global _output_buffer
+    _output_buffer = io.StringIO()
+`);
+                } catch (e) {
+                    console.error('Erro ao configurar IO:', e);
+                }
+            }
+
+            /**
+             * Executa código Python e retorna output
+             * @param {string} code - Código Python a executar
+             * @returns {Promise<{output: string, error: string|null}>}
+             */
+            async runCode(code) {
+                if (!this.isReady) {
+                    return { output: '', error: 'Python não está pronto' };
+                }
+
+                if (this.isExecuting) {
+                    return { output: '', error: 'Execução anterior ainda em andamento' };
+                }
+
+                this.isExecuting = true;
+                this.outputBuffer = '';
+
+                try {
+                    // Validação básica
+                    const validation = this.validateCode(code);
+                    if (!validation.valid) {
+                        this.isExecuting = false;
+                        return { output: '', error: validation.error };
+                    }
+
+                    // Limpar output anterior
+                    await this.py.runPythonAsync('clear_output()');
+
+                    // Executar código com timeout
+                    const result = await this.executeWithTimeout(code);
+
+                    if (result.error) {
+                        this.isExecuting = false;
+                        return { output: '', error: result.error };
+                    }
+
+                    // Capturar output
+                    const output = await this.py.runPythonAsync('get_output()');
+
+                    this.isExecuting = false;
+                    return {
+                        output: output || '(sem saída)',
+                        error: null
+                    };
+
+                } catch (error) {
+                    this.isExecuting = false;
+                    return {
+                        output: '',
+                        error: this.formatError(error)
+                    };
+                }
+            }
+
+            /**
+             * Executa código com timeout
+             * @private
+             */
+            async executeWithTimeout(code) {
+                return new Promise((resolve) => {
+                    let timeoutId;
+                    let completed = false;
+
+                    const executionPromise = this.py.runPythonAsync(code)
+                        .then(() => {
+                            if (!completed) {
+                                completed = true;
+                                clearTimeout(timeoutId);
+                                resolve({ error: null });
+                            }
+                        })
+                        .catch((error) => {
+                            if (!completed) {
+                                completed = true;
+                                clearTimeout(timeoutId);
+                                resolve({ error: error.message });
+                            }
+                        });
+
+                    timeoutId = setTimeout(() => {
+                        if (!completed) {
+                            completed = true;
+                            // Tentar interromper (nem sempre funciona em WebAssembly)
+                            resolve({ error: 'Timeout: execução levou mais de 5 segundos' });
+                        }
+                    }, this.timeout);
+                });
+            }
+
+            /**
+             * Valida sintaxe básica
+             * @private
+             */
+            validateCode(code) {
+                if (!code || !code.trim()) {
+                    return { valid: false, error: 'Código vazio' };
+                }
+
+                // Verificar indentação básica
+                const lines = code.split('\n');
+                let inBlock = false;
+                let expectedIndent = 0;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const trimmed = line.trim();
+
+                    if (!trimmed || trimmed.startsWith('#')) continue; // Skip empty/comments
+
+                    const indent = line.search(/\S/);
+
+                    // Verificar se entra em bloco
+                    if (trimmed.endsWith(':')) {
+                        inBlock = true;
+                        expectedIndent = indent + 4;
+                    }
+
+                    // Verificar indentação após :
+                    if (inBlock && indent < expectedIndent && trimmed.length > 0) {
+                        if (!trimmed.startsWith('#')) {
+                            // Último : ainda não teve corpo indentado
+                        }
+                    }
+
+                    // Sair de bloco
+                    if (inBlock && indent <= expectedIndent - 4 && trimmed.length > 0) {
+                        inBlock = false;
+                    }
+                }
+
+                return { valid: true };
+            }
+
+            /**
+             * Formata mensagem de erro
+             * @private
+             */
+            formatError(error) {
+                const message = error.message || String(error);
+
+                // Extrair tipo e mensagem
+                if (message.includes('SyntaxError')) {
+                    return `Erro de Sintaxe: ${message.split('SyntaxError:')[1] || 'verificar código'}`;
+                }
+                if (message.includes('IndentationError')) {
+                    return `Erro de Indentação: código não está alinhado corretamente`;
+                }
+                if (message.includes('NameError')) {
+                    return `Erro de Nome: variável ou função não definida`;
+                }
+                if (message.includes('TypeError')) {
+                    return `Erro de Tipo: verificar tipos de variáveis`;
+                }
+                if (message.includes('ValueError')) {
+                    return `Erro de Valor: valor inválido fornecido`;
+                }
+                if (message.includes('ZeroDivisionError')) {
+                    return `Erro: divisão por zero não é permitida`;
+                }
+
+                return `Erro: ${message}`;
+            }
+
+            /**
+             * Limpa estado (para nova missão)
+             */
+            async clearState() {
+                if (!this.isReady) return;
+
+                try {
+                    // Limpar apenas variáveis do usuário
+                    await this.py.runPythonAsync(`
+# Limpar apenas variáveis do usuário
+import sys
+vars_to_delete = [var for var in dir() if not var.startswith('_')]
+for var in vars_to_delete:
+    try:
+        del globals()[var]
+    except:
+        pass
+clear_output()
+`);
+                } catch (e) {
+                    console.warn('Erro ao limpar estado:', e);
+                }
+            }
+
+            /**
+             * Verifica se está pronto
+             */
+            ready() {
+                return this.isReady;
+            }
+
+            /**
+             * Obtém informações do Pyodide
+             */
+            getInfo() {
+                return {
+                    ready: this.isReady,
+                    executing: this.isExecuting,
+                    version: this.py ? 'loaded' : 'not loaded'
+                };
+            }
+        }
+
+        // Exportar para uso global
+        window.PyodideManager = PyodideManager;
+    </script>
+    <script>
+        /**
+         * MissionValidator - Valida execução de missões
+         * Responsável por:
+         * - Comparar resultado com esperado
+         * - Fornecer dicas progressivas
+         * - Gerenciar progresso
+         * - Salvar em localStorage
+         */
+
+        class MissionValidator {
+            constructor() {
+                this.storage = new LocalStorageManager();
+                this.hints = this.loadHints();
+            }
+
+            /**
+             * Valida se resultado está correto
+             * @param {string} output - Output do código executado
+             * @param {string} expected - Output esperado
+             * @param {string} missionId - ID da missão
+             * @returns {Promise<{passed: boolean, feedback: string}>}
+             */
+            async validate(output, expected, missionId) {
+                // Normalizar strings (remover espaços extras, quebras de linha)
+                const normalizedOutput = this.normalizeString(output);
+                const normalizedExpected = this.normalizeString(expected);
+
+                // Comparação simples
+                const passed = normalizedOutput === normalizedExpected;
+
+                let feedback = '';
+                if (passed) {
+                    feedback = '✅ Parabéns! Missão completada!';
+                } else {
+                    feedback = this.generateFeedback(normalizedOutput, normalizedExpected);
+                }
+
+                // Salvar tentativa
+                await this.storage.recordAttempt(missionId, passed);
+
+                return { passed, feedback };
+            }
+
+            /**
+             * Normaliza string para comparação
+             * @private
+             */
+            normalizeString(str) {
+                return str
+                    .trim()
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .join('\n');
+            }
+
+            /**
+             * Gera feedback útil
+             * @private
+             */
+            generateFeedback(actual, expected) {
+                // Se saída está vazia
+                if (!actual) {
+                    return '❌ Seu código não produziu saída. Use print() para exibir resultado.';
+                }
+
+                // Se tamanho muito diferente
+                if (Math.abs(actual.length - expected.length) > 10) {
+                    return `❌ Saída incompleta ou com muitos caracteres extras.\nEsperado: ${expected}\nRecebido: ${actual}`;
+                }
+
+                // Se é similar mas não igual
+                if (this.isSimilar(actual, expected)) {
+                    return `❌ Muito perto! Verifique espaços, maiúsculas ou pontuação.\nEsperado: "${expected}"\nRecebido: "${actual}"`;
+                }
+
+                return `❌ Saída não corresponde.\nEsperado: "${expected}"\nRecebido: "${actual}"`;
+            }
+
+            /**
+             * Verifica se strings são similares
+             * @private
+             */
+            isSimilar(str1, str2) {
+                const maxDiff = Math.max(str1.length, str2.length) * 0.2;
+                let diff = 0;
+
+                for (let i = 0; i < Math.max(str1.length, str2.length); i++) {
+                    if (str1[i] !== str2[i]) diff++;
+                }
+
+                return diff < maxDiff;
+            }
+
+            /**
+             * Obtém dica para uma missão
+             * @param {object} mission - Objeto da missão
+             * @param {number} attemptCount - Número de tentativas
+             * @returns {string} Dica apropriada
+             */
+            getHint(mission, attemptCount = 0) {
+                const hints = this.hints[mission.id] || [];
+
+                if (attemptCount < 1) {
+                    return 'Faça uma tentativa antes de pedir dica!';
+                }
+
+                if (attemptCount - 1 >= hints.length) {
+                    return `Nenhuma mais dicas. Dica final: ${hints[hints.length - 1]}`;
+                }
+
+                return hints[attemptCount - 1] || hints[hints.length - 1];
+            }
+
+            /**
+             * Carrega dicas do arquivo
+             * @private
+             */
+            loadHints() {
+                return {
+                    1: [
+                        'Use a função print() para exibir texto',
+                        'O texto deve estar entre aspas: print("texto")',
+                        'print("Olá, Mundo!")'
+                    ],
+                    2: [
+                        'Defina uma variável: nome = "valor"',
+                        'Use f-string para interpolar: f"texto {variavel}"',
+                        'nome = "Lumi"\nprint(f"O robô é: {nome}")'
+                    ],
+                    3: [
+                        'Declare as variáveis x e y',
+                        'Use + para soma e * para multiplicação',
+                        'x = 5\ny = 3\nprint(f"Soma: {x + y}")\nprint(f"Produto: {x * y}")'
+                    ],
+                    4: [
+                        'Crie 3 variáveis com tipos diferentes',
+                        'Use f-string para exibir todos juntos',
+                        'inteiro = 42\nfloat_num = 3.14\ntexto = "Python"\nprint(f"Inteiro: {inteiro}, Float: {float_num}, Texto: {texto}")'
+                    ],
+                    5: [
+                        'Use operadores: >, <, ==, !=',
+                        'Os resultados serão True ou False',
+                        'a = 10\nb = 5\nprint(f"a > b: {a > b}")\nprint(f"a == b: {a == b}")\nprint(f"a != b: {a != b}")'
+                    ],
+                    6: [
+                        'Use if/else para tomar decisões',
+                        'Lembre-se da indentação (4 espaços)',
+                        'idade = 20\nif idade >= 18:\n    print("Você é maior de idade")\nelse:\n    print("Você é menor de idade")'
+                    ],
+                    7: [
+                        'Use for com range()',
+                        'range(1, 6) gera números de 1 a 5',
+                        'for i in range(1, 6):\n    print(f"Número: {i}")'
+                    ],
+                    8: [
+                        'Crie uma lista com [elemento1, elemento2, ...]',
+                        'Use índices: lista[0], lista[-1], len(lista)',
+                        'lista = ["Ana", "Bruno", "Carlos", "Diana"]\nprint(f"Primeiro: {lista[0]}")\nprint(f"Último: {lista[-1]}")\nprint(f"Tamanho: {len(lista)}")'
+                    ],
+                    9: [
+                        'Defina uma função com def nome():',
+                        'Lembre-se da indentação dentro da função',
+                        'def saudacao():\n    print("Olá!")\nsaudacao()'
+                    ],
+                    10: [
+                        'Função com parâmetro: def nome(parametro):',
+                        'Use o parâmetro dentro da função',
+                        'def saudacao(nome):\n    print(f"Olá, {nome}!")\nsaudacao("Lumi")'
+                    ],
+                    11: [
+                        'Use return para devolver um valor',
+                        'Atribua o resultado a uma variável',
+                        'def dobrar(x):\n    return x * 2\nresultado = dobrar(5)\nprint(resultado)'
+                    ],
+                    12: [
+                        'Defina múltiplas funções',
+                        'Chame cada uma e imprima os resultados',
+                        'def somar(a, b):\n    return a + b\ndef multiplicar(a, b):\n    return a * b\nprint(somar(3, 5))\nprint(multiplicar(2, 4))'
+                    ]
+                };
+            }
+
+            /**
+             * Verifica se missão está desbloqueada
+             * @param {string} phaseId - ID da fase
+             * @param {string} missionId - ID da missão
+             * @returns {Promise<boolean>}
+             */
+            async isMissionUnlocked(phaseId, missionId) {
+                // Fase 1 sempre desbloqueada
+                if (phaseId === 1) return true;
+
+                // Verificar se fase anterior foi completada
+                const previousPhase = phaseId - 1;
+                const isPhaseCompleted = await this.storage.isPhaseCompleted(previousPhase);
+
+                return isPhaseCompleted;
+            }
+
+            /**
+             * Marca missão como completada
+             * @param {string} missionId - ID da missão
+             * @param {number} creditos - Créditos da missão
+             * @returns {Promise<{creditos: number, nextLevel: boolean}>}
+             */
+            async completeMission(missionId, creditos) {
+                await this.storage.completeMission(missionId);
+                const newCredits = await this.storage.addCredits(creditos);
+
+                return {
+                    credits: newCredits,
+                    nextLevel: false // Será implementado depois
+                };
+            }
+
+            /**
+             * Obtém progresso do usuário
+             * @returns {Promise<object>}
+             */
+            async getProgress() {
+                return {
+                    completedMissions: await this.storage.getCompletedMissions(),
+                    totalCredits: await this.storage.getCredits(),
+                    attempts: await this.storage.getAllAttempts()
+                };
+            }
+        }
+
+        /**
+         * LocalStorageManager - Gerencia dados persistentes
+         */
+        class LocalStorageManager {
+            constructor() {
+                this.prefix = 'pydetetive_';
+                this.initStorage();
+            }
+
+            /**
+             * Inicializa storage se necessário
+             * @private
+             */
+            initStorage() {
+                const data = this.get('data');
+                if (!data) {
+                    this.set('data', {
+                        completedMissions: [],
+                        credits: 0,
+                        attempts: {},
+                        currentPhase: 1,
+                        completedPhases: []
+                    });
+                }
+            }
+
+            /**
+             * Salva na storage
+             * @private
+             */
+            set(key, value) {
+                try {
+                    localStorage.setItem(this.prefix + key, JSON.stringify(value));
+                } catch (e) {
+                    console.warn('localStorage cheio:', e);
+                }
+            }
+
+            /**
+             * Recupera da storage
+             * @private
+             */
+            get(key) {
+                try {
+                    const item = localStorage.getItem(this.prefix + key);
+                    return item ? JSON.parse(item) : null;
+                } catch (e) {
+                    console.warn('Erro ao ler localStorage:', e);
+                    return null;
+                }
+            }
+
+            /**
+             * Registra tentativa de missão
+             */
+            async recordAttempt(missionId, passed) {
+                const data = this.get('data');
+
+                if (!data.attempts[missionId]) {
+                    data.attempts[missionId] = { count: 0, passed: false };
+                }
+
+                data.attempts[missionId].count++;
+                if (passed) {
+                    data.attempts[missionId].passed = true;
+                    if (!data.completedMissions.includes(missionId)) {
+                        data.completedMissions.push(missionId);
+                    }
+                }
+
+                this.set('data', data);
+            }
+
+            /**
+             * Marca missão como completada
+             */
+            async completeMission(missionId) {
+                const data = this.get('data');
+                if (!data.completedMissions.includes(missionId)) {
+                    data.completedMissions.push(missionId);
+                }
+                this.set('data', data);
+            }
+
+            /**
+             * Adiciona créditos
+             */
+            async addCredits(amount) {
+                const data = this.get('data');
+                data.credits += amount;
+                this.set('data', data);
+                return data.credits;
+            }
+
+            /**
+             * Obtém créditos atuais
+             */
+            async getCredits() {
+                const data = this.get('data');
+                return data.credits || 0;
+            }
+
+            /**
+             * Obtém missões completadas
+             */
+            async getCompletedMissions() {
+                const data = this.get('data');
+                return data.completedMissions || [];
+            }
+
+            /**
+             * Obtém todas as tentativas
+             */
+            async getAllAttempts() {
+                const data = this.get('data');
+                return data.attempts || {};
+            }
+
+            /**
+             * Verifica se fase foi completada
+             */
+            async isPhaseCompleted(phaseId) {
+                // Implementar lógica de qual missão marca fase como completa
+                // Por enquanto, simples check
+                return false;
+            }
+
+            /**
+             * Limpa dados (debug)
+             */
+            clear() {
+                try {
+                    for (let key in localStorage) {
+                        if (key.startsWith(this.prefix)) {
+                            localStorage.removeItem(key);
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Erro ao limpar localStorage:', e);
+                }
+            }
+        }
+
+        // Exportar para uso global
+        window.MissionValidator = MissionValidator;
+        window.LocalStorageManager = LocalStorageManager;
+    </script>
+    <script>
+        // Instâncias globais
+        let pyodideManager = null;
+        let missionValidator = null;
+        let currentPhase = null;
+        let currentMission = null;
+        let phases = [];
+        let credits = 0;
+        let attemptCount = 0;
+
+        // Dados das fases (inline)
+        const phasesData = [
+          {
+            "id": 1,
+            "nome": "Fase 1",
+            "descricao": "Aprende os conceitos básicos: print, variáveis e input",
+            "missoes": [
+              {
+                "id": 1,
+                "titulo": "Olá Mundo",
+                "descricao": "Usa print() para exibir uma mensagem",
+                "codigo": "print(\"Olá, Mundo!\")",
+                "esperado": "Olá, Mundo!",
+                "creditos": 10
+              },
+              {
+                "id": 2,
+                "titulo": "Trabalhar com Variáveis",
+                "descricao": "Cria variáveis e exibe o seu conteúdo",
+                "codigo": "nome = \"Lumi\"\nprint(f\"O robô é: {nome}\")",
+                "esperado": "O robô é: Lumi",
+                "creditos": 10
+              },
+              {
+                "id": 3,
+                "titulo": "Operações Matemáticas",
+                "descricao": "Realiza cálculos simples",
+                "codigo": "x = 5\ny = 3\nprint(f\"Soma: {x + y}\")\nprint(f\"Produto: {x * y}\")",
+                "esperado": "Soma: 8\nProduto: 15",
+                "creditos": 15
+              },
+              {
+                "id": 4,
+                "titulo": "Tipos de Dados",
+                "descricao": "Trabalha com diferentes tipos de dados",
+                "codigo": "inteiro = 42\nfloat_num = 3.14\ntexto = \"Python\"\nprint(f\"Inteiro: {inteiro}, Float: {float_num}, Texto: {texto}\")",
+                "esperado": "Inteiro: 42, Float: 3.14, Texto: Python",
+                "creditos": 15
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nome": "Fase 2",
+            "descricao": "Aprende operadores, condições e estruturas de controle",
+            "missoes": [
+              {
+                "id": 5,
+                "titulo": "Operadores Relacionais",
+                "descricao": "Usa operadores para comparar valores",
+                "codigo": "a = 10\nb = 5\nprint(f\"a > b: {a > b}\")\nprint(f\"a == b: {a == b}\")\nprint(f\"a != b: {a != b}\")",
+                "esperado": "a > b: True\na == b: False\na != b: True",
+                "creditos": 10
+              },
+              {
+                "id": 6,
+                "titulo": "Estrutura IF",
+                "descricao": "Usa if para tomar decisões",
+                "codigo": "idade = 20\nif idade >= 18:\n    print(\"Você é maior de idade\")\nelse:\n    print(\"Você é menor de idade\")",
+                "esperado": "Você é maior de idade",
+                "creditos": 15
+              },
+              {
+                "id": 7,
+                "titulo": "Laço FOR",
+                "descricao": "Usa for para repetir ações",
+                "codigo": "for i in range(1, 6):\n    print(f\"Número: {i}\")",
+                "esperado": "Número: 1\nNúmero: 2\nNúmero: 3\nNúmero: 4\nNúmero: 5",
+                "creditos": 15
+              },
+              {
+                "id": 8,
+                "titulo": "Listas",
+                "descricao": "Trabalha com listas e seus elementos",
+                "codigo": "lista = [\"Ana\", \"Bruno\", \"Carlos\", \"Diana\"]\nprint(f\"Primeiro: {lista[0]}\")\nprint(f\"Último: {lista[-1]}\")\nprint(f\"Tamanho: {len(lista)}\")",
+                "esperado": "Primeiro: Ana\nÚltimo: Diana\nTamanho: 4",
+                "creditos": 20
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nome": "Fase 3",
+            "descricao": "Aprende sobre funções e modularização de código",
+            "missoes": [
+              {
+                "id": 9,
+                "titulo": "Função Simples",
+                "descricao": "Cria uma função que exibe uma mensagem",
+                "codigo": "def saudacao():\n    print(\"Olá!\")\n\nsaudacao()",
+                "esperado": "Olá!",
+                "creditos": 15
+              },
+              {
+                "id": 10,
+                "titulo": "Função com Parâmetro",
+                "descricao": "Cria uma função que recebe um parâmetro",
+                "codigo": "def saudacao(nome):\n    print(f\"Olá, {nome}!\")\n\nsaudacao(\"Lumi\")",
+                "esperado": "Olá, Lumi!",
+                "creditos": 20
+              },
+              {
+                "id": 11,
+                "titulo": "Função com Retorno",
+                "descricao": "Cria uma função que retorna um valor",
+                "codigo": "def dobrar(x):\n    return x * 2\n\nresultado = dobrar(5)\nprint(resultado)",
+                "esperado": "10",
+                "creditos": 20
+              },
+              {
+                "id": 12,
+                "titulo": "Múltiplas Funções",
+                "descricao": "Trabalha com múltiplas funções no mesmo código",
+                "codigo": "def somar(a, b):\n    return a + b\n\ndef multiplicar(a, b):\n    return a * b\n\nprint(somar(3, 5))\nprint(multiplicar(2, 4))",
+                "esperado": "8\n8",
+                "creditos": 25
+              }
+            ]
+          }
+        ];
+
+        // Inicializar Pyodide com novo gerenciador
+        async function initPyodide() {
+            try {
+                pyodideManager = new PyodideManager();
+                const result = await pyodideManager.init();
+
+                if (result.success) {
+                    updateOutput('✓ ' + result.message);
+                } else {
+                    updateOutput('✗ ' + result.message);
+                }
+            } catch (e) {
+                updateOutput('✗ Erro ao carregar Python: ' + e.message);
+            }
+        }
+
+        // Carregar fases do arquivo JSON
+        async function loadPhases() {
+            try {
+                phases = phasesData;
+
+                // Inicializar validador
+                missionValidator = new MissionValidator();
+
+                // Recuperar créditos salvos
+                const savedCredits = await missionValidator.storage.getCredits();
+                credits = savedCredits;
+                document.getElementById('creditsValue').textContent = credits;
+
+                renderPhaseSelector();
+            } catch (e) {
+                updateOutput('✗ Erro ao carregar as fases: ' + e.message);
+            }
+        }
+
+        // Renderizar seletor de fases
+        function renderPhaseSelector() {
+            const selector = document.getElementById('phaseSelector');
+            selector.innerHTML = '';
+
+            phases.forEach(phase => {
+                const btn = document.createElement('button');
+                btn.className = 'phase-btn';
+                btn.textContent = phase.nome;
+                btn.onclick = () => switchPhase(phase, btn);
+                selector.appendChild(btn);
+            });
+        }
+
+        // Trocar de fase
+        async function switchPhase(phase, btn) {
+            currentPhase = phase;
+            currentMission = null;
+            attemptCount = 0;
+
+            // Atualizar botões ativos
+            document.querySelectorAll('.phase-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            // Atualizar informações da fase
+            document.getElementById('phaseInfo').textContent = phase.descricao;
+
+            // Renderizar missões
+            renderMissions();
+
+            // Limpar estado do Pyodide
+            if (pyodideManager && pyodideManager.isReady) {
+                await pyodideManager.clearState();
+            }
+
+            // Carregar primeiro código de exemplo
+            if (phase.missoes.length > 0) {
+                currentMission = phase.missoes[0];
+                document.getElementById('editor').value = currentMission.codigo;
+                document.getElementById('output').textContent = '';
+            }
+        }
+
+        // Renderizar missões na sidebar
+        async function renderMissions() {
+            const missionsList = document.getElementById('missionsList');
+            missionsList.innerHTML = '';
+
+            if (!currentPhase) return;
+
+            const completedMissions = missionValidator ?
+                await missionValidator.storage.getCompletedMissions() : [];
+
+            currentPhase.missoes.forEach((mission, index) => {
+                const div = document.createElement('div');
+                const isCompleted = completedMissions.includes(mission.id);
+
+                div.className = 'mission' + (isCompleted ? ' completed' : '');
+                div.innerHTML = `
+                    <strong>${isCompleted ? '✓ ' : ''}${index + 1}. ${mission.titulo}</strong>
+                    <p>${mission.descricao}</p>
+                `;
+                div.onclick = async () => {
+                    currentMission = mission;
+                    attemptCount = 0;
+                    document.getElementById('editor').value = mission.codigo;
+                    document.getElementById('output').textContent = '';
+
+                    // Limpar estado do Pyodide
+                    if (pyodideManager && pyodideManager.isReady) {
+                        await pyodideManager.clearState();
+                    }
+                };
+                missionsList.appendChild(div);
+            });
+        }
+
+        // Atualizar output
+        function updateOutput(text) {
+            document.getElementById('output').textContent = text;
+        }
+
+        // Executar código Python
+        async function executarCodigo() {
+            if (!pyodideManager || !pyodideManager.isReady) {
+                updateOutput('✗ Python não está pronto. Aguarde...');
+                return;
+            }
+
+            const code = document.getElementById('editor').value;
+            if (!code.trim()) {
+                updateOutput('✗ Escreva algum código para executar.');
+                return;
+            }
+
+            updateOutput('⏳ Executando...');
+            attemptCount++;
+
+            try {
+                // Executar com novo gerenciador
+                const result = await pyodideManager.runCode(code);
+
+                if (result.error) {
+                    updateOutput('✗ Erro:\n' + result.error);
+
+                    // Oferecer dica se há missão ativa
+                    if (currentMission && missionValidator) {
+                        const hint = missionValidator.getHint(currentMission, attemptCount);
+                        updateOutput(`✗ Erro:\n${result.error}\n\n💡 Dica ${attemptCount}/${3}:\n${hint}`);
+                    }
+                    return;
+                }
+
+                const output = result.output;
+
+                // Se há missão ativa, validar resultado
+                if (currentMission && missionValidator) {
+                    const validation = await missionValidator.validate(
+                        output,
+                        currentMission.esperado,
+                        currentMission.id
+                    );
+
+                    updateOutput(validation.feedback);
+
+                    // Se passou, adicionar créditos
+                    if (validation.passed) {
+                        const newCredits = await missionValidator.completeMission(
+                            currentMission.id,
+                            currentMission.creditos
+                        );
+                        credits = newCredits;
+                        document.getElementById('creditsValue').textContent = credits;
+
+                        // Animar
+                        const creditElement = document.getElementById('creditsValue');
+                        creditElement.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            creditElement.style.transform = 'scale(1)';
+                        }, 300);
+                    } else if (attemptCount < 3) {
+                        // Oferecer próxima dica
+                        const hint = missionValidator.getHint(currentMission, attemptCount + 1);
+                        updateOutput(`${validation.feedback}\n\n💡 Próxima dica:\n${hint}`);
+                    }
+                } else {
+                    // Sem missão ativa, apenas mostrar resultado
+                    updateOutput(`✓ Executado com sucesso!\n\n${output}`);
+                }
+
+            } catch (e) {
+                updateOutput('✗ Erro inesperado:\n' + e.message);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('runBtn').addEventListener('click', executarCodigo);
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.getElementById('output').textContent = '';
+        });
+
+        // Inicializar ao carregar a página
+        window.addEventListener('load', () => {
+            initPyodide();
+            loadPhases();
+        });
+    </script>
+</body>
+</html>
