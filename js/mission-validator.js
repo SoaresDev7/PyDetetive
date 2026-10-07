@@ -1,8 +1,9 @@
 /**
- * MissionValidator - Valida execução de missões
+ * MissionValidator v2.0 - Valida execução de missões
  * Responsável por:
  * - Comparar resultado com esperado
  * - Fornecer dicas progressivas
+ * - Análise estática de código
  * - Gerenciar progresso
  * - Salvar em localStorage
  */
@@ -11,6 +12,21 @@ class MissionValidator {
     constructor() {
         this.storage = new LocalStorageManager();
         this.hints = this.loadHints();
+        this.patternDetector = new Map();
+        this.initPatterns();
+    }
+
+    /**
+     * Inicializa padrões de detecção
+     * @private
+     */
+    initPatterns() {
+        // Padrões comuns que alunos usam errado
+        this.patternDetector.set('print-without-args', /print\s*\(\s*\)/);
+        this.patternDetector.set('missing-print', /^\s*\w+\s*=\s*[^=]/);
+        this.patternDetector.set('string-not-quoted', /print\s*\(\s*\w+\s*\)/);
+        this.patternDetector.set('missing-colon', /(if|for|while|def)\s+.*[^:]\s*$/m);
+        this.patternDetector.set('wrong-indentation', /^[ ]{1,3}(?!$)/m);
     }
 
     /**
@@ -90,6 +106,126 @@ class MissionValidator {
         }
 
         return diff < maxDiff;
+    }
+
+    /**
+     * Analisa código estaticamente
+     * @param {string} code - Código a analisar
+     * @returns {object} Análise do código {hasErrors, patterns, issues}
+     */
+    analyzeCode(code) {
+        const analysis = {
+            hasErrors: false,
+            patterns: [],
+            issues: [],
+            complexity: this.calculateComplexity(code)
+        };
+
+        // Detectar padrões problematicos
+        for (const [patternName, pattern] of this.patternDetector) {
+            if (pattern.test(code)) {
+                analysis.patterns.push(patternName);
+            }
+        }
+
+        // Verificar estrutura
+        if (!code.includes('print')) {
+            analysis.issues.push('Código não contém print() - nenhuma saída será gerada');
+            analysis.hasErrors = true;
+        }
+
+        return analysis;
+    }
+
+    /**
+     * Calcula complexidade do código
+     * @private
+     */
+    calculateComplexity(code) {
+        const lines = code.split('\n').length;
+        const hasLoop = /\b(for|while)\b/.test(code);
+        const hasCondition = /\b(if|else)\b/.test(code);
+        const hasFunction = /\bdef\b/.test(code);
+
+        let complexity = 'simples';
+        if (hasFunction || (hasLoop && hasCondition)) complexity = 'complexo';
+        else if (hasLoop || hasCondition) complexity = 'médio';
+
+        return {
+            lines,
+            hasLoop,
+            hasCondition,
+            hasFunction,
+            level: complexity
+        };
+    }
+
+    /**
+     * Calcula similaridade entre dois strings (0-100%)
+     * @param {string} actual - String real
+     * @param {string} expected - String esperada
+     * @returns {number} Score de 0 a 100
+     */
+    calculateSimilarity(actual, expected) {
+        if (actual === expected) return 100;
+        if (!actual || !expected) return 0;
+
+        const longer = actual.length > expected.length ? actual : expected;
+        const shorter = actual.length > expected.length ? expected : actual;
+
+        if (longer.length === 0) return 100;
+
+        const editDistance = this.levenshteinDistance(longer, shorter);
+        return Math.round(((longer.length - editDistance) / longer.length) * 100);
+    }
+
+    /**
+     * Calcula distância de Levenshtein
+     * @private
+     */
+    levenshteinDistance(s1, s2) {
+        const costs = [];
+        for (let i = 0; i <= s1.length; i++) {
+            let lastValue = i;
+            for (let j = 0; j <= s2.length; j++) {
+                if (i === 0) {
+                    costs[j] = j;
+                } else if (j > 0) {
+                    let newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    }
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+            if (i > 0) costs[s2.length] = lastValue;
+        }
+        return costs[s2.length];
+    }
+
+    /**
+     * Sugere correções baseado no código
+     * @param {string} code - Código do aluno
+     * @param {string} expected - Resultado esperado
+     * @returns {string} Sugestão de correção
+     */
+    suggestFix(code, expected) {
+        const analysis = this.analyzeCode(code);
+
+        if (analysis.issues.length > 0) {
+            return `⚠️ Problemas detectados:\n${analysis.issues.join('\n')}`;
+        }
+
+        if (analysis.patterns.includes('missing-print')) {
+            return '💡 Parece que você criou variáveis mas não usou print() para exibir o resultado.';
+        }
+
+        if (analysis.patterns.includes('string-not-quoted')) {
+            return '💡 Strings devem estar entre aspas: print("seu texto")';
+        }
+
+        return '💡 Verifique se o output corresponde exatamente ao esperado (maiúsculas, espaços, etc.)';
     }
 
     /**
