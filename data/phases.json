@@ -76,5 +76,44 @@
         "creditos": 20
       }
     ]
+  },
+  {
+    "id": 3,
+    "nome": "Fase 3",
+    "descricao": "Aprende sobre funções e modularização de código",
+    "missoes": [
+      {
+        "id": 9,
+        "titulo": "Função Simples",
+        "descricao": "Cria uma função que exibe uma mensagem",
+        "codigo": "def saudacao():\n    print(\"Olá!\")\n\nsaudacao()",
+        "esperado": "Olá!",
+        "creditos": 15
+      },
+      {
+        "id": 10,
+        "titulo": "Função com Parâmetro",
+        "descricao": "Cria uma função que recebe um parâmetro",
+        "codigo": "def saudacao(nome):\n    print(f\"Olá, {nome}!\")\n\nsaudacao(\"Lumi\")",
+        "esperado": "Olá, Lumi!",
+        "creditos": 20
+      },
+      {
+        "id": 11,
+        "titulo": "Função com Retorno",
+        "descricao": "Cria uma função que retorna um valor",
+        "codigo": "def dobrar(x):\n    return x * 2\n\nresultado = dobrar(5)\nprint(resultado)",
+        "esperado": "10",
+        "creditos": 20
+      },
+      {
+        "id": 12,
+        "titulo": "Múltiplas Funções",
+        "descricao": "Trabalha com múltiplas funções no mesmo código",
+        "codigo": "def somar(a, b):\n    return a + b\n\ndef multiplicar(a, b):\n    return a * b\n\nprint(somar(3, 5))\nprint(multiplicar(2, 4))",
+        "esperado": "8\n8",
+        "creditos": 25
+      }
+    ]
   }
 ]
