@@ -336,6 +336,83 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
 .caixa .tp{font-size:.8rem;font-weight:800;color:#23160e;margin-top:.25rem}
 .caixa.mudou{animation:pulo .6s ease}
 .visu-saida{font-family:var(--f-code);background:var(--console-bg);color:var(--console-ink);border:3px solid var(--outline);border-radius:10px;padding:.6rem .9rem;min-height:2.6em;white-space:pre}
+/* ---------- PLANOS DE AULA E DESAFIOS DO PROFESSOR ---------- */
+.abas-prof{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.aba-prof{background:var(--paper-2);border:2px solid var(--outline);border-radius:999px;padding:.35rem 1rem;font-weight:800;color:var(--paper-ink)}
+.aba-prof[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.grade-aulas{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin-top:1rem}
+.aula-card{background:var(--paper);color:var(--paper-ink)}
+.aula-card h3{margin:.5rem 0 .4rem}
+.aula-card p{margin:0 0 .6rem}
+.aula-card ul{margin:0 0 .4rem;padding-left:1.2rem;font-weight:600}
+.aula-card .meta{font-size:.9rem;color:var(--paper-soft)}
+.aula-card .tag.liberada{background:var(--green);color:#fff6e2}
+.acoes-aula{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+.acoes-aula .btn{font-size:.95rem;padding:.35rem .8rem;box-shadow:0 3px 0 var(--outline)}
+#plano-aula{margin-top:1.2rem;scroll-margin-top:6rem}
+.plano-topo{background:var(--panel-dark);color:var(--panel-ink);border:3px solid var(--outline);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem}
+.plano-topo span{font-family:var(--f-maquina);color:var(--accent)}
+.plano-topo h2{font-family:var(--f-title);font-weight:400;margin:.2rem 0}
+.plano-topo p{margin:0;font-weight:600}
+.plano-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1rem}
+.bloco{background:var(--paper-2);border:2px solid var(--outline);border-radius:10px;padding:.8rem 1rem}
+.bloco h4{font-family:var(--f-title);font-weight:400;font-size:1.15rem;margin:0 0 .4rem;color:var(--red)}
+.bloco ul,.plano-sec ol{margin:0;padding-left:1.2rem;font-weight:600}
+.bloco li,.plano-sec li{margin:.25rem 0}
+.plano-sec h4{font-family:var(--f-title);font-weight:400;font-size:1.3rem;margin:1.2rem 0 .5rem;color:var(--red)}
+.plano-tab{width:100%;border-collapse:collapse;font-weight:600}
+.plano-tab th,.plano-tab td{text-align:left;padding:.4rem .5rem;border-bottom:2px dashed var(--paper-line);vertical-align:top}
+.plano-tab th{font-family:var(--f-title);font-weight:400;color:var(--paper-soft)}
+.roteiro li{margin:.45rem 0}
+.roteiro span{color:var(--paper-soft);font-weight:600}
+.form-campo{display:grid;gap:.25rem;margin-bottom:.8rem}
+.form-campo label{font-weight:800}
+.form-campo input,.form-campo textarea{border:3px solid var(--outline);border-radius:10px;padding:.5rem .7rem;background:#fffaf0;color:#23160e;width:100%;font:inherit}
+.form-campo textarea{min-height:80px;font-family:var(--f-code);resize:vertical}
+.form-duplo{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media (max-width:640px){.form-duplo{grid-template-columns:1fr}}
+.linha-desafio{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;border-bottom:2px dashed var(--paper-line);padding:.5rem 0}
+.linha-desafio small{display:block;color:var(--paper-soft);font-weight:600}
+#codigo-desafio{min-height:90px;font-size:.85rem;word-break:break-all}
+.importar{max-width:1290px;margin:0 auto 3rem;background:var(--panel);border:3px solid var(--outline);border-radius:14px;padding:1rem 1.2rem;color:var(--panel-ink)}
+.importar h3{font-family:var(--f-title);font-weight:400;margin:0 0 .4rem}
+.importar p{margin:0 0 .6rem;font-weight:600}
+.importar textarea{width:100%;min-height:70px;font-family:var(--f-code);font-size:.85rem;border:3px solid var(--outline);border-radius:10px;padding:.5rem;background:#fffaf0;color:#23160e}
+.importar .msg{color:var(--panel-ink)}
+.codigo-curto{font-family:var(--f-maquina);font-size:1.6rem;letter-spacing:.35em;text-align:center;color:var(--red);background:#fffaf0;padding:.5rem}
+
+/* ---------- FICHA DA MISSÃO (versão legível) ---------- */
+.ficha{background:var(--paper);padding:1.5rem 1.6rem 1.6rem;background-image:none;border-radius:14px}
+.fases-missao{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem;margin-bottom:.9rem}
+.fase-chip{display:flex;flex-direction:column;align-items:flex-start;gap:.1rem;text-align:left;background:var(--paper-2);color:var(--paper-ink);border:2px solid var(--outline);border-radius:12px;padding:.45rem .65rem;position:relative;min-height:3.2rem}
+.fase-chip .fn{font-family:var(--f-title);font-size:1.02rem;line-height:1.1}
+.fase-chip .fnome{font-size:.78rem;font-weight:700;color:var(--paper-soft);line-height:1.2}
+.fase-chip .cadeado{position:absolute;right:.5rem;top:.4rem;font-size:.9rem}
+.fase-chip.atual{background:var(--accent);color:var(--accent-ink)}
+.fase-chip.atual .fnome{color:var(--accent-ink)}
+.fase-chip.extra{border-style:dashed}
+.fase-chip:disabled{opacity:.5;cursor:not-allowed}
+.missoes-nav{gap:.5rem;margin-bottom:1.1rem}
+.missoes-nav .chip{width:2.5rem;height:2.5rem}
+.ficha-topo{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.4rem}
+.pill{font-family:var(--f-maquina);font-size:.85rem;border:2px solid var(--outline);border-radius:999px;padding:.12rem .7rem;background:var(--paper-2);color:var(--paper-ink)}
+.pill.recompensa{background:var(--green);color:#fff6e2;font-weight:400}
+.ficha h2{font-size:clamp(1.8rem,3.2vw,2.4rem);margin:.2rem 0 .9rem}
+.enunciado{background:#fffaf0;border:2px solid var(--outline);border-left:8px solid var(--accent);border-radius:10px;padding:1rem 1.15rem;font-size:1.04rem;line-height:1.65;color:var(--paper-ink);margin-bottom:.4rem}
+.enunciado p{margin:.35rem 0;max-width:none}
+.enunciado code{background:rgba(42,24,16,.12)}
+.link-manual{margin:.6rem 0 0}
+.missao{background:var(--paper-2);border:2px solid var(--outline);border-radius:12px;padding:1rem 1.1rem 1.1rem;margin:1.2rem 0}
+.missao h3{margin:0 0 .7rem;font-size:1.35rem;color:var(--red)}
+#m-lista{list-style:none;margin:0;padding:0;counter-reset:passo;display:grid;gap:.6rem}
+#m-lista li{counter-increment:passo;position:relative;margin:0;padding:.65rem .85rem .65rem 3.2rem;background:#fffaf0;border:2px solid var(--outline);border-radius:10px;font-weight:600;line-height:1.55}
+#m-lista li::before{content:counter(passo);position:absolute;left:.65rem;top:50%;transform:translateY(-50%);width:1.9rem;height:1.9rem;border-radius:50%;background:var(--accent);color:var(--accent-ink);border:2px solid var(--outline);display:grid;place-items:center;font-family:var(--f-title);font-size:1rem;line-height:1}
+#m-lista code{background:rgba(42,24,16,.12)}
+.dica{border-top:2px dashed var(--paper-line);padding-top:.9rem;margin-top:.4rem;gap:.6rem}
+.dica .btn{font-size:1rem}
+.dica small{display:block;width:100%;font-weight:700;color:var(--paper-soft)}
+.dica-texto{margin-top:0;width:100%;font-size:1rem;line-height:1.5}
+@media (max-width:640px){.ficha{padding:1.1rem 1rem}}
 </style>
 </head>
 <body>
@@ -573,6 +650,7 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
     <button class="aba" data-ir="quadro">Quadro do caso</button>
     <button class="aba" data-ir="manual">Manual</button>
     <button class="aba" data-ir="desafio">Missões</button>
+    <button class="aba" data-ir="aulas" id="aba-aulas" hidden>Aulas</button>
   </nav>
   <span class="creditos" id="creditos" title="Créditos da agência">🪙 0 créditos</span>
   <button class="mini" id="tema" aria-label="Alternar entre modo noite e modo projeção">🌙 Noite</button>
@@ -734,15 +812,19 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
 <section class="tela" id="desafio" aria-label="Missões">
   <div class="desafio-layout">
     <article class="ficha">
-      <div class="missoes-nav" id="missoes-nav"><span>Fase 1</span></div>
+      <div class="fases-missao" id="fases-missao" aria-label="Fases"></div>
+      <div class="missoes-nav" id="missoes-nav" aria-label="Missões da fase"></div>
+      <div class="ficha-topo">
+        <span class="pill" id="m-fase"></span>
+        <span class="pill recompensa" id="m-recompensa"></span>
+      </div>
       <h2 id="m-titulo"></h2>
-      <div id="m-texto"></div>
+      <div class="enunciado" id="m-texto"></div>
       <button class="link-manual" id="m-manual"></button>
       <div class="missao">
         <h3>Sua missão</h3>
         <ol id="m-lista"></ol>
       </div>
-      <p class="recompensa" id="m-recompensa"></p>
       <div class="dica" id="m-dica"></div>
     </article>
 
@@ -765,6 +847,24 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
       </div>
     </div>
   </div>
+<div class="importar">
+  <h3>Adicionar desafio do professor</h3>
+  <p>Cole aqui o código que o professor enviou. O desafio aparece como uma nova missão.</p>
+  <textarea id="importar-codigo" aria-label="Código do desafio" placeholder="Cole o código começando por PYD1:"></textarea>
+  <div class="botoes" style="margin:.6rem 0 0"><button class="btn claro" id="importar-btn">Adicionar desafio</button></div>
+  <p class="msg" id="importar-msg" role="status"></p>
+</div>
+</section>
+
+<!-- ================= AULAS DA TURMA (alunos) ================= -->
+<section class="tela" id="aulas" aria-label="Aulas da turma">
+  <div class="prof-wrap">
+    <div class="cartao">
+      <h2>Aulas da turma</h2>
+      <p>Aqui ficam as aulas que o professor liberou. Abra os slides para acompanhar a explicação no seu ritmo.</p>
+    </div>
+    <div id="aulas-lista" class="grade-aulas"></div>
+  </div>
 </section>
 
 <!-- ================= PROFESSOR: ENTRADA ================= -->
@@ -783,22 +883,68 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
       <div class="cartao">
         <h2>Painel do professor</h2>
         <p>A ferramenta não tem servidor, então cada fase é aberta por um código de acesso. Projete o código quando a turma puder avançar. Os alunos digitam no quadro do caso.</p>
+        <nav class="abas-prof" aria-label="Seções do painel">
+          <button class="aba-prof" data-aba="codigos" aria-current="page">Turma e códigos</button>
+          <button class="aba-prof" data-aba="aulas" aria-current="false">Planos de aula</button>
+          <button class="aba-prof" data-aba="desafios" aria-current="false">Criar desafio</button>
+        </nav>
       </div>
-      <div class="prof-grade">
-        <div class="cartao">
-          <h3>Códigos de acesso das fases</h3>
-          <table class="tabela" id="tabela-codigos"></table>
-        </div>
-        <div class="cartao">
-          <h3>Aula</h3>
-          <div class="lista-acoes">
-            <button class="btn verde" id="iniciar-aula">Iniciar modo aula: Fase 1</button>
-            <button class="btn claro" data-ir="manual">Projetar o manual do detetive</button>
-            <button class="btn claro" data-ir="quadro">Projetar o quadro do caso</button>
-            <button class="btn claro" id="rever-intro">Rever a introdução</button>
-            <button class="btn vermelho" id="reiniciar">Apagar progresso deste computador</button>
+
+      <div class="painel-aba" data-painel="codigos">
+        <div class="prof-grade">
+          <div class="cartao">
+            <h3>Códigos de acesso das fases</h3>
+            <table class="tabela" id="tabela-codigos"></table>
           </div>
-          <p style="margin-top:1rem">Dica: use o botão 🌙/☀️ no topo para o modo projeção, que fica mais legível em sala clara.</p>
+          <div class="cartao">
+            <h3>Ferramentas</h3>
+            <div class="lista-acoes">
+              <button class="btn claro" data-ir="manual">Projetar o manual do detetive</button>
+              <button class="btn claro" data-ir="quadro">Projetar o quadro do caso</button>
+              <button class="btn claro" id="rever-intro">Rever a introdução</button>
+              <button class="btn vermelho" id="reiniciar">Apagar progresso deste computador</button>
+            </div>
+            <p style="margin-top:1rem">Dica: use o botão 🌙/☀️ no topo para o modo projeção, que fica mais legível em sala clara.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="painel-aba" data-painel="aulas" hidden>
+        <div class="cartao">
+          <h3>Planos de aula</h3>
+          <p>Leia o plano antes de liberar a aula. <b>Só professor</b> mantém a aula fechada para os alunos. <b>Liberar para a turma</b> a publica na aba Aulas. Projetar mostra os slides no modo aula; as notas do professor aparecem apenas para você.</p>
+        </div>
+        <div id="lista-aulas" class="grade-aulas"></div>
+        <div id="plano-aula" class="cartao" hidden></div>
+      </div>
+
+      <div class="painel-aba" data-painel="desafios" hidden>
+        <div class="prof-grade">
+          <div class="cartao">
+            <h3>Novo desafio</h3>
+            <p>Crie um exercício próprio. Ele é entregue por código: você gera o código e envia aos alunos quando quiser.</p>
+            <div class="form-campo"><label for="d-titulo">Título</label><input id="d-titulo" maxlength="80" placeholder="Ex.: O recibo falso"></div>
+            <div class="form-campo"><label for="d-enunciado">Enunciado (o que o aluno deve fazer)</label><textarea id="d-enunciado" placeholder="Ex.: Crie a variável recibo com o texto 'Caio' e mostre-a na tela."></textarea></div>
+            <div class="form-campo"><label for="d-passos">Passos (um por linha)</label><textarea id="d-passos" style="min-height:70px"></textarea></div>
+            <div class="form-campo"><label for="d-inicial">Código inicial (opcional)</label><textarea id="d-inicial"></textarea></div>
+            <div class="form-duplo">
+              <div class="form-campo"><label for="d-saida">Saída esperada (trecho que deve aparecer)</label><input id="d-saida" placeholder="Ex.: Caio"></div>
+              <div class="form-campo"><label for="d-exigir">Trecho obrigatório no código (opcional)</label><input id="d-exigir" placeholder='Ex.: print('></div>
+            </div>
+            <div class="form-duplo">
+              <div class="form-campo"><label for="d-recompensa">Recompensa (créditos)</label><input id="d-recompensa" type="number" min="0" max="50" value="10"></div>
+              <div class="form-campo"><label for="d-custo">Custo da dica (créditos)</label><input id="d-custo" type="number" min="0" max="30" value="5"></div>
+            </div>
+            <div class="form-campo"><label for="d-dica">Dica</label><input id="d-dica" placeholder="Ex.: Use o print com o nome da variável."></div>
+            <button class="btn" id="d-salvar">Salvar desafio</button>
+            <p class="msg" id="d-msg" role="status"></p>
+          </div>
+          <div class="cartao">
+            <h3>Seus desafios</h3>
+            <div id="lista-desafios"></div>
+            <div class="form-campo" style="margin-top:1rem"><label for="codigo-curto">Código curto (5 caracteres)</label><input id="codigo-curto" readonly placeholder="Clique em Gerar código" class="codigo-curto"></div>
+            <div class="form-campo"><label for="codigo-desafio">Código completo (para enviar sem servidor)</label><textarea id="codigo-desafio" readonly placeholder="Clique em Gerar código no desafio desejado"></textarea></div>
+          </div>
         </div>
       </div>
     </div>
@@ -809,7 +955,8 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
 <section class="tela" id="aula" aria-label="Modo aula">
   <div class="aula">
     <div class="aula-barra">
-      <button class="mini" id="sair-aula">✕ Sair do modo aula</button>
+      <button class="mini" id="sair-aula">✕ Sair</button>
+      <strong id="aula-titulo" style="font-family:var(--f-title);font-weight:400;font-size:1.2rem"></strong>
       <div class="dir">
         <button class="mini" id="notas-toggle" aria-pressed="false">Notas do professor</button>
         <button class="btn claro" id="slide-ant">◀</button>
@@ -830,7 +977,7 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
 const CHAVE = 'pydetetive:estado';
 function ler(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
 function gravar(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
-const PADRAO = {quiz:{}, introVista:false, creditos:0, feitas:{}, dicas:{}, codigos:{}, liberadas:[1], rascunhos:{}};
+const PADRAO = {quiz:{}, introVista:false, creditos:0, feitas:{}, dicas:{}, codigos:{}, liberadas:[1], rascunhos:{}, aulasLiberadas:[], desafiosProf:[], desafiosImportados:[]};
 let E; try { E = Object.assign({}, PADRAO, JSON.parse(ler(CHAVE) || '{}')); } catch(e){ E = {...PADRAO}; }
 const salvar = () => gravar(CHAVE, JSON.stringify(E));
 
@@ -847,9 +994,10 @@ const FASES = [
 /* =================== navegação =================== */
 const telas = document.querySelectorAll('.tela');
 function ir(id){
-  if (id === 'desafio') montarMissao(missaoAtual);
+  if (id === 'desafio') montarMissao(missaoId || primeiraMissaoDisponivel());
   if (id === 'quadro') montarQuadro();
   if (id === 'manual') montarManual();
+  if (id === 'aulas') montarAulasAluno();
   telas.forEach(t => t.classList.toggle('ativa', t.id === id));
   document.querySelectorAll('.aba').forEach(a => a.setAttribute('aria-current', a.dataset.ir === id ? 'page' : 'false'));
   window.scrollTo({top:0});
@@ -988,9 +1136,10 @@ function mostrarSaida(el, {saida, erro}){
   if (!saida && !erro) el.innerHTML = '<span class="vazio">O programa rodou, mas nada apareceu na tela.</span>';
 }
 
-/* =================== missões da fase 1 =================== */
+/* =================== missões (fases 1 a 6 e desafios do professor) =================== */
 const MISSOES = [
-  { id:'f1m1', secao:'print', titulo:'O cabeçalho do caso',
+  /* ---------- FASE 1: variáveis e tipos ---------- */
+  { id:'f1m1', fase:1, secao:'print', titulo:'O cabeçalho do caso',
     texto:['Todo arquivo da agência começa com um cabeçalho. O computador só mostra algo na tela quando pedimos, e o comando para isso é o <code>print()</code>.',
            'Textos em Python ficam sempre entre aspas.'],
     passos:['Mostre na tela a frase <code>CASO LUMI: CONFIDENCIAL</code>.'],
@@ -1001,7 +1150,7 @@ const MISSOES = [
       if (!r.saida.toUpperCase().includes('CASO LUMI')) return [false,'Quase','O texto na tela não é o cabeçalho pedido. Confira se escreveu CASO LUMI: CONFIDENCIAL.'];
       return [true,'Pista aceita','Arquivo aberto. Agora vamos às fichas dos suspeitos.'];
     }},
-  { id:'f1m2', secao:'variaveis', titulo:'Abra a primeira ficha',
+  { id:'f1m2', fase:1, secao:'variaveis', titulo:'Abra a primeira ficha',
     texto:['A agência recebeu a lista de quem estava na escola naquela noite. Para não perder nenhum dado, guardamos cada informação numa <strong>variável</strong>: uma gaveta com um nome, onde fica um valor para usar depois.'],
     passos:['Crie uma variável chamada <code>suspeito</code> com o texto <code>"Caio Ribeiro"</code>.','Mostre essa variável na tela usando <code>print()</code>.'],
     inicial:'# Missão 2: abra a primeira ficha\n\n', recompensa:10,
@@ -1012,7 +1161,7 @@ const MISSOES = [
       if (!r.saida.includes('Caio Ribeiro')) return [false,'Quase','O nome não apareceu na tela. Verifique o seu print.'];
       return [true,'Pista aceita','Ficha de Caio Ribeiro aberta. Mas uma ficha só com o nome não diz muita coisa.'];
     }},
-  { id:'f1m3', secao:'tipos', titulo:'Complete a ficha',
+  { id:'f1m3', fase:1, secao:'tipos', titulo:'Complete a ficha',
     texto:['Cada informação tem um <strong>tipo</strong>. Nomes e cargos são textos (<code>str</code>). Idades são números inteiros (<code>int</code>) e vão <strong>sem aspas</strong>.',
            'Um único <code>print</code> pode mostrar várias coisas, separadas por vírgula.'],
     passos:['Crie a variável <code>idade</code> com o número <code>34</code>.','Crie a variável <code>cargo</code> com o texto <code>"Técnico do laboratório"</code>.','Mostre <code>suspeito</code>, <code>idade</code> e <code>cargo</code> com um único <code>print</code>.'],
@@ -1024,30 +1173,210 @@ const MISSOES = [
       if (!/^\s*cargo\s*=\s*["'].+["']/m.test(cod)) return [false,'Ainda não','Falta a variável cargo, com o texto entre aspas.'];
       if (!/print\s*\(\s*suspeito\s*,\s*idade\s*,\s*cargo\s*\)/.test(cod)) return [false,'Quase','As variáveis estão certas. Agora mostre as três num único print, separadas por vírgula.'];
       return [true,'Fase concluída','Ficha completa. Uma nova pista apareceu no quadro do caso.'];
+    }},
+
+  /* ---------- FASE 2: entrada e cálculos ---------- */
+  { id:'f2m1', fase:2, secao:null, titulo:'Pergunte o horário',
+    texto:['Antes de calcular qualquer coisa, precisamos saber a hora em que a pista foi encontrada. Quem usa o programa responde com <code>input()</code>.',
+           'Tudo que o <code>input()</code> recebe chega como <strong>texto</strong>. Para fazer contas, convertemos com <code>int()</code>.'],
+    passos:['Use <code>hora = int(input("Que horas são? "))</code> para perguntar e guardar a hora.','Mostre a frase <code>Horário anotado:</code> seguida do valor de <code>hora</code>, com <code>print()</code>.'],
+    inicial:'# Missão 1: pergunte o horário\n\n', recompensa:15,
+    dica:{custo:5, texto:'Escreva tudo em uma linha: hora = int(input("Que horas são? ")). Depois: print("Horário anotado:", hora).'},
+    checar(cod, r){
+      if (!/hora\s*=\s*int\s*\(\s*input\s*\(/.test(cod)) return [false,'Ainda não','Guarde a resposta com hora = int(input(...)). O int() converte o texto em número.'];
+      if (!r.saida.includes('Horário anotado')) return [false,'Quase','Mostre a frase "Horário anotado:" seguida do valor de hora, com print().'];
+      return [true,'Pista aceita','Horário anotado. Agora o computador sabe quando a pista foi encontrada.'];
+    }},
+  { id:'f2m2', fase:2, secao:null, titulo:'Quantos minutos se passaram?',
+    texto:['Para comparar horários, transformamos tudo em minutos: 21h40 vira <code>21 * 60 + 40</code>, que dá 1300 minutos desde a meia-noite.',
+           'Subtrair dois horários em minutos dá o intervalo entre eles.'],
+    passos:['Crie <code>fim = 21 * 60 + 47</code> (21h47 em minutos).','Mostre a diferença com <code>print(fim - inicio)</code>.'],
+    inicial:'# Missão 2: quantos minutos?\ninicio = 21 * 60 + 40\n\n', recompensa:15,
+    dica:{custo:5, texto:'Use print(fim - inicio). O resultado precisa ser o número de minutos entre 21h40 e 21h47.'},
+    checar(cod, r){
+      if (!/fim\s*=/.test(cod)) return [false,'Ainda não','Crie a variável fim com o horário 21h47 em minutos: fim = 21 * 60 + 47.'];
+      if (!/print\s*\(\s*fim\s*-\s*inicio\s*\)/.test(cod)) return [false,'Quase','Mostre a diferença com print(fim - inicio).'];
+      const ultima = r.saida.trim().split('\n').pop().trim();
+      if (ultima !== '7') return [false,'Quase','Entre 21h40 e 21h47 se passaram 7 minutos. Confira o valor de fim.'];
+      return [true,'Pista aceita','Sete minutos. Essa é a janela em que o Lumi desapareceu.'];
+    }},
+  { id:'f2m3', fase:2, secao:null, titulo:'Dividir a investigação',
+    texto:['Quatro agentes precisam dividir 47 minutos de investigação de forma igual. O operador <code>//</code> faz a divisão inteira, e o operador <code>%</code> mostra o resto.'],
+    passos:['Calcule <code>total // pessoas</code>: quantos minutos cada agente recebe.','Calcule <code>total % pessoas</code>: quantos minutos sobram.','Mostre os dois resultados com um print.'],
+    inicial:'# Missão 3: divida a investigação\ntotal = 47\npessoas = 4\n\n', recompensa:20,
+    dica:{custo:10, texto:'print(total // pessoas, total % pessoas) mostra os dois valores lado a lado.'},
+    checar(cod, r){
+      if (!/\/\//.test(cod) || !/%/.test(cod)) return [false,'Ainda não','Use // para a divisão inteira e % para o resto.'];
+      const pedacos = r.saida.trim().split(/\s+/);
+      if (!pedacos.includes('11') || !pedacos.includes('3')) return [false,'Quase','Com 47 minutos e 4 agentes, cada um recebe 11 e sobram 3. Confira os operadores.'];
+      return [true,'Fase concluída','Investigação dividida com justiça. Uma nova etapa se abriu no quadro do caso.'];
+    }},
+
+  /* ---------- FASE 3: condicionais ---------- */
+  { id:'f3m1', fase:3, secao:null, titulo:'O álibi da Helena',
+    texto:['Helena disse que saiu da sala às 21h30 (1290 minutos). O sumiço aconteceu às 21h40 (1300 minutos). Se ela saiu antes, não estava no laboratório no momento do sumiço.',
+           'Para decidir entre dois caminhos, usamos <code>if</code> e <code>else</code>.'],
+    passos:['Use <code>if saiu &lt; hora_do_sumico:</code> para comparar os horários.','Se for verdade, mostre <code>Helena saiu antes do sumiço</code>.','Caso contrário (<code>else:</code>), mostre <code>Helena ainda estava na sala</code>.'],
+    inicial:'# Missão 1: o álibi da Helena\nsaiu = 1290\nhora_do_sumico = 1300\n\n', recompensa:15,
+    dica:{custo:5, texto:'Lembre que if e else precisam de dois pontos no fim da linha, e o print deve ficar com recuo dentro de cada um.'},
+    checar(cod, r){
+      if (!/\bif\b/.test(cod) || !/\belse\s*:/.test(cod)) return [false,'Ainda não','Use if para o primeiro caminho e else para o segundo.'];
+      if (!r.saida.includes('Helena saiu antes do sumiço')) return [false,'Quase','Com saiu = 1290 e hora_do_sumico = 1300, a frase esperada é "Helena saiu antes do sumiço". Confira a comparação.'];
+      return [true,'Pista aceita','O álibi da Helena foi analisado. Ela não estava no laboratório.'];
+    }},
+  { id:'f3m2', fase:3, secao:null, titulo:'Em que momento estava?',
+    texto:['Agora temos três momentos da noite: antes da feira (antes de 21h30), durante o sumiço (21h30 a 21h50) e depois do apagão (depois de 21h50).',
+           'Com <code>elif</code>, testamos os caminhos em ordem. Só o primeiro caminho verdadeiro é executado.'],
+    passos:['Se <code>hora</code> for menor que 1290, mostre <code>Antes da feira</code>.','Senão, se <code>hora</code> for até 1310, mostre <code>Durante o sumiço</code>.','Caso contrário, mostre <code>Depois do apagão</code>.'],
+    inicial:'# Missão 2: em que momento estava?\nhora = 1305\n\n', recompensa:15,
+    dica:{custo:10, texto:'if hora < 1290: ... elif hora <= 1310: ... else: ... A ordem das condições importa.'},
+    checar(cod, r){
+      if (!/\belif\b/.test(cod)) return [false,'Ainda não','Use elif para o segundo caminho.'];
+      if (!r.saida.includes('Durante o sumiço')) return [false,'Quase','Para hora = 1305 (21h45), a resposta deve ser "Durante o sumiço". Confira os limites de cada caminho.'];
+      return [true,'Pista aceita','Momento identificado: o Lumi ainda estava na sala.'];
+    }},
+  { id:'f3m3', fase:3, secao:null, titulo:'Quem tinha acesso?',
+    texto:['Para entrar no laboratório era preciso estar no prédio <strong>e</strong> ter a chave. Duas condições precisam ser verdadeiras ao mesmo tempo.',
+           'O operador <code>and</code> só dá <code>True</code> quando as duas condições são verdadeiras.'],
+    passos:['Use <code>if estava_no_lab and tinha_chave:</code>.','Se for verdadeiro, mostre <code>Acesso confirmado</code>.','Caso contrário, mostre <code>Sem prova de acesso</code>.'],
+    inicial:'# Missão 3: quem tinha acesso?\nestava_no_lab = True\ntinha_chave = True\n\n', recompensa:20,
+    dica:{custo:10, texto:'Escreva if estava_no_lab and tinha_chave: e, dentro dele, o print de acesso confirmado.'},
+    checar(cod, r){
+      if (!/\band\b/.test(cod)) return [false,'Ainda não','Use and para exigir as duas condições ao mesmo tempo.'];
+      if (!r.saida.includes('Acesso confirmado')) return [false,'Quase','Com as duas variáveis verdadeiras, a frase esperada é "Acesso confirmado".'];
+      return [true,'Fase concluída','Os álibis foram analisados. Uma nova pista apareceu no quadro do caso.'];
+    }},
+
+  /* ---------- FASE 4: laços ---------- */
+  { id:'f4m1', fase:4, secao:null, titulo:'As câmeras do corredor',
+    texto:['Existem cinco câmeras no corredor. Escrever cinco <code>print</code> seria repetir a mesma coisa. O <code>for</code> repete uma ação para cada item de uma sequência.',
+           'A função <code>range(1, 6)</code> gera os números de 1 a 5.'],
+    passos:['Use <code>for i in range(1, 6):</code> para repetir a ação.','Dentro do for, mostre <code>Câmera</code>, o número e a palavra <code>gravou</code>.'],
+    inicial:'# Missão 1: as câmeras do corredor\n\n', recompensa:15,
+    dica:{custo:5, texto:'for i in range(1, 6): e, na linha seguinte com recuo, print("Câmera", i, "gravou").'},
+    checar(cod, r){
+      if (!/\bfor\b/.test(cod) || !/range\s*\(/.test(cod)) return [false,'Ainda não','Use um for com range() para repetir a ação.'];
+      const linhas = r.saida.split('\n').filter(l => l.includes('gravou'));
+      if (linhas.length !== 5) return [false,'Quase','Eram cinco câmeras. Confira o range: ele precisa ir de 1 até 5.'];
+      return [true,'Pista aceita','Cinco câmeras verificadas. Nenhuma imagem foi pulada.'];
+    }},
+  { id:'f4m2', fase:4, secao:null, titulo:'Tempo total de gravação',
+    texto:['Cada minuto gravado pela câmera 3 tem um número, de 1 a 10. Para saber o total, vamos <strong>acumular</strong> os valores numa variável.'],
+    passos:['Crie <code>total = 0</code> antes do laço.','Use <code>for minuto in range(1, 11):</code> e, dentro dele, <code>total += minuto</code>.','Depois do laço, mostre <code>total</code>.'],
+    inicial:'# Missão 2: tempo total de gravação\ntotal = 0\n\n', recompensa:15,
+    dica:{custo:10, texto:'A linha total += minuto soma o minuto atual ao total a cada volta. O print deve ficar fora do for, sem recuo.'},
+    checar(cod, r){
+      if (!/\bfor\b/.test(cod) || !/\+=/.test(cod)) return [false,'Ainda não','Use um for com a soma total += minuto.'];
+      if (!r.saida.trim().split(/\s+/).includes('55')) return [false,'Quase','A soma de 1 a 10 é 55. Confira o range e se o print está fora do for.'];
+      return [true,'Pista aceita','Foram 55 minutos de gravação analisados.'];
+    }},
+  { id:'f4m3', fase:4, secao:null, titulo:'Verificação até o fim',
+    texto:['Às vezes não sabemos quantas vezes repetir, só até quando. O <code>while</code> repete enquanto a condição for verdadeira.',
+           'Se a condição nunca mudar, o laço não termina. Por isso, dentro do while precisamos mudar o contador.'],
+    passos:['Crie <code>contador = 0</code>.','Use <code>while contador &lt; 4:</code>.','Dentro do while, aumente com <code>contador += 1</code> e mostre <code>Verificação</code> com o número.'],
+    inicial:'# Missão 3: verificação até o fim\ncontador = 0\n\n', recompensa:20,
+    dica:{custo:10, texto:'Dentro do while: contador += 1 e depois print("Verificação", contador). Sem o += 1, o laço nunca termina.'},
+    checar(cod, r){
+      if (!/\bwhile\b/.test(cod) || !/\+=\s*1/.test(cod)) return [false,'Ainda não','Use while e aumente o contador com += 1, senão o laço nunca termina.'];
+      const verificacoes = r.saida.split('\n').filter(l => l.includes('Verificação'));
+      if (verificacoes.length !== 4) return [false,'Quase','Eram quatro verificações. Confira a condição do while.'];
+      return [true,'Fase concluída','Todas as verificações foram feitas. Uma nova etapa se abriu no quadro do caso.'];
+    }},
+
+  /* ---------- FASE 5: listas e textos ---------- */
+  { id:'f5m1', fase:5, secao:null, titulo:'A lista de suspeitos',
+    texto:['Em vez de uma variável para cada suspeito, guardamos todos numa <strong>lista</strong>: valores entre colchetes, separados por vírgula.',
+           'Os itens têm índice, e a contagem começa em <code>0</code>. Então <code>suspeitos[1]</code> é o segundo item. <code>len()</code> diz quantos itens existem.'],
+    passos:['Crie <code>suspeitos = ["Helena Martins", "Caio Ribeiro", "Bia Nogueira", "Otávio Leal"]</code>.','Mostre quantos suspeitos existem com <code>print(len(suspeitos))</code>.','Mostre o segundo suspeito com <code>print(suspeitos[1])</code>.'],
+    inicial:'# Missão 1: a lista de suspeitos\n\n', recompensa:15,
+    dica:{custo:5, texto:'O segundo item tem índice 1, porque a contagem começa em zero: suspeitos[1].'},
+    checar(cod, r){
+      if (!/suspeitos\s*=\s*\[/.test(cod)) return [false,'Ainda não','Crie a lista com colchetes: suspeitos = [ ... ].'];
+      if (!/len\s*\(\s*suspeitos\s*\)/.test(cod)) return [false,'Quase','Use len(suspeitos) para contar os suspeitos.'];
+      const linhas = r.saida.trim().split('\n').map(s => s.trim());
+      if (!linhas.includes('4') || !linhas.includes('Caio Ribeiro')) return [false,'Quase','Esperava ver 4 (quantidade) e Caio Ribeiro (segundo item). Lembre que o índice começa em zero.'];
+      return [true,'Pista aceita','Lista montada. Quatro suspeitos guardados em um só lugar.'];
+    }},
+  { id:'f5m2', fase:5, secao:null, titulo:'Pistas acumuladas',
+    texto:['Novas pistas chegam durante a investigação. Para acrescentar um item no fim de uma lista, usamos <code>append()</code>.'],
+    passos:['Crie <code>pistas = []</code>, uma lista vazia.','Adicione <code>"pegadas"</code> com <code>pistas.append("pegadas")</code>.','Adicione <code>"luvas"</code> da mesma forma e mostre o último item com <code>print(pistas[-1])</code>.'],
+    inicial:'# Missão 2: pistas acumuladas\n\n', recompensa:15,
+    dica:{custo:10, texto:'pistas = [] e depois pistas.append("pegadas"). O índice -1 pega o último item da lista.'},
+    checar(cod, r){
+      if ((cod.match(/append\s*\(/g) || []).length < 2) return [false,'Ainda não','Use pistas.append(...) duas vezes, uma para cada pista.'];
+      if (!r.saida.includes('luvas')) return [false,'Quase','O último item deveria ser "luvas". Use pistas[-1] para pegar o último.'];
+      return [true,'Pista aceita','Duas pistas novas registradas.'];
+    }},
+  { id:'f5m3', fase:5, secao:null, titulo:'Decifre o bilhete',
+    texto:['Um bilhete encontrado no laboratório está escrito ao contrário. Um texto pode ser fatiado com <code>[::-1]</code>, que percorre as letras de trás para frente.'],
+    passos:['Use <code>mensagem = "LUMI ESTA VIVO"</code> como está no código inicial.','Mostre a mensagem ao contrário com <code>print(mensagem[::-1])</code>.'],
+    inicial:'# Missão 3: decifre o bilhete\nmensagem = "LUMI ESTA VIVO"\n\n', recompensa:20,
+    dica:{custo:10, texto:'print(mensagem[::-1]) mostra o texto invertido. Não altere a variável mensagem.'},
+    checar(cod, r){
+      if (!/\[::-1\]/.test(cod)) return [false,'Ainda não','Use mensagem[::-1] para inverter o texto.'];
+      if (!r.saida.includes('OVIV ATSE IMUL')) return [false,'Quase','O bilhete deveria aparecer como OVIV ATSE IMUL. Confira se o texto original não foi alterado.'];
+      return [true,'Fase concluída','Bilhete decifrado. A mensagem fala de um lugar que o Lumi ainda não revelou.'];
+    }},
+
+  /* ---------- FASE 6: funções ---------- */
+  { id:'f6m1', fase:6, secao:null, titulo:'A primeira função',
+    texto:['Quando um trecho de código se repete, vale transformá-lo numa <strong>função</strong>. Com <code>def</code> criamos a receita; ela só roda quando é chamada.'],
+    passos:['Crie <code>def saudar():</code> com um <code>print</code> de <code>Agência PyDetetive, bom dia!</code> dentro, com recuo.','Chame a função escrevendo <code>saudar()</code> em uma linha própria.'],
+    inicial:'# Missão 1: a primeira função\n\n', recompensa:15,
+    dica:{custo:5, texto:'def saudar(): na primeira linha, print("Agência PyDetetive, bom dia!") com recuo, e saudar() no fim.'},
+    checar(cod, r){
+      if (!/def\s+saudar\s*\(\s*\)\s*:/.test(cod)) return [false,'Ainda não','Crie a função com def saudar():.'];
+      if (!/^\s*saudar\s*\(\s*\)\s*$/m.test(cod)) return [false,'Quase','Falta chamar a função: escreva saudar() em uma linha própria.'];
+      if (!r.saida.includes('Agência PyDetetive, bom dia!')) return [false,'Quase','A função foi chamada, mas a frase não apareceu. Confira o print dentro dela.'];
+      return [true,'Pista aceita','Função criada e usada.'];
+    }},
+  { id:'f6m2', fase:6, secao:null, titulo:'Apresente o suspeito',
+    texto:['Uma função pode receber informações de fora por meio de <strong>parâmetros</strong>. Assim, a mesma receita serve para qualquer suspeito.'],
+    passos:['Crie <code>def apresentar(nome):</code> que mostre <code>Suspeito:</code> seguido do nome.','Chame a função com <code>apresentar("Bia Nogueira")</code>.'],
+    inicial:'# Missão 2: apresente o suspeito\n\n', recompensa:15,
+    dica:{custo:10, texto:'Dentro da função: print("Suspeito:", nome). Na chamada, passe o nome entre aspas.'},
+    checar(cod, r){
+      if (!/def\s+apresentar\s*\(\s*\w+\s*\)\s*:/.test(cod)) return [false,'Ainda não','Crie def apresentar(nome): com um parâmetro entre parênteses.'];
+      if (!/apresentar\s*\(\s*["']Bia Nogueira["']\s*\)/.test(cod)) return [false,'Quase','Chame a função com apresentar("Bia Nogueira").'];
+      if (!r.saida.includes('Suspeito: Bia Nogueira')) return [false,'Quase','A frase esperada é "Suspeito: Bia Nogueira". Confira o print dentro da função.'];
+      return [true,'Pista aceita','Suspeito apresentado pela mesma receita.'];
+    }},
+  { id:'f6m3', fase:6, secao:null, titulo:'A função que devolve',
+    texto:['Às vezes a função não deve apenas mostrar algo, e sim <strong>devolver</strong> um resultado para quem chamou. Isso é o <code>return</code>.',
+           'O <code>print</code> mostra; o <code>return</code> entrega o valor, que pode ser guardado em uma variável ou usado em outra conta.'],
+    passos:['Crie <code>def minutos_entre(inicio, fim):</code> que devolva <code>fim - inicio</code> com <code>return</code>.','Mostre <code>minutos_entre(1290, 1310)</code> com <code>print()</code>.'],
+    inicial:'# Missão 3: a função que devolve\n\n', recompensa:20,
+    dica:{custo:10, texto:'def minutos_entre(inicio, fim): e, na linha seguinte com recuo, return fim - inicio. De 1290 a 1310 são 20 minutos.'},
+    checar(cod, r){
+      if (!/def\s+minutos_entre\s*\(\s*inicio\s*,\s*fim\s*\)\s*:/.test(cod)) return [false,'Ainda não','Crie def minutos_entre(inicio, fim): com os dois parâmetros.'];
+      if (!/\breturn\b/.test(cod)) return [false,'Quase','Use return para devolver o resultado da conta.'];
+      if (!r.saida.trim().split(/\s+/).includes('20')) return [false,'Quase','De 21h30 (1290) a 21h50 (1310) são 20 minutos. Confira a conta e o print.'];
+      return [true,'Fase concluída','Todas as fases da investigação foram concluídas. O caso está quase resolvido.'];
     }}
 ];
-let missaoAtual = MISSOES.findIndex(m => !E.feitas[m.id]); if (missaoAtual < 0) missaoAtual = MISSOES.length - 1;
-let editorMissao = null;
-const $ = id => document.getElementById(id);
 
-function montarMissao(i){
-  missaoAtual = i; const m = MISSOES[i];
-  const nav = $('missoes-nav'); nav.innerHTML = '<span>Fase 1</span>';
-  MISSOES.forEach((mm, j) => {
-    const b = document.createElement('button'); b.className = 'chip' + (E.feitas[mm.id] ? ' feita' : '') + (j === i ? ' atual' : '');
-    b.textContent = j + 1; b.setAttribute('aria-label', `Missão ${j+1}`);
-    b.disabled = j > 0 && !E.feitas[MISSOES[j-1].id];
-    b.addEventListener('click', () => montarMissao(j)); nav.append(b);
-  });
-  $('m-titulo').textContent = m.titulo;
-  $('m-texto').innerHTML = m.texto.map(t => `<p>${t}</p>`).join('');
-  const sm = MANUAL_F1.find(x => x.id === m.secao); $('m-manual').textContent = `📖 Rever no manual: ${sm.curto}`; $('m-manual').onclick = () => { ir('manual'); irSecao(m.secao); };
-  $('m-lista').innerHTML = m.passos.map(t => `<li>${t}</li>`).join('');
-  $('m-recompensa').textContent = E.feitas[m.id] ? '✔ Missão resolvida.' : `Recompensa: 🪙 ${m.recompensa} créditos`;
-  montarDica(m);
-  editorMissao = criarEditor($('editor-missao'), E.rascunhos[m.id] ?? m.inicial, v => { E.rascunhos[m.id] = v; salvar(); });
-  $('saida').innerHTML = '<span class="vazio">Execute o código para ver o resultado aqui.</span>';
-  $('veredito').classList.remove('mostrar');
+let faseMissao = 1, missaoId = null, editorMissao = null;
+const $ = id => document.getElementById(id);
+const faseLiberada = n => E.liberadas.includes(n);
+const feitaMissao = m => !!E.feitas[m.id];
+function todasMissoes(){ return MISSOES.concat((E.desafiosImportados || []).map(desafioParaMissao)); }
+function missoesDoGrupo(g){ return todasMissoes().filter(m => m.fase === g); }
+function podeAbrirMissao(m, grupo){
+  if (m.fase === 'extra') return true;
+  const i = grupo.indexOf(m);
+  return i === 0 || feitaMissao(grupo[i - 1]);
+}
+function primeiraPendente(g){
+  const l = missoesDoGrupo(g);
+  return l.find(m => !feitaMissao(m)) || l[0];
+}
+function primeiraMissaoDisponivel(){
+  const m = MISSOES.find(x => faseLiberada(x.fase) && !feitaMissao(x));
+  return (m || MISSOES[0]).id;
+}
+function proximaMissaoId(){
+  const grupo = missoesDoGrupo(faseMissao), i = grupo.findIndex(m => m.id === missaoId);
+  return grupo[i + 1] ? grupo[i + 1].id : null;
 }
 function montarDica(m){
   const d = $('m-dica');
@@ -1057,6 +1386,57 @@ function montarDica(m){
     <small>${pode ? 'A dica fica liberada para sempre nesta missão.' : 'Créditos insuficientes. Resolva missões para ganhar mais.'}</small>`;
   if (pode) $('comprar-dica').addEventListener('click', () => { E.creditos -= m.dica.custo; E.dicas[m.id] = true; salvar(); mostrarCreditos(true); montarDica(m); });
 }
+function montarNavFases(){
+  const box = $('fases-missao'); box.innerHTML = '';
+  FASES.forEach(f => {
+    const lib = faseLiberada(f.n), b = document.createElement('button');
+    b.className = 'fase-chip' + (f.n === faseMissao ? ' atual' : '');
+    b.disabled = !lib;
+    b.innerHTML = `<span class="fn">Fase ${f.n}</span><span class="fnome">${esc(f.nome)}</span>${lib ? '' : '<span class="cadeado" aria-hidden="true">🔒</span>'}`;
+    b.addEventListener('click', () => montarMissao(primeiraPendente(f.n).id));
+    box.append(b);
+  });
+  if (missoesDoGrupo('extra').length){
+    const b = document.createElement('button');
+    b.className = 'fase-chip extra' + (faseMissao === 'extra' ? ' atual' : '');
+    b.innerHTML = '<span class="fn">Extra</span><span class="fnome">Desafios do professor</span>';
+    b.addEventListener('click', () => montarMissao(primeiraPendente('extra').id));
+    box.append(b);
+  }
+}
+function montarNavMissoes(){
+  const box = $('missoes-nav'); box.innerHTML = '';
+  const grupo = missoesDoGrupo(faseMissao);
+  grupo.forEach((mm, j) => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (feitaMissao(mm) ? ' feita' : '') + (mm.id === missaoId ? ' atual' : '');
+    b.textContent = j + 1;
+    b.title = mm.titulo;
+    b.setAttribute('aria-label', `Missão ${j + 1}: ${mm.titulo}`);
+    b.disabled = !podeAbrirMissao(mm, grupo);
+    b.addEventListener('click', () => montarMissao(mm.id));
+    box.append(b);
+  });
+}
+function montarMissao(id){
+  let m = todasMissoes().find(x => x.id === id);
+  if (!m) m = todasMissoes().find(x => x.id === primeiraMissaoDisponivel());
+  if (!m) return;
+  faseMissao = m.fase; missaoId = m.id;
+  montarNavFases(); montarNavMissoes();
+  $('m-fase').textContent = m.fase === 'extra' ? 'Desafio do professor' : `Fase ${m.fase} · ${FASES.find(f => f.n === m.fase).nome}`;
+  $('m-titulo').textContent = m.titulo;
+  $('m-texto').innerHTML = m.texto.map(t => `<p>${t}</p>`).join('');
+  $('m-lista').innerHTML = m.passos.map(t => `<li>${t}</li>`).join('');
+  const sm = m.secao && MANUAL_F1.find(x => x.id === m.secao);
+  $('m-manual').hidden = !sm;
+  if (sm){ $('m-manual').textContent = `📖 Rever no manual: ${sm.curto}`; $('m-manual').onclick = () => { ir('manual'); irSecao(m.secao); }; }
+  $('m-recompensa').textContent = feitaMissao(m) ? '✔ Missão resolvida' : `🪙 ${m.recompensa} créditos`;
+  montarDica(m);
+  editorMissao = criarEditor($('editor-missao'), E.rascunhos[m.id] ?? m.inicial, v => { E.rascunhos[m.id] = v; salvar(); });
+  $('saida').innerHTML = '<span class="vazio">Execute o código para ver o resultado aqui.</span>';
+  $('veredito').classList.remove('mostrar');
+}
 function veredito(ok, carimbo, texto, temProxima){
   const v = $('veredito'); v.classList.remove('mostrar','ok','nao'); void v.offsetWidth;
   v.classList.add('mostrar', ok ? 'ok' : 'nao'); $('carimbo').textContent = carimbo; $('veredito-texto').textContent = texto;
@@ -1064,19 +1444,34 @@ function veredito(ok, carimbo, texto, temProxima){
 }
 $('executar').addEventListener('click', async () => { $('veredito').classList.remove('mostrar'); mostrarSaida($('saida'), await rodar(editorMissao.valor)); });
 $('verificar').addEventListener('click', async () => {
-  const m = MISSOES[missaoAtual], cod = editorMissao.valor, r = await rodar(cod); mostrarSaida($('saida'), r);
+  const m = todasMissoes().find(x => x.id === missaoId), cod = editorMissao.valor, r = await rodar(cod);
+  mostrarSaida($('saida'), r);
   if (r.erro) return veredito(false,'Ainda não','O código tem um erro. Leia a mensagem acima: ela diz em que linha está o problema.');
   const [ok, carimbo, texto] = m.checar(cod, r);
   let extra = '';
-  if (ok && !E.feitas[m.id]){ E.feitas[m.id] = true; E.creditos += m.recompensa; salvar(); mostrarCreditos(true); extra = ` Você ganhou ${m.recompensa} créditos.`; montarDica(m); $('m-recompensa').textContent = '✔ Missão resolvida.'; }
-  veredito(ok, carimbo, texto + extra, ok && missaoAtual < MISSOES.length - 1);
-  if (ok) montarMissaoNav();
+  if (ok && !E.feitas[m.id]){ E.feitas[m.id] = true; E.creditos += m.recompensa; salvar(); mostrarCreditos(true); extra = ` Você ganhou ${m.recompensa} créditos.`; montarDica(m); $('m-recompensa').textContent = '✔ Missão resolvida'; }
+  veredito(ok, carimbo, texto + extra, ok && !!proximaMissaoId());
+  if (ok){ montarNavFases(); montarNavMissoes(); }
 });
-function montarMissaoNav(){ const chips = document.querySelectorAll('#missoes-nav .chip'); MISSOES.forEach((mm,j) => { chips[j].classList.toggle('feita', !!E.feitas[mm.id]); chips[j].disabled = j > 0 && !E.feitas[MISSOES[j-1].id]; }); }
-$('proxima').addEventListener('click', () => montarMissao(missaoAtual + 1));
+$('proxima').addEventListener('click', () => { const p = proximaMissaoId(); if (p) montarMissao(p); });
+function faseConcluida(n = 1){ return MISSOES.filter(m => m.fase === n).every(m => E.feitas[m.id]); }
+
+/* desafios do professor: viram missões extras ao serem importados */
+function desafioParaMissao(d){
+  return {
+    id: 'c-' + d.id, fase: 'extra', secao: null, titulo: d.titulo,
+    texto: [esc(d.enunciado)], passos: d.passos.map(esc),
+    inicial: d.inicial, recompensa: d.recompensa,
+    dica: {custo: d.custo, texto: d.dica},
+    checar(cod, r){
+      if (d.exigir && !cod.includes(d.exigir)) return [false, 'Quase', `Ainda falta usar "${d.exigir}" no seu código.`];
+      if (d.saidaEsperada && !r.saida.includes(d.saidaEsperada)) return [false, 'Quase', 'A saída ainda não é a que a agência pediu. Compare com o enunciado.'];
+      return [true, 'Pista aceita', 'Desafio concluído.'];
+    }
+  };
+}
 
 /* =================== quadro e códigos =================== */
-function faseConcluida(){ return MISSOES.every(m => E.feitas[m.id]); }
 function montarQuadro(){
   const nota = $('nota-pista');
   if (faseConcluida()){ nota.className = 'item nota anonima'; nota.innerHTML = '<span class="alfinete"></span><b>Mensagem anônima</b>Nem tudo que sai andando sai sozinho.'; }
@@ -1121,7 +1516,7 @@ $('projecao').addEventListener('click', () => $('projecao').hidden = true);
 $('rever-intro').addEventListener('click', mostrarIntro);
 $('reiniciar').addEventListener('click', () => {
   if (!confirm('Apagar créditos, missões e fases abertas deste computador? A introdução aparecerá de novo.')) return;
-  E = JSON.parse(JSON.stringify(PADRAO)); salvar(); mostrarCreditos(); missaoAtual = 0; mostrarIntro();
+  E = JSON.parse(JSON.stringify(PADRAO)); salvar(); mostrarCreditos(); missaoId = null; mostrarIntro();
 });
 
 /* =================== modo aula (slides da fase 1) =================== */
@@ -1149,12 +1544,259 @@ const SLIDES = [
     html:`<p>Errar faz parte da investigação. O Python sempre diz <strong>o tipo do erro</strong> e <strong>em que linha</strong> ele está.</p><p class="maquina">Este código tem dois problemas. Quem encontra?</p>`,
     codigo:'suspeito = "Bia Nogueira"\nprint(Suspeito)\nprint("Caso Lumi)',
     nota:'<b>Erros (5 min).</b> Deixe a turma apontar os erros antes de executar: letra maiúscula em Suspeito (o Python diferencia) e aspas não fechadas. Corrija um de cada vez, executando entre as correções.' },
+  { titulo:'Vocabulário do detetive', unico:true,
+    html:`<table class="tipos"><tr><th>Palavra</th><th>Significado</th></tr>
+          <tr><td><code>print()</code></td><td>mostra algo na tela</td></tr>
+          <tr><td><code>variável</code></td><td>gaveta com nome que guarda um valor</td></tr>
+          <tr><td><code>str / int / float / bool</code></td><td>texto, inteiro, decimal e verdadeiro/falso</td></tr>
+          <tr><td><code>NameError</code></td><td>o Python não conhece o nome usado</td></tr></table>`,
+    nota:'<b>Revisão (2 min).</b> Peça para a turma explicar cada palavra com as próprias palavras antes de passar para o próximo slide.' },
   { titulo:'Agora é com vocês', unico:true,
     html:`<p>Abram o <strong>PyDetetive</strong> e resolvam as missões da Fase 1.</p>
           <p>Cada missão resolvida vale créditos. Com créditos, vocês compram dicas, mas pensem bem antes de gastar.</p>
           <p class="maquina">Quem completar a fase vai revelar uma nova pista no quadro do caso.</p>`,
     nota:'<b>Prática (20 min) e fechamento (5 min).</b> Circule pela sala. Nos 5 minutos finais, projete o quadro do caso e leia a mensagem anônima com a turma, sem explicar: é o gancho para a próxima aula. Na aula 2, projete o código da Fase 2 pelo painel do professor.' }
 ];
+/* =================== planos e slides das aulas =================== */
+const LICOES = [
+  { n:1, fase:1, titulo:'O arquivo do caso', duracao:'50 min',
+    resumo:'Primeiro contato com Python: mostrar informações, guardar pistas em variáveis, reconhecer tipos e ler mensagens de erro.',
+    objetivos:['Mostrar textos e valores na tela com print().','Criar variáveis, dar nomes claros a elas e reutilizá-las.','Identificar os tipos str, int, float e bool com type().','Ler uma mensagem de erro e localizar a linha do problema.'],
+    habilidades:['Abstração: dar nome a uma informação para usá-la depois (variáveis).','Reconhecimento de padrões: perceber que texto vai entre aspas e número não.','Depuração: interpretar a mensagem de erro antes de mudar o código.','Decomposição: dividir a investigação em pistas pequenas e verificáveis.'],
+    preRequisitos:['Nenhum conhecimento de programação.','Computador com navegador. Na primeira abertura, o Python leva alguns segundos para carregar.'],
+    materiais:['Slides da Aula 1 (modo aula).','Manual do detetive, Capítulo 1: quatro seções com exemplos para testar.','Missões 1 a 3 da Fase 1 para a prática.','Quadro branco para anotar as respostas da turma: elas viram as variáveis da aula.'],
+    cronograma:[['0–5 min','Abertura: relembrar a introdução em quadrinhos e fazer a pergunta disparadora.'],['5–12 min','print(): demonstração ao vivo, com textos e números.'],['12–22 min','Variáveis: visualizador de gavetas. Peça para a turma prever cada passo antes do clique.'],['22–30 min','Tipos: type() e o caso do "34" com aspas.'],['30–37 min','Erros de propósito: Suspeito com maiúscula e aspas que faltam. Deixe a turma apontar antes de executar.'],['37–46 min','Prática nas Missões 1 a 3. Circule pela sala.'],['46–50 min','Fechamento: revisão do vocabulário e gancho para a próxima aula.']],
+    perguntas:['Se vocês fossem investigar, que informações anotariam primeiro?','O que aparece: print(suspeito) ou print("suspeito")? Por quê?','Por que 34 e "34" são diferentes para o computador?'],
+    erros:[['Texto sem aspas (print(Caio)) gera NameError.','Pergunte: o Python acha que Caio é o nome de uma gaveta?'],['print com P maiúsculo gera NameError.','Lembre que o Python diferencia maiúsculas de minúsculas.'],['Vírgula no decimal (altura = 1,68) não dá erro: vira uma tupla (1, 68).','Mostre o resultado com print(altura) e pergunte o tipo com type(). Use ponto.'],['Usar uma variável antes de criá-la.','Pergunte em que linha ela foi criada e leve a turma a ler o erro.']],
+    avaliacao:['print("10 + 5") mostra o quê? (Resposta: 10 + 5)','Qual é o tipo de idade = 34? (Resposta: int)','Qual erro aparece em print(nome) sem criar nome? (Resposta: NameError)'],
+    licao:'Terminar as Missões 1 a 3 e reler o Capítulo 1 do manual. Próximo passo: Fase 2, Entrada e cálculos.',
+    slides: SLIDES },
+
+  { n:2, fase:2, titulo:'A linha do tempo', duracao:'50 min',
+    resumo:'Receber dados de quem usa o programa com input(), converter textos em números e calcular intervalos de tempo.',
+    objetivos:['Ler informações digitadas com input() e entender que o retorno é sempre texto.','Converter texto em número com int() e float().','Usar os operadores + - * / // % ** com segurança.','Montar mensagens com valores usando f-strings.'],
+    habilidades:['Entrada e saída de dados.','Operadores e expressões aritméticas.','Algoritmos: sequência de passos (ler, converter, calcular, mostrar).','Abstração: guardar um resultado em variável para usar depois.'],
+    preRequisitos:['Aula 1: print(), variáveis e os tipos str, int e float.'],
+    materiais:['Slides da Aula 2 (modo aula).','Relógio ou cronômetro para o exercício de horários.','Atenção: as missões da Fase 2 ainda estão em produção na plataforma. Use os exemplos dos slides ou crie desafios na aba Criar desafio.'],
+    cronograma:[['0–5 min','Abertura: "Quanto tempo o Lumi ficou sozinho entre 21h40 e 21h47?"'],['5–15 min','input(): execute ao vivo pedindo um nome a um aluno.'],['15–25 min','Textos e números: int() e float(). Mostre o TypeError ao somar texto com número.'],['25–35 min','Operadores: calcule com a turma, em voz alta, 7 / 2 e 7 // 2.'],['35–45 min','Cálculo de horário: converter 21h40 em minutos e achar a diferença.'],['45–50 min','Avaliação rápida e recados.']],
+    perguntas:['Se digitarem 20 e 5 e somarmos sem converter, o resultado é 25?','Qual é a diferença entre / e //?','Por que precisamos de int() antes de calcular a idade?'],
+    erros:[['Somar input sem converter: "20" + "5" dá "205".','Mostre o resultado e pergunte o tipo. Depois converta com int().'],['TypeError ao somar texto e número.','Peça para a turma ler a mensagem e identificar os dois tipos envolvidos.'],['Esquecer um parêntese em int(input()).','Peça para contar em voz alta os parênteses abertos e fechados.'],['Esperar 3 como resultado de 7 / 2.','Mostre 3.5 e explique a diferença entre divisão exata e divisão inteira.']],
+    avaliacao:['print(7 // 2) mostra o quê? (Resposta: 3)','Se idade = input() e a pessoa digitar 30, qual é o tipo? (Resposta: str)','Quanto é 10 % 3? (Resposta: 1)'],
+    licao:'Escrever um programa que pergunte a hora em que o Lumi foi visto e calcule quantos minutos faltam até 21h47. Próximo passo: Fase 3, Condicionais.',
+    slides: [
+      { titulo:'Fase 2: A linha do tempo', unico:true,
+        html:`<p class="maquina">21h40: Lumi foi visto pela última vez. 21h47: as câmeras apagaram. Quanto tempo se passou?</p><p>Para responder, o computador precisa <strong>receber</strong> horários, <strong>converter</strong> textos em números e <strong>calcular</strong>.</p>`,
+        nota:'<b>Abertura (5 min).</b> Pergunte à turma como faria a conta no papel. Anote os passos no quadro: eles viram o roteiro da aula.' },
+      { titulo:'input(): o computador pergunta',
+        html:`<p>O comando <code>input()</code> mostra uma pergunta e espera a resposta de quem usa o programa.</p><p>A resposta chega sempre como <strong>texto</strong>, mesmo quando é um número.</p>`,
+        codigo:`nome = input("Qual o seu nome, detetive? ")\nprint("Bem-vindo,", nome)`,
+        nota:'<b>input() (10 min).</b> Peça para um aluno digitar o nome e execute ao vivo. Pergunte qual tipo de dado a variável nome guardou.' },
+      { titulo:'input() devolve texto',
+        html:`<p>Mesmo que a pessoa digite <code>34</code>, o que foi guardado é o texto <code>"34"</code>. Confira com <code>type()</code>.</p>`,
+        codigo:`idade = input("Idade: ")\nprint(idade, "é do tipo", type(idade))`,
+        nota:'<b>Tipo do input.</b> Peça para digitarem um número e observem que o tipo continua str. Esse é o ponto que sustenta a aula inteira.' },
+      { titulo:'Converter antes de calcular',
+        html:`<p><code>int()</code> transforma texto em número inteiro. <code>float()</code> transforma em número com casas decimais.</p><p>Sem a conversão, somar um texto com um número gera erro.</p>`,
+        codigo:`anos = int(input("Quantos anos você tem? "))\nprint("Daqui a 5 anos:", anos + 5)`,
+        nota:'<b>Conversão.</b> Mostre o TypeError de propósito: print("Idade: " + 34). Peça para a turma identificar os dois tipos e corrigir com str().' },
+      { titulo:'Operadores matemáticos',
+        html:`<table class="tipos"><tr><th>Operador</th><th>Faz o quê</th><th>Exemplo com 7 e 2</th></tr>
+          <tr><td><code>+</code> <code>-</code> <code>*</code></td><td>soma, subtração, multiplicação</td><td>9, 5, 14</td></tr>
+          <tr><td><code>/</code></td><td>divisão com decimais</td><td>3.5</td></tr>
+          <tr><td><code>//</code></td><td>divisão inteira (descarta o resto)</td><td>3</td></tr>
+          <tr><td><code>%</code></td><td>resto da divisão</td><td>1</td></tr>
+          <tr><td><code>**</code></td><td>potência</td><td>49</td></tr></table>`,
+        codigo:`print(7 / 2)\nprint(7 // 2)\nprint(7 % 2)`,
+        nota:'<b>Operadores (10 min).</b> Peça para a turma prever os três resultados antes de executar. Pergunte para que serviria o resto da divisão.' },
+      { titulo:'f-strings: mensagens com valores',
+        html:`<p>Uma f-string começa com <code>f</code> antes das aspas. Tudo entre chaves <code>{ }</code> é substituído pelo valor da variável.</p>`,
+        codigo:`suspeito = "Helena Martins"\nminutos = 12\nprint(f"{suspeito} saiu da sala há {minutos} minutos.")`,
+        nota:'<b>f-strings.</b> Compare com a versão de print("..." + str(minutos)) para mostrar por que a f-string é mais legível.' },
+      { titulo:'Exemplo resolvido: horário em minutos',
+        html:`<p>Para subtrair horários, convertemos tudo em minutos: 21h40 = 21 × 60 + 40 = 1300 minutos.</p><p class="maquina">Agora é com vocês: calculem o intervalo entre 21h30 e 21h55.</p>`,
+        codigo:`inicio = 21 * 60 + 40\nfim = 21 * 60 + 47\nprint("Minutos passados:", fim - inicio)`,
+        nota:'<b>Exemplo resolvido (8 min).</b> Execute, depois peça à turma para adaptar o código ao intervalo 21h30 a 21h55. A resposta é 25.' },
+      { titulo:'Agora é com vocês', unico:true,
+        html:`<p>Em duplas, escrevam um programa que pergunte a hora em que alguém viu o Lumi e mostre quantos minutos faltam até 21h47.</p><p class="maquina">Dica: converta a hora digitada com int() antes de qualquer conta.</p>`,
+        nota:'<b>Prática (10 min) e fechamento (5 min).</b> Circule pela sala e verifique se as duplas usam int(). No fechamento, mostre duas respostas diferentes e pergunte qual está certa.' }
+    ] },
+
+  { n:3, fase:3, titulo:'Os álibis', duracao:'50 min',
+    resumo:'Fazer o computador decidir caminhos com if, elif e else, usando comparações e a lógica de and, or e not.',
+    objetivos:['Comparar valores com ==, !=, <, >, <= e >=.','Escrever if, elif e else com a indentação correta.','Combinar condições com and, or e not.','Interpretar erros de sintaxe e de recuo.'],
+    habilidades:['Estruturas de decisão: o programa escolhe caminhos.','Lógica booleana: verdadeiro e falso como resultados de perguntas.','Teste e depuração: testar um caminho de cada vez.','Decomposição: transformar um álibi em regras verificáveis.'],
+    preRequisitos:['Aulas 1 e 2: print(), variáveis, input(), conversões e o tipo bool.'],
+    materiais:['Slides da Aula 3 (modo aula).','Ficha de álibis: horários dos quatro suspeitos escritos no quadro ou impressos.','Dupla de trabalho para a prática final.'],
+    cronograma:[['0–6 min','Abertura: "Se o álibi do Caio cobre 21h40, ele é suspeito?"'],['6–14 min','Comparações e o tipo bool. Peça previsões antes de executar.'],['14–26 min','if e else ao vivo, com o exemplo do guarda-chuva.'],['26–34 min','elif e a ordem das condições: mude a hora e observe o caminho.'],['34–42 min','and, or e not. Erro de recuo proposital.'],['42–50 min','Prática em duplas: um if para o álibi de um suspeito.']],
+    perguntas:['Por que o if precisa de dois pontos no fim da linha?','5 == 5.0 é True ou False?','Se a condição do elif for verdadeira e a do else também, qual frase aparece?'],
+    erros:[['Usar = no lugar de == dentro do if gera SyntaxError.','Lembre que = guarda um valor e == pergunta se são iguais.'],['Esquecer os dois pontos no fim do if.','Peça para a turma encontrar o lugar onde faltam os dois pontos.'],['Recuo errado gera IndentationError.','Conte os espaços em voz alta e mostre que cada bloco precisa do mesmo recuo.'],['Escrever "else if" em vez de elif gera SyntaxError.','Mostre a forma correta e pergunte por que o Python não entende a outra.'],['Comparar texto com número: "34" == 34 dá False sem erro.','Este é o erro mais traiçoeiro: pergunte o tipo de cada lado antes de comparar.']],
+    avaliacao:['print(3 > 2 and 2 > 5) mostra o quê? (Resposta: False)','x = 3, com if x % 2 == 0 e else: o resultado é par ou ímpar? (Resposta: ímpar)','Qual operador inverte um valor booleano? (Resposta: not)'],
+    licao:'Escrever um if para dois suspeitos com álibis diferentes e explicar em uma frase por que cada caminho foi escolhido. Próximo passo: Fase 4, Laços.',
+    slides: [
+      { titulo:'Fase 3: Os álibis', unico:true,
+        html:`<p class="maquina">Caio disse que estava no laboratório até as 21h50. Helena disse que saiu às 21h30. Quem está mentindo?</p><p>Hoje o computador aprende a decidir: se isto for verdade, faça aquilo.</p>`,
+        nota:'<b>Abertura (6 min).</b> Pergunte: "Como um detetive decide se um álibi é verdadeiro?" Anote as respostas no quadro: elas viram as condições do if.' },
+      { titulo:'Comparar é fazer uma pergunta',
+        html:`<table class="tipos"><tr><th>Operador</th><th>Pergunta que faz</th><th>Exemplo</th><th>Resultado</th></tr>
+          <tr><td><code>==</code></td><td>é igual?</td><td><code>5 == 5</code></td><td><code>True</code></td></tr>
+          <tr><td><code>!=</code></td><td>é diferente?</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+          <tr><td><code>&gt;</code> e <code>&lt;</code></td><td>é maior ou menor?</td><td><code>21 &gt; 20</code></td><td><code>True</code></td></tr>
+          <tr><td><code>&gt;=</code> e <code>&lt;=</code></td><td>é maior ou igual, menor ou igual?</td><td><code>21 &gt;= 22</code></td><td><code>False</code></td></tr></table>`,
+        codigo:`print(5 == 5)\nprint(21 >= 22)\nprint("Caio" != "Helena")`,
+        nota:'<b>Revisão (5 min).</b> Peça para a turma prever cada resultado antes de executar. Lembre a diferença entre = (guardar) e == (comparar).' },
+      { titulo:'if: se isto for verdade',
+        html:`<p>O <code>if</code> executa um bloco somente quando a condição é <code>True</code>.</p><p>Os dois pontos no fim da linha e o recuo (os espaços no começo) são obrigatórios.</p>`,
+        codigo:`hora = 21\nif hora >= 21:\n    print("Já era noite na escola.")\nprint("Fim do registro.")`,
+        nota:'<b>if (7 min).</b> Mude hora para 19 e execute de novo. Pergunte o que mudou e por que a última linha aparece sempre.' },
+      { titulo:'else: o caminho alternativo',
+        html:`<p>O <code>else</code> executa quando a condição do <code>if</code> é falsa.</p>`,
+        codigo:`tinha_guarda_chuva = True\nif tinha_guarda_chuva:\n    print("Caio estava com o guarda-chuva.")\nelse:\n    print("Caio saiu sem proteção.")`,
+        nota:'<b>else.</b> Troque True por False e pergunte qual frase aparece. Relacione com a ideia de caminho alternativo.' },
+      { titulo:'elif: várias possibilidades',
+        html:`<p>Com <code>elif</code> (contração de "else if") testamos possibilidades em ordem. Só o primeiro caminho verdadeiro é executado.</p>`,
+        codigo:`hora = 21\nif hora < 20:\n    print("Ainda estava na escola.")\nelif hora < 22:\n    print("Estava no laboratório.")\nelse:\n    print("Já tinha saído.")`,
+        nota:'<b>elif.</b> Pergunte: se a hora fosse 22, qual frase apareceria? Mostre que a ordem das condições importa.' },
+      { titulo:'and, or e not',
+        html:`<table class="tipos"><tr><th>Operador</th><th>Resultado é True quando</th></tr>
+          <tr><td><code>and</code></td><td>as duas condições são verdadeiras</td></tr>
+          <tr><td><code>or</code></td><td>pelo menos uma é verdadeira</td></tr>
+          <tr><td><code>not</code></td><td>inverte o valor (True vira False)</td></tr></table>`,
+        codigo:`estava_no_lab = True\ntinha_chave = False\nif estava_no_lab and tinha_chave:\n    print("Acesso confirmado.")\nelse:\n    print("Sem prova de acesso.")`,
+        nota:'<b>Lógica.</b> Mude tinha_chave para True e execute. Depois troque and por or e pergunte o que muda.' },
+      { titulo:'Indentação é regra',
+        html:`<p>Se o recuo estiver errado, o Python nem começa a executar. Cada bloco precisa do mesmo recuo.</p><p class="maquina">Este código tem um erro de recuo. Encontrem.</p>`,
+        codigo:`if 2 > 1:\nprint("sem recuo")`,
+        nota:'<b>Erro de recuo (5 min).</b> Deixe a turma apontar a linha antes de executar. Depois, adicione os quatro espaços e execute de novo.' },
+      { titulo:'Agora é com vocês', unico:true,
+        html:`<p>Em duplas, escrevam um <code>if</code> que decida se um suspeito tem álibi.</p><p>Exemplo de regra: se estava na escola às 21h45, tem álibi. Senão, continua suspeito.</p><p class="maquina">Desafio extra: usem elif para separar três casos: antes de 21h30, entre 21h30 e 21h50, e depois de 21h50.</p>`,
+        nota:'<b>Prática em duplas (20 min).</b> Circule pela sala. Ao final, cada dupla explica a condição mais importante com as próprias palavras.' }
+    ] },
+
+  { n:4, fase:4, titulo:'As câmeras', duracao:'50 min',
+    resumo:'Repetir tarefas com for e while, usar range() e acumular valores para analisar gravações em série.',
+    objetivos:['Repetir um bloco de código para cada item com for.','Gerar sequências de números com range().','Acumular valores em uma variável.','Usar while com uma condição que um dia deixa de ser verdadeira.'],
+    habilidades:['Repetição (laços): fazer a mesma tarefa muitas vezes sem copiar código.','Padrões: perceber quando uma tarefa se repete.','Abstração: o laço trabalha para qualquer quantidade de itens.','Depuração: reconhecer e interromper um laço infinito.'],
+    preRequisitos:['Aulas 1 a 3: print(), variáveis, comparações e if.'],
+    materiais:['Slides da Aula 4 (modo aula).','Lista de horários das câmeras escrita no quadro (por exemplo, 21h40 a 21h47, minuto a minuto).','Cronômetro para a prática.'],
+    cronograma:[['0–5 min','Abertura: "As câmeras gravaram por minutos. Você olharia todos um por um?"'],['5–15 min','for e range() ao vivo.'],['15–25 min','Acumulador: somar valores dentro do laço.'],['25–35 min','while e a condição que muda a cada volta.'],['35–42 min','Laço infinito: apenas mostrar o código, sem executar.'],['42–50 min','Prática em duplas: listar os horários das câmeras com for.']],
+    perguntas:['Quantas vezes o laço repete com range(3)?','Quais números aparecem em range(1, 4)?','O que aconteceria se esquecêssemos de atualizar a variável de um while?'],
+    erros:[['range(1, 5) não inclui o 5.','Mostre a lista gerada e pergunte qual é o último número.'],['Esquecer de atualizar a variável do while.','Pergunte: a condição algum dia vai virar falsa? Só é seguro executar se a resposta for sim.'],['Recuo errado dentro do for gera IndentationError.','Mostre que a linha que repete precisa estar um nível abaixo do for.'],['Acumulador não é zerado antes do laço.','Peça para a turma prever o total antes de executar.']],
+    avaliacao:['for i in range(3): print(i) mostra o quê? (Resposta: 0, 1 e 2)','total = 0 com for n in range(1, 4): total += n. Qual é o total? (Resposta: 6)','contador = 0 com while contador < 3: contador += 1 e print(contador). Quantas linhas aparecem? (Resposta: 3)'],
+    licao:'Escrever um for que mostre os horários das câmeras de 21h40 a 21h47. Próximo passo: Fase 5, Listas e textos.',
+    slides: [
+      { titulo:'Fase 4: As câmeras', unico:true,
+        html:`<p class="maquina">As câmeras gravaram imagens a cada minuto. Ninguém tem tempo de olhar todas uma por uma.</p><p>Hoje o computador repete tarefas para nós: com <code>for</code> e <code>while</code>.</p>`,
+        nota:'<b>Abertura (5 min).</b> Pergunte: "Como vocês fariam para olhar 100 imagens sem copiar a mesma ação 100 vezes?"' },
+      { titulo:'for: repita para cada item',
+        html:`<p>O <code>for</code> percorre uma sequência e executa o bloco uma vez para cada item.</p>`,
+        codigo:`for camera in range(1, 4):\n    print("Câmera", camera, "verificada")`,
+        nota:'<b>for (7 min).</b> Execute e pergunte quantas linhas aparecem. Depois, mude o range para (1, 8) e veja a diferença.' },
+      { titulo:'range(): a régua do laço',
+        html:`<table class="tipos"><tr><th>Comando</th><th>Números gerados</th></tr>
+          <tr><td><code>range(3)</code></td><td>0, 1, 2</td></tr>
+          <tr><td><code>range(1, 4)</code></td><td>1, 2, 3</td></tr>
+          <tr><td><code>range(0, 10, 2)</code></td><td>0, 2, 4, 6, 8</td></tr></table><p>O último número nunca entra: range(1, 4) para antes do 4.</p>`,
+        nota:'<b>range (5 min).</b> Peça para a turma escrever, antes, a lista de range(5, 10). Confira no slide: 5, 6, 7, 8, 9.' },
+      { titulo:'Acumulando pistas',
+        html:`<p>Um <strong>acumulador</strong> é uma variável que guarda o total ao longo das voltas do laço.</p>`,
+        codigo:`total_minutos = 0\nfor minuto in range(1, 6):\n    total_minutos += minuto\nprint("Total:", total_minutos)`,
+        nota:'<b>Acumulador (10 min).</b> Pergunte o que aconteceria se a linha total_minutos = 0 fosse esquecida. Execute e confira o resultado: 15.' },
+      { titulo:'while: repita enquanto',
+        html:`<p>O <code>while</code> repete enquanto a condição for verdadeira. A condição precisa mudar durante as voltas, senão nunca termina.</p>`,
+        codigo:`tentativas = 0\nwhile tentativas < 3:\n    tentativas += 1\n    print("Tentativa", tentativas)`,
+        nota:'<b>while (8 min).</b> Mostre a linha tentativas += 1 e pergunte: se ela sumisse, o que aconteceria? Só explique, não execute.' },
+      { titulo:'Cuidado: laço infinito',
+        html:`<p>Um laço cuja condição nunca fica falsa repete para sempre.</p><pre class="cola">while True:\n    print("Lumi?")</pre>`,
+        nota:'<b>Atenção.</b> Não execute laços infinitos ao vivo: a aba do navegador trava. Mostre apenas o código. Se acontecer por engano, feche a aba: o progresso fica salvo.' },
+      { titulo:'Agora é com vocês', unico:true,
+        html:`<p>Em duplas, usem <code>for</code> e <code>range()</code> para mostrar os horários de 21h40 a 21h45, um por linha.</p><p class="maquina">Pista extra: range(40, 46) gera 40, 41, ..., 45.</p>`,
+        nota:'<b>Prática em duplas (20 min).</b> Circule pela sala. No fechamento, peça para uma dupla mostrar o código e explique por que o último horário aparece.' }
+    ] },
+
+  { n:5, fase:5, titulo:'Mensagens cifradas', duracao:'50 min',
+    resumo:'Guardar vários valores em listas, acessá-los pelo índice e transformar textos com métodos e fatiamento.',
+    objetivos:['Criar listas e acessar itens pelo índice.','Usar len() e append() para ler e aumentar uma lista.','Aplicar métodos de texto como upper(), strip() e replace().','Percorrer uma lista com for.'],
+    habilidades:['Estruturas de dados: agrupar informações relacionadas.','Representação de informação: o texto é uma sequência de letras.','Algoritmos de transformação: aplicar a mesma regra a cada item.','Abstração: tratar a lista inteira como um único objeto.'],
+    preRequisitos:['Aulas 1 a 4: variáveis, tipos, if e for/range.'],
+    materiais:['Slides da Aula 5 (modo aula).','Tabela de letras com posição (A = 0, B = 1 e assim por diante) para explicar índices.','Pequeno bilhete com uma mensagem cifrada para a turma decifrar.'],
+    cronograma:[['0–5 min','Abertura: "Quatro suspeitos numa só gaveta. Como guardar todos juntos?"'],['5–15 min','Listas e índices: a contagem começa em zero.'],['15–25 min','append() e len(): crescer a lista e medi-la.'],['25–35 min','Métodos de texto: upper(), strip(), replace().'],['35–45 min','Mensagem ao contrário: fatiamento com [::-1].'],['45–50 min','Avaliação rápida e recados.']],
+    perguntas:['Qual é o índice do último item de uma lista com 4 elementos?','upper() muda a variável original ou devolve um novo texto?','Por que lista[1] é o segundo item, e não o primeiro?'],
+    erros:[['Confundir posição com índice: lista[1] parece ser o primeiro item.','Use a tabela de letras: A = 0, B = 1. Peça para a turma achar a letra do índice 2.'],['IndexError: list index out of range.','Pergunte quantos itens a lista tem e qual é o maior índice válido.'],['Tentar trocar uma letra de um texto: texto[0] = "X" gera TypeError.','Explique que texto é imutável: métodos devolvem um texto novo.'],['Escrever texto.upper sem parênteses mostra a função, não o resultado.','Peça para a turma comparar as duas linhas e ler a diferença.']],
+    avaliacao:['suspeitos = ["Helena", "Caio", "Bia"]; print(suspeitos[1]) mostra o quê? (Resposta: Caio)','print(len("LUMI")) mostra o quê? (Resposta: 4)','print("lumi".upper()) mostra o quê? (Resposta: LUMI)'],
+    licao:'Criar uma lista com os quatro suspeitos e mostrar cada nome em maiúsculas. Próximo passo: Fase 6, Funções.',
+    slides: [
+      { titulo:'Fase 5: Mensagens cifradas', unico:true,
+        html:`<p class="maquina">Um bilhete foi encontrado no laboratório. Está escrito ao contrário e os suspeitos são citados em ordem.</p><p>Para decifrar, precisamos guardar vários valores juntos e transformar textos.</p>`,
+        nota:'<b>Abertura (5 min).</b> Mostre um bilhete escrito ao contrário e peça para a turma tentar ler sem ajuda. Depois, revele que o computador faz isso em uma linha.' },
+      { titulo:'Listas: várias gavetas numa caixa',
+        html:`<p>Uma lista guarda vários valores entre colchetes, separados por vírgula. <code>len()</code> diz quantos itens ela tem.</p>`,
+        codigo:`suspeitos = ["Helena Martins", "Caio Ribeiro", "Bia Nogueira", "Otávio Leal"]\nprint(suspeitos)\nprint(len(suspeitos))`,
+        nota:'<b>Listas (8 min).</b> Pergunte quantos itens há antes de executar. Mostre que print(suspeitos) mostra a lista inteira.' },
+      { titulo:'Índices começam em zero',
+        html:`<p>Cada item tem um índice. O primeiro é <code>0</code>. O índice <code>-1</code> pega o último item.</p>`,
+        codigo:`suspeitos = ["Helena", "Caio", "Bia", "Otávio"]\nprint(suspeitos[0])\nprint(suspeitos[-1])`,
+        nota:'<b>Índices (10 min).</b> Peça para a turma prever suspeitos[2] antes de executar. Resposta: Bia. Use a tabela de letras para reforçar.' },
+      { titulo:'append(): adicionando pistas',
+        html:`<p><code>append()</code> adiciona um item no fim da lista.</p>`,
+        codigo:`pistas = []\npistas.append("pegadas")\npistas.append("luvas")\nprint(pistas)`,
+        nota:'<b>append (7 min).</b> Pergunte o que aparece se a linha pistas = [] for removida. Resposta: erro de nome, porque pistas não existe.' },
+      { titulo:'Textos têm métodos',
+        html:`<p>Textos também têm métodos, com parênteses: <code>upper()</code> põe em maiúsculas, <code>strip()</code> remove espaços das pontas e <code>replace()</code> troca partes do texto.</p>`,
+        codigo:`codigo = "lumi"\nprint(codigo.upper())\nprint("  Caso Lumi  ".strip())\nprint("caso-lumi".replace("-", " "))`,
+        nota:'<b>Métodos (10 min).</b> Pergunte: o valor de codigo muda depois de codigo.upper()? Resposta: não, o método devolve um texto novo.' },
+      { titulo:'Mensagem cifrada: ao contrário',
+        html:`<p>O símbolo <code>[::-1]</code> percorre o texto de trás para frente. É um exemplo simples de transformação.</p>`,
+        codigo:`mensagem = "LUMI ESTA VIVO"\nprint(mensagem[::-1])`,
+        nota:'<b>Decifrar (8 min).</b> Peça para a turma descobrir o bilhete ao contrário. Execute e confirme que a resposta é OVIV ATSE IMUL.' },
+      { titulo:'Agora é com vocês', unico:true,
+        html:`<p>Em duplas, criem uma lista com os quatro suspeitos e mostrem apenas o segundo e o último.</p><p class="maquina">Pista: lembrem que o índice começa em zero.</p>`,
+        nota:'<b>Prática em duplas (20 min).</b> Circule pela sala. No fechamento, peça para uma dupla explicar o índice do último item.' }
+    ] },
+
+  { n:6, fase:6, titulo:'A revelação', duracao:'50 min',
+    resumo:'Organizar o raciocínio em funções: escrever uma regra uma vez e reutilizá-la para qualquer suspeito.',
+    objetivos:['Criar uma função com def e chamá-la.','Passar informações para a função com parâmetros.','Devolver um resultado com return.','Diferenciar print (mostrar) de return (devolver).'],
+    habilidades:['Decomposição: dividir um problema grande em partes menores.','Abstração: nomear uma regra e usá-la sem repetir código.','Reutilização: uma mesma função serve para vários casos.','Modularização: separar a regra do lugar onde ela é usada.'],
+    preRequisitos:['Aulas 1 a 5, em especial comparações (Aula 3) e conversões (Aula 2).'],
+    materiais:['Slides da Aula 6 (modo aula).','Quadro com os horários dos suspeitos: Helena 21h30 a 21h50, Caio 21h40 a 21h45.','Folha em branco para a turma escrever a função em duplas.'],
+    cronograma:[['0–5 min','Abertura: "Vamos repetir o mesmo cálculo para cada suspeito?"'],['5–15 min','def e chamada da função, ao vivo.'],['15–25 min','Parâmetros: a função recebe dados de fora.'],['25–35 min','return versus print: mostre a diferença na mesma execução.'],['35–45 min','Prática em duplas: função que diz se um horário está coberto por um álibi.'],['45–50 min','Revelação: fechamento do caso e recados finais.']],
+    perguntas:['Qual é a diferença entre print e return?','Quantas vezes a função roda se a chamarmos três vezes?','Por que escrever uma função é melhor do que copiar o mesmo código?'],
+    erros:[['Esquecer os parênteses ao chamar: saudar mostra a função, não executa.','Peça para a turma comparar saudar e saudar() e ler o resultado de cada um.'],['Função sem return: print(resultado) mostra None.','Pergunte o que a função devolveu. Mostre que print não é return.'],['Chamar a função sem passar o parâmetro gera TypeError.','Leia a mensagem em voz alta: ela diz qual argumento faltou.'],['Corpo da função sem recuo gera IndentationError.','Mostre o recuo como parte da definição da função.']],
+    avaliacao:['def dobro(n) com return n * 2, depois print(dobro(4)). O que aparece? (Resposta: 8)','Uma função com print dentro é chamada sem return. O que aparece? (Resposta: o texto do print)','def f(): sem return, e print(f()). O que aparece? (Resposta: None)'],
+    licao:'Escrever uma função que receba o horário de um suspeito e diga se ele tem álibi para 21h45. Fim da sequência: o professor decide o que vem depois.',
+    slides: [
+      { titulo:'Fase 6: A revelação', unico:true,
+        html:`<p class="maquina">Quatro suspeitos. Quatro álibis. A mesma pergunta para todos: onde estavam às 21h45?</p><p>Escrever a pergunta uma única vez, como uma função, resolve isso para qualquer pessoa.</p>`,
+        nota:'<b>Abertura (5 min).</b> Pergunte: "Se a regra do álibi mudar, quantos lugares do código precisamos alterar?" Anote a resposta para lembrar no fechamento.' },
+      { titulo:'def: ensine uma receita ao computador',
+        html:`<p><code>def</code> cria uma função, uma receita com nome. Ela só roda quando é chamada.</p>`,
+        codigo:`def saudar():\n    print("Agência PyDetetive, bom dia!")\n\nsaudar()\nsaudar()`,
+        nota:'<b>def (8 min).</b> Pergunte quantas vezes a mensagem aparece. Resposta: duas, porque a função foi chamada duas vezes.' },
+      { titulo:'Parâmetros: ingredientes da função',
+        html:`<p>Parâmetros são informações que a função recebe de quem a chama.</p>`,
+        codigo:`def apresentar(nome, cargo):\n    print(nome, "é", cargo)\n\napresentar("Helena Martins", "professora de física")\napresentar("Caio Ribeiro", "técnico do laboratório")`,
+        nota:'<b>Parâmetros (10 min).</b> Troque a ordem dos argumentos na segunda chamada e pergunte o que muda na frase.' },
+      { titulo:'return: devolva o resultado',
+        html:`<p><code>return</code> entrega um valor para quem chamou a função. Assim, o resultado pode ser guardado em uma variável.</p>`,
+        codigo:`def minutos_entre(inicio, fim):\n    return fim - inicio\n\nprint(minutos_entre(1300, 1307))`,
+        nota:'<b>return (8 min).</b> Explique que 1300 é 21h40 e 1307 é 21h47, usando a conversão da Aula 2. A resposta é 7.' },
+      { titulo:'print mostra, return devolve',
+        html:`<p>Execute e compare: a primeira chamada só mostra; a segunda entrega um valor que o print exibe.</p>`,
+        codigo:`def mostrar(x):\n    print("mostrei", x)\n\ndef devolver(x):\n    return x\n\nmostrar(5)\nprint(devolver(5))`,
+        nota:'<b>print x return (7 min).</b> Pergunte: se trocarmos print por return dentro de mostrar, o que acontece na chamada mostrar(5)? Resposta: nada aparece.' },
+      { titulo:'Revelação: a regra do álibi',
+        html:`<p>A função abaixo decide se um horário está coberto por um álibi. Horários em minutos: 21h30 é 1290 e 21h50 é 1310.</p>`,
+        codigo:`def cobre_horario(inicio, fim, hora):\n    return inicio <= hora <= fim\n\nprint(cobre_horario(1290, 1310, 1300))\nprint(cobre_horario(1290, 1310, 1320))`,
+        nota:'<b>Revelação (10 min).</b> Execute: True e False. Pergunte: quem teria álibi para 21h45 e quem não teria? Não revele a resposta do caso: deixe a turma decidir.' },
+      { titulo:'Agora é com vocês', unico:true,
+        html:`<p>Em duplas, escrevam uma função que receba início, fim e hora, e devolva True ou False.</p><p class="maquina">Teste com os horários dos quatro suspeitos.</p>`,
+        nota:'<b>Prática em duplas (15 min) e fechamento (5 min).</b> No fechamento, reúna a turma: cada dupla lê a função em voz alta e diz qual suspeito ficou sem álibi.' },
+      { titulo:'Fechamento do caso', unico:true,
+        html:`<p>Com funções, o detetive reaproveita o raciocínio: a mesma regra serve para qualquer suspeito e qualquer horário.</p><p>Nem todo caso se resolve com uma única função, mas todo caso começa com uma pergunta bem feita.</p>`,
+        nota:'<b>Encerramento (3 min).</b> Retome a pergunta da abertura sobre quantos lugares precisam mudar. Agradeça e feche a sequência.' }
+    ] }
+];
+
 const VISU = { linhas:['suspeito = "Caio Ribeiro"','idade = 34','suspeito = "Bia Nogueira"','print(suspeito)'],
   passos:[{}, {suspeito:['"Caio Ribeiro"','str']}, {suspeito:['"Caio Ribeiro"','str'], idade:['34','int']}, {suspeito:['"Bia Nogueira"','str'], idade:['34','int']}, {suspeito:['"Bia Nogueira"','str'], idade:['34','int'], _saida:'Bia Nogueira'}] };
 let slideAtual = 0;
@@ -1174,26 +1816,196 @@ function montarVisu(host){
   q('.vr').addEventListener('click', () => { p = 0; desenhar(null); });
 }
 function montarSlide(){
-  const s = SLIDES[slideAtual], el = $('slide');
+  const L = LICOES[aulaCorrente - 1], lista = L.slides, s = lista[slideAtual], el = $('slide');
   el.className = 'slide' + (s.unico ? ' unico' : '');
   let dir = '';
   if (s.codigo) dir = `<div class="bancada"><div class="bancada-topo"><span>Código ao vivo</span><span class="motor${motor ? ' pronto' : ''}" data-motor>${motor ? 'Python pronto' : 'Preparando o Python…'}</span></div><div id="ed-slide"></div><div class="botoes"><button class="btn claro" id="exec-slide" data-precisa-motor ${motor ? '' : 'disabled'}>▶ Executar</button></div><pre class="saida" id="saida-slide"><span class="vazio">A saída aparece aqui.</span></pre></div>`;
   if (s.visu) dir = '<div class="visu-host"></div>';
   el.innerHTML = `<div><h2>${s.titulo}</h2>${s.html}</div>${dir}`;
-  $('slide-num').textContent = `${slideAtual+1} / ${SLIDES.length}`;
-  $('notas').innerHTML = s.nota;
-  $('slide-ant').disabled = slideAtual === 0; $('slide-prox').disabled = slideAtual === SLIDES.length - 1;
+  $('slide-num').textContent = `${slideAtual+1} / ${lista.length}`;
+  $('notas').innerHTML = origemAula === 'professor' ? s.nota : '';
+  $('notas').hidden = true;
+  $('notas-toggle').hidden = origemAula !== 'professor';
+  $('notas-toggle').setAttribute('aria-pressed', 'false');
+  $('aula-titulo').textContent = `Aula ${L.n}: ${L.titulo}`;
+  $('slide-ant').disabled = slideAtual === 0; $('slide-prox').disabled = slideAtual === lista.length - 1;
   if (s.codigo){ const ed = criarEditor($('ed-slide'), s.codigo); $('exec-slide').addEventListener('click', async () => mostrarSaida($('saida-slide'), await rodar(ed.valor))); }
   if (s.visu) montarVisu(el.querySelector('.visu-host'));
 }
-$('iniciar-aula').addEventListener('click', () => { slideAtual = 0; montarSlide(); ir('aula'); });
-$('sair-aula').addEventListener('click', () => ir('professor'));
+$('sair-aula').addEventListener('click', () => ir(origemAula === 'professor' ? 'professor' : 'aulas'));
 $('slide-ant').addEventListener('click', () => { if (slideAtual > 0){ slideAtual--; montarSlide(); } });
-$('slide-prox').addEventListener('click', () => { if (slideAtual < SLIDES.length - 1){ slideAtual++; montarSlide(); } });
+$('slide-prox').addEventListener('click', () => { if (slideAtual < LICOES[aulaCorrente - 1].slides.length - 1){ slideAtual++; montarSlide(); } });
 $('notas-toggle').addEventListener('click', e => { const n = $('notas'); n.hidden = !n.hidden; e.currentTarget.setAttribute('aria-pressed', String(!n.hidden)); });
 document.addEventListener('keydown', e => {
   if (!$('aula').classList.contains('ativa') || e.target.tagName === 'TEXTAREA') return;
   if (e.key === 'ArrowRight') $('slide-prox').click(); if (e.key === 'ArrowLeft') $('slide-ant').click();
+});
+
+/* =================== planos de aula, liberação e desafios =================== */
+let aulaCorrente = 1, origemAula = 'professor';
+const aulaPorNumero = n => LICOES.find(l => l.n === n);
+const aulaLiberada = n => E.aulasLiberadas.includes(n);
+function abrirAula(n, origem){ aulaCorrente = n; origemAula = origem; slideAtual = 0; montarSlide(); ir('aula'); }
+function atualizarAbaAulas(){ $('aba-aulas').hidden = E.aulasLiberadas.length === 0; }
+function alternarLiberacao(n){
+  const i = E.aulasLiberadas.indexOf(n);
+  if (i >= 0) E.aulasLiberadas.splice(i, 1); else E.aulasLiberadas.push(n);
+  salvar(); montarListaAulas(); atualizarAbaAulas();
+}
+function montarListaAulas(){
+  const box = $('lista-aulas'); box.innerHTML = '';
+  LICOES.forEach(L => {
+    const lib = aulaLiberada(L.n), card = document.createElement('article');
+    card.className = 'cartao aula-card';
+    card.innerHTML = `<span class="tag${lib ? ' liberada' : ''}">${lib ? 'Liberada para a turma' : 'Só professor'}</span>
+      <h3>Aula ${L.n}: ${esc(L.titulo)}</h3>
+      <p>${esc(L.resumo)}</p>
+      <p class="meta">Fase ${L.fase} · ${esc(L.duracao)} · ${L.slides.length} slides</p>
+      <div class="acoes-aula">
+        <button class="btn claro" data-plano="${L.n}">Ver plano</button>
+        <button class="btn" data-projetar="${L.n}">Projetar slides</button>
+        <button class="btn ${lib ? 'vermelho' : 'verde'}" data-liberar="${L.n}">${lib ? 'Recolher da turma' : 'Liberar para a turma'}</button>
+      </div>`;
+    box.append(card);
+  });
+  box.querySelectorAll('[data-plano]').forEach(b => b.addEventListener('click', () => montarPlano(+b.dataset.plano)));
+  box.querySelectorAll('[data-projetar]').forEach(b => b.addEventListener('click', () => abrirAula(+b.dataset.projetar, 'professor')));
+  box.querySelectorAll('[data-liberar]').forEach(b => b.addEventListener('click', () => alternarLiberacao(+b.dataset.liberar)));
+}
+function montarPlano(n){
+  const L = aulaPorNumero(n), box = $('plano-aula');
+  const lista = itens => `<ul>${itens.map(t => `<li>${esc(t)}</li>`).join('')}</ul>`;
+  const ordenada = itens => `<ol>${itens.map(t => `<li>${esc(t)}</li>`).join('')}</ol>`;
+  box.innerHTML = `
+    <div class="plano-topo"><span>Aula ${L.n} · Fase ${L.fase} · ${esc(L.duracao)}</span><h2>${esc(L.titulo)}</h2><p>${esc(L.resumo)}</p></div>
+    <div class="plano-grade">
+      <div class="bloco"><h4>Objetivos</h4>${lista(L.objetivos)}</div>
+      <div class="bloco"><h4>Habilidades exploradas</h4>${lista(L.habilidades)}</div>
+      <div class="bloco"><h4>Pré-requisitos</h4>${lista(L.preRequisitos)}</div>
+      <div class="bloco"><h4>Materiais de apoio</h4>${lista(L.materiais)}</div>
+    </div>
+    <div class="plano-sec"><h4>Cronograma</h4>
+      <table class="plano-tab"><tr><th>Tempo</th><th>Atividade</th></tr>${L.cronograma.map(([t, a]) => `<tr><td>${esc(t)}</td><td>${esc(a)}</td></tr>`).join('')}</table>
+    </div>
+    <div class="plano-sec"><h4>Perguntas para a turma</h4>${ordenada(L.perguntas)}</div>
+    <div class="plano-sec"><h4>Erros comuns e como conduzir</h4>
+      <table class="plano-tab"><tr><th>O que costuma acontecer</th><th>Como conduzir</th></tr>${L.erros.map(([e, c]) => `<tr><td>${esc(e)}</td><td>${esc(c)}</td></tr>`).join('')}</table>
+    </div>
+    <div class="plano-sec"><h4>Avaliação rápida (últimos 5 minutos)</h4>${ordenada(L.avaliacao)}</div>
+    <div class="plano-sec"><h4>Roteiro dos slides</h4>
+      <ol class="roteiro">${L.slides.map(s => `<li><strong>${esc(s.titulo)}</strong>${s.nota ? `<br><span>${esc(s.nota.replace(/<[^>]+>/g, ''))}</span>` : ''}</li>`).join('')}</ol>
+    </div>
+    <div class="plano-sec"><h4>Lição de casa e próximo passo</h4><p>${esc(L.licao)}</p></div>
+    <div class="botoes"><button class="btn" id="plano-projetar">Projetar slides desta aula</button><button class="btn claro" id="plano-fechar">Fechar plano</button></div>`;
+  box.hidden = false;
+  $('plano-projetar').addEventListener('click', () => abrirAula(n, 'professor'));
+  $('plano-fechar').addEventListener('click', () => { box.hidden = true; });
+  box.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+function montarAulasAluno(){
+  atualizarAbaAulas();
+  const box = $('aulas-lista'); box.innerHTML = '';
+  const liberadas = LICOES.filter(L => aulaLiberada(L.n));
+  if (!liberadas.length){ box.innerHTML = '<div class="cartao"><p>Nenhuma aula foi liberada ainda. Aguarde o professor.</p></div>'; return; }
+  liberadas.forEach(L => {
+    const card = document.createElement('article'); card.className = 'cartao aula-card';
+    card.innerHTML = `<h3>Aula ${L.n}: ${esc(L.titulo)}</h3><p>${esc(L.resumo)}</p><ul>${L.objetivos.map(o => `<li>${esc(o)}</li>`).join('')}</ul><div class="acoes-aula"><button class="btn">Abrir slides</button></div>`;
+    card.querySelector('button').addEventListener('click', () => abrirAula(L.n, 'aluno'));
+    box.append(card);
+  });
+}
+document.querySelectorAll('.aba-prof').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.aba-prof').forEach(x => x.setAttribute('aria-current', x === b ? 'page' : 'false'));
+  document.querySelectorAll('.painel-aba').forEach(p => { p.hidden = p.dataset.painel !== b.dataset.aba; });
+  if (b.dataset.aba === 'aulas') montarListaAulas();
+  if (b.dataset.aba === 'desafios') montarListaDesafios();
+}));
+
+/* desafios criados pelo professor: viram código de texto para enviar aos alunos */
+const PREFIXO_DESAFIO = 'PYD1:';
+function b64enc(s){ const bytes = new TextEncoder().encode(s); let bin = ''; bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin); }
+function b64dec(s){ const bin = atob(s); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
+function normalizarDesafio(o){
+  if (!o || typeof o !== 'object') return null;
+  const txt = (v, max) => typeof v === 'string' ? v.trim().slice(0, max) : '';
+  const num = (v, min, max, padrao) => { const n = parseInt(v, 10); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : padrao; };
+  const titulo = txt(o.titulo, 80), enunciado = txt(o.enunciado, 800);
+  const saidaEsperada = txt(o.saidaEsperada, 200), exigir = txt(o.exigir, 100);
+  if (!titulo || !enunciado || (!saidaEsperada && !exigir)) return null;
+  return {
+    id: txt(o.id, 40) || String(Date.now()),
+    titulo, enunciado,
+    passos: Array.isArray(o.passos) ? o.passos.map(p => txt(p, 200)).filter(Boolean).slice(0, 6) : [],
+    inicial: typeof o.inicial === 'string' ? o.inicial.slice(0, 2000) : '',
+    saidaEsperada, exigir,
+    recompensa: num(o.recompensa, 0, 50, 10),
+    custo: num(o.custo, 0, 30, 5),
+    dica: txt(o.dica, 300) || 'Releia o enunciado e teste uma parte de cada vez.'
+  };
+}
+function codificarDesafio(d){ return PREFIXO_DESAFIO + b64enc(JSON.stringify(d)); }
+const ALFABETO_CODIGO = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; /* sem 0, O, 1, I, L para não confundir */
+function gerarCodigoCurto(){
+  const usados = new Set(E.desafiosProf.map(d => d.codigo));
+  let c;
+  do {
+    c = Array.from(crypto.getRandomValues(new Uint8Array(5)), b => ALFABETO_CODIGO[b % ALFABETO_CODIGO.length]).join('');
+  } while (usados.has(c));
+  return c;
+}
+function montarListaDesafios(){
+  const box = $('lista-desafios'); box.innerHTML = '';
+  if (!E.desafiosProf.length){ box.innerHTML = '<p>Nenhum desafio criado ainda.</p>'; return; }
+  E.desafiosProf.forEach((d, i) => {
+    if (!d.codigo){ d.codigo = gerarCodigoCurto(); salvar(); }
+    const row = document.createElement('div'); row.className = 'linha-desafio';
+    row.innerHTML = `<span><strong>${esc(d.titulo)}</strong><small>Código ${esc(d.codigo)} · ${d.recompensa} créditos · ${d.passos.length} passo(s)</small></span><span class="acoes-aula"><button class="btn claro" data-gerar="${i}">Gerar código</button><button class="btn vermelho" data-excluir="${i}">Excluir</button></span>`;
+    box.append(row);
+  });
+  box.querySelectorAll('[data-gerar]').forEach(b => b.addEventListener('click', () => {
+    const d = E.desafiosProf[+b.dataset.gerar];
+    $('codigo-curto').value = d.codigo; $('codigo-desafio').value = codificarDesafio(d);
+    $('codigo-curto').select();
+  }));
+  box.querySelectorAll('[data-excluir]').forEach(b => b.addEventListener('click', () => {
+    if (!confirm('Excluir este desafio?')) return;
+    E.desafiosProf.splice(+b.dataset.excluir, 1); salvar();
+    $('codigo-curto').value = ''; $('codigo-desafio').value = ''; montarListaDesafios();
+  }));
+}
+$('d-salvar').addEventListener('click', () => {
+  const msg = $('d-msg');
+  const d = normalizarDesafio({
+    titulo: $('d-titulo').value, enunciado: $('d-enunciado').value,
+    passos: $('d-passos').value.split('\n'), inicial: $('d-inicial').value,
+    saidaEsperada: $('d-saida').value, exigir: $('d-exigir').value,
+    recompensa: $('d-recompensa').value, custo: $('d-custo').value, dica: $('d-dica').value
+  });
+  if (!d){ msg.className = 'msg nao'; msg.textContent = 'Preencha título, enunciado e pelo menos a saída esperada ou um trecho obrigatório.'; return; }
+  d.codigo = gerarCodigoCurto(); E.desafiosProf.push(d); salvar();
+  ['d-titulo','d-enunciado','d-passos','d-inicial','d-saida','d-exigir','d-dica'].forEach(id => $(id).value = '');
+  msg.className = 'msg ok'; msg.textContent = 'Desafio salvo. Gere o código quando quiser entregá-lo à turma.';
+  montarListaDesafios();
+});
+
+/* importação de desafios */
+$('importar-btn').addEventListener('click', () => {
+  const msg = $('importar-msg'), txt = $('importar-codigo').value.trim().toUpperCase();
+  let obj = null, achouLocal = null;
+  if (txt.length <= 5){
+    achouLocal = E.desafiosProf.find(d => d.codigo === txt);
+    if (!achouLocal){ msg.className = 'msg nao'; msg.textContent = 'Código curto não encontrado neste computador. Peça ao professor o código completo (começa com PYD1:).'; return; }
+    obj = achouLocal;
+  } else {
+    try { if (txt.startsWith(PREFIXO_DESAFIO)) obj = normalizarDesafio(JSON.parse(b64dec(txt.slice(PREFIXO_DESAFIO.length)))); } catch(e){ obj = null; }
+    if (!obj){ msg.className = 'msg nao'; msg.textContent = 'Código inválido. Copie o código inteiro enviado pelo professor.'; return; }
+  }
+  if (E.desafiosImportados.some(d => d.id === obj.id)){ msg.className = 'msg nao'; msg.textContent = 'Este desafio já está na sua lista de missões.'; return; }
+  E.desafiosImportados.push(obj); salvar();
+  $('importar-codigo').value = '';
+  msg.className = 'msg ok'; msg.textContent = `Desafio "${obj.titulo}" adicionado.`;
+  missaoId = 'c-' + obj.id; faseMissao = 'extra';
+  ir('desafio');
 });
 
 /* =================== manual do detetive =================== */
@@ -1324,6 +2136,7 @@ function montarBloco(el, b){
 }
 
 montarQuadro();
+atualizarAbaAulas();
 </script>
 </body>
 </html>
