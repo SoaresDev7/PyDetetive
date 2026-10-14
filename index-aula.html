@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PyDetetive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+/* Tema padrão: noite (clima tenso). Tema claro: modo projeção. */
+:root{
+  --room:#10142a; --wall-line:#1a2042;
+  --panel:#3d2417; --panel-dark:#1f120b; --panel-ink:#f6e4c4;
+  --paper:#eadcb9; --paper-2:#dcc99f; --paper-ink:#23160e; --paper-soft:#5e4430; --paper-line:#cdb68a;
+  --outline:#0d0806;
+  --accent:#f0a23a; --accent-ink:#2e1a04;
+  --green:#3c7a50; --blue:#2b4676; --red:#d23a2a;
+  --cork:#8f6a42; --cork-dot:#7a5835;
+  --code-bg:#1b1511; --code-ink:#f3e3c2; --gutter:#7d6a52;
+  --t-kw:#ff8a6b; --t-str:#9fd48a; --t-num:#8fb4ff; --t-com:#8d7a63; --t-fn:#f4bf57;
+  --console-bg:#0e0b09; --console-ink:#f7e7c4;
+  --vinheta:rgba(3,4,12,.62);
+  --f-title:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --f-body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",Consolas,"Courier New",monospace;
+  --f-maquina:"Special Elite","Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --room:#10142a; --panel:#3d2417; --paper:#eadcb9; --code-bg:#1b1511; --vinheta:rgba(3,4,12,.62); }
+}
+:root[data-theme="dark"]{ --room:#10142a; --panel:#3d2417; --paper:#eadcb9; --code-bg:#1b1511; --vinheta:rgba(3,4,12,.62); }
+:root[data-theme="light"]{
+  --room:#e6c894; --wall-line:#c99d63;
+  --panel:#86502e; --panel-dark:#5c3420; --panel-ink:#fff1d6;
+  --paper:#fbf0d6; --paper-2:#f3e2bb; --paper-ink:#2e1c12; --paper-soft:#6b4d36; --paper-line:#e2cc9f;
+  --outline:#2a1810; --red:#c63b2b;
+  --cork:#c9975c; --cork-dot:#b07f45;
+  --code-bg:#fffaf0; --code-ink:#2e1c12; --gutter:#b39a78;
+  --t-kw:#b0381f; --t-str:#2f7446; --t-num:#2b4676; --t-com:#9a8062; --t-fn:#b0650c;
+  --console-bg:#2c1f17;
+  --vinheta:rgba(40,20,10,.12);
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--room);color:var(--panel-ink);font-family:var(--f-body);font-size:1.05rem;line-height:1.5;
+  background-image: none 86px 88px)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background: var(--paper) 100%)}
+main,header{position:relative;z-index:1}
+img,svg{max-width:100%}
+button,input{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+[hidden]{display:none!important}
+
+/* ---------- barra superior ---------- */
+.topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:.8rem;padding:.55rem 1.2rem;
+  background:var(--panel-dark);border-bottom:4px solid var(--outline);flex-wrap:wrap}
+.marca{font-family:var(--f-title);font-size:1.5rem;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-right:auto}
+.marca svg{width:30px;height:30px}
+.abas{display:flex;gap:.3rem;flex-wrap:wrap}
+.aba{background:transparent;border:2px solid transparent;color:var(--panel-ink);padding:.3rem .85rem;border-radius:999px;font-weight:800}
+.aba[aria-current="page"]{background:var(--paper);color:var(--paper-ink);border-color:var(--outline)}
+.aba:hover:not([aria-current="page"]){border-color:var(--panel-ink)}
+.creditos{font-weight:800;background:var(--panel);border:2px solid var(--outline);border-radius:999px;padding:.25rem .8rem;color:var(--accent);white-space:nowrap}
+.creditos.ganhou{border:2px solid var(--outline);color:var(--panel-ink);border-radius:12px;padding:.3rem .7rem;font-weight:800}
+
+.tela{display:none}
+.tela.ativa{display:block}
+
+.btn{font-family:var(--f-title);font-size:1.12rem;background:var(--accent);color:var(--accent-ink);border:3px solid var(--outline);
+  border-radius:14px;padding:.55rem 1.25rem;box-shadow:0 5px 0 var(--outline);; transition: none;box-shadow:0 1px 0 var(--outline)}
+.btn.verde{background:var(--green);color:#fff6e2}
+.btn.vermelho{background:var(--red);color:#fff6e2}
+.btn.claro{background:var(--paper);color:var(--paper-ink)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- INTRO EM QUADRINHOS ---------- */
+#intro{position:fixed;inset:0;z-index:100;background:#06070d;overflow:auto;padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(1rem + env(safe-area-inset-bottom,0px))}
+.hq{max-width:min(1100px,calc((100vh - 140px) * 1.28));margin:0 auto}
+.pagina{display:none;grid-template-columns:1fr 1fr;gap:14px}
+.pagina.ativa{display:grid}
+.q{position:relative;background:#000;border:5px solid #efe6d2;overflow:hidden;opacity:0;transform:scale(.97);; transition: none;transform:none}
+.q svg{display:block;width:100%;height:auto}
+.legenda{position:absolute;left:10px;top:10px;max-width:70%;background:#f1d46a;color:#111;border:3px solid #111;padding:.35rem .6rem;
+  font-family:var(--f-maquina);font-size:clamp(.8rem,1.6vw,1.05rem);line-height:1.3;box-shadow:3px 3px 0 #111}
+.legenda.baixo{top:auto;bottom:10px;left:auto;right:10px}
+.balao{position:absolute;background:#fff;color:#111;border:3px solid #111;border-radius:50%/45%;padding:.5rem 1rem;font-family:var(--f-title);font-size:clamp(.9rem,2vw,1.35rem)}
+.onoma{position:absolute;font-family:var(--f-title);color:#f0a23a;-webkit-text-stroke:2px #111;font-size:clamp(1.4rem,4vw,2.6rem);transform:rotate(-12deg)}
+.hq-controles{max-width:min(1100px,calc((100vh - 140px) * 1.28));margin:1rem auto 0;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:#cfc3aa;font-weight:700}
+.hq-controles .dir{display:flex;gap:.8rem;align-items:center}
+.pular{background:none;border:none;color:#9d917b;text-decoration:underline;font-weight:700}
+@media (max-width:640px){.pagina{grid-template-columns:1fr}}
+
+.cena{display:block;width:100%;height:auto}
+.chuva{left:50%;top:0;transform:translateX(-50%);width:min(560px,78%);transform-origin:50% 0}
+.correntes{display:flex;justify-content:space-between;padding:0 18%}
+.correntes span{width:6px;height:clamp(16px,5vw,56px);background: var(--paper);border-radius:3px}
+.placa{border:4px solid var(--outline);border-radius:22px;padding:clamp(.6rem,2vw,1.4rem) 1rem clamp(.7rem,2vw,1.3rem);text-align:center;
+  box-shadow: none;
+  background: var(--paper) 13px 15px),linear-gradient(180deg,#7a4526,#5c3420 55%,#4a2a18)}
+.placa h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(2rem,7.5vw,4.6rem);line-height:1;color:#ffcf7a;color:#f3d9b0;font-family:var(--f-maquina);font-size:clamp(.85rem,2vw,1.15rem)}
+
+.pasta{background:var(--paper);color:var(--paper-ink);border:3px solid var(--outline);border-radius:6px 18px 18px 18px;padding:1.4rem 1.6rem 1.6rem;
+  box-shadow: none;display:grid;grid-template-columns:1fr auto;gap:1.2rem;align-items:center;position:relative}
+.pasta::before{content:"Arquivo 1";position:absolute;top:-34px;left:-3px;background:var(--paper);border:3px solid var(--outline);border-bottom:none;
+  border-radius:12px 12px 0 0;padding:.2rem 1.1rem .5rem;font-family:var(--f-maquina)}
+.pasta h2{margin:0 0 .3rem;font-family:var(--f-title);font-weight:400;font-size:clamp(1.6rem,4vw,2.3rem);color:var(--red)}
+.pasta p{margin:0;max-width:60ch;color:var(--paper-soft);font-weight:600}
+.pasta .acoes{display:flex;flex-direction:column;gap:.9rem}
+.carimbo-conf{position:absolute;right:1.2rem;top:-1.1rem;font-family:var(--f-maquina);color:var(--red);border:3px solid var(--red);padding:.1rem .6rem;transform:rotate(6deg);background:var(--paper);font-size:1rem}
+@media (max-width:700px){.pasta{grid-template-columns:1fr}.pasta .acoes{flex-direction:row;flex-wrap:wrap}.arquivo{margin-top:1.5rem}}
+
+/* ---------- QUADRO ---------- */
+.quadro-layout{max-width:1320px;margin:1.5rem auto 3rem;padding:0 1rem;display:grid;grid-template-columns:1fr 280px;gap:1.2rem;align-items:start}
+@media (max-width:960px){.quadro-layout{grid-template-columns:1fr}}
+.moldura{border:14px solid var(--panel);border-radius:10px;outline:3px solid var(--outline);box-shadow: none;overflow-x:auto;background:var(--panel)}
+.cortica{position:relative;min-width:780px;aspect-ratio:16/10;background-color:var(--cork);
+  background-image: none 1.2px,transparent 1.6px),radial-gradient(var(--cork-dot) 1px,transparent 1.4px);
+  background-size:14px 14px,23px 23px;background-position:0 0,7px 11px}
+.cortica::after{content:"";position:absolute;inset:0;pointer-events:none;background: var(--paper),transparent 50%,var(--vinheta) 100%)}
+.barbantes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.barbantes line{stroke:var(--red);stroke-width:3;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.item{position:absolute;transform:translate(-50%,-50%) rotate(var(--r,0deg))}
+.foto{width:17%;background:#f8f1e2;border:2px solid #cdb993;padding:.6rem .6rem 0;box-shadow: none;color:#23160e;text-align:center}
+.foto.grande{width:21%}
+.foto svg{display:block;width:100%;height:auto;border:2px solid #0d0806}
+.foto strong{display:block;font-family:var(--f-title);font-weight:400;font-size:clamp(.95rem,1.4vw,1.2rem);margin-top:.35rem;line-height:1.1}
+.foto small{display:block;color:#5e4430;font-weight:700;font-size:clamp(.72rem,1vw,.85rem);line-height:1.2;padding-bottom:.5rem}
+.selo{display:inline-block;margin-bottom:.55rem;font-family:var(--f-maquina);font-size:.78rem;padding:.02rem .5rem;border:2px solid #2b4676;color:#2b4676;transform:rotate(-3deg)}
+.selo.alvo{border-color:#c63b2b;color:#c63b2b}
+.alfinete{position:absolute;top:-9px;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background: var(--paper);border:2px solid #0d0806;z-index:2}
+.nota{width:19%;background:#f3dc86;color:#23160e;padding:.7rem .8rem;box-shadow: none;font-weight:700;font-size:clamp(.78rem,1.1vw,.95rem);line-height:1.3}
+.nota b{font-family:var(--f-title);font-weight:400;display:block;font-size:1.1em;color:#c63b2b}
+.nota.bloqueada{background:#d9cdb5;color:#5e4430}
+.nota.bloqueada b{color:#5e4430}
+.nota.anonima{background:#f8f1e2;font-family:var(--f-maquina);font-weight:400}
+.painel{background:var(--paper);color:var(--paper-ink);border:3px solid var(--outline);border-radius:14px;padding:1.1rem;box-shadow: none;font-weight:400;margin:0 0 .7rem;font-size:1.5rem}
+.fases{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.fases li{display:grid;grid-template-columns:2rem 1fr auto;align-items:center;gap:.5rem;padding:.45rem .55rem;border-radius:10px;border:2px dashed var(--paper-line);font-weight:700}
+.fases li .n{font-family:var(--f-title);font-size:1.2rem;text-align:center}
+.fases li.atual{border:2px solid var(--outline);background:var(--accent);color:var(--accent-ink)}
+.fases li.trancada{color:var(--paper-soft)}
+.fases li.aberta{border-style:solid;border-color:var(--green)}
+.fases small{display:block;font-weight:600;font-size:.8rem;opacity:.85}
+.codigo-acesso{margin-top:1rem;border-top:2px dashed var(--paper-line);padding-top:.9rem}
+.codigo-acesso label{display:block;font-weight:800;margin-bottom:.35rem}
+.codigo-acesso div{display:flex;gap:.5rem}
+.codigo-acesso input{flex:1;min-width:0;border:3px solid var(--outline);border-radius:10px;padding:.45rem .6rem;font-family:var(--f-maquina);text-transform:uppercase;background:#fffaf0;color:#23160e}
+.codigo-acesso .btn{padding:.4rem .8rem;font-size:1rem}
+.msg{font-size:.9rem;font-weight:700;margin:.5rem 0 0;min-height:1.2em}
+.msg.ok{color:var(--green)} .msg.nao{color:var(--red)}
+
+/* ---------- MISSÕES ---------- */
+.desafio-layout{max-width:1320px;margin:1.5rem auto 3rem;padding:0 1rem;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.3fr);gap:1.4rem;align-items:start}
+@media (max-width:960px){.desafio-layout{grid-template-columns:1fr}}
+.ficha{background:var(--paper);color:var(--paper-ink);border:3px solid var(--outline);border-radius:8px;padding:1.4rem 1.6rem;box-shadow: none;
+  background-image: none 31px 32px);background-position:0 12px}
+.missoes-nav{display:flex;gap:.45rem;margin-bottom:.9rem;flex-wrap:wrap;align-items:center}
+.missoes-nav span{font-weight:800;color:var(--green);margin-right:.3rem}
+.chip{width:2.3rem;height:2.3rem;border-radius:50%;border:3px solid var(--outline);background:var(--paper-2);color:var(--paper-ink);font-family:var(--f-title);font-size:1.05rem}
+.chip.feita{background:var(--green);color:#fff}
+.chip.atual{background:var(--accent)}
+.chip:disabled{opacity:.45;cursor:not-allowed}
+.ficha h2{font-family:var(--f-title);font-weight:400;font-size:clamp(1.7rem,3vw,2.2rem);margin:.1rem 0 .8rem;line-height:1.1}
+.ficha p{margin:0 0 1rem;max-width:62ch}
+.missao{background:var(--paper-2);border:3px solid var(--outline);border-radius:12px;padding:1rem 1.1rem;margin:1.2rem 0}
+.missao h3{margin:0 0 .4rem;font-family:var(--f-title);font-weight:400;font-size:1.3rem;color:var(--red)}
+.missao ol{margin:0;padding-left:1.3rem}
+.missao li{margin:.25rem 0}
+.recompensa{font-weight:800;color:var(--paper-soft);font-size:.92rem}
+code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);padding:.05rem .35rem;border-radius:5px}
+.dica{border-top:2px dashed var(--paper-line);padding-top:.8rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}
+.dica .btn{font-size:.95rem;padding:.35rem .9rem;box-shadow:0 3px 0 var(--outline)}
+.dica small{font-weight:700;color:var(--paper-soft)}
+.dica-texto{background:#fffaf0;border:2px solid var(--outline);border-radius:10px;padding:.7rem .9rem;margin-top:.8rem;font-weight:600}
+
+.bancada{background:var(--panel);border:3px solid var(--outline);border-radius:16px;padding:.9rem;box-shadow: none;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.7rem;flex-wrap:wrap}
+.bancada-topo span{font-family:var(--f-title);font-size:1.25rem;color:var(--panel-ink)}
+.motor{font-weight:700;font-size:.85rem;color:var(--panel-ink);background:var(--panel-dark);border-radius:999px;padding:.2rem .8rem}
+.motor::before{content:"";display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:var(--accent);margin-right:.45rem;vertical-align:middle}
+.motor.pronto::before{background:#7fd88f}
+.editor{position:relative;display:grid;grid-template-columns:3rem 1fr;background:var(--code-bg);border:3px solid var(--outline);border-radius:10px;height:var(--altura,280px);overflow:hidden}
+.linhas{font-family:var(--f-code);font-size:var(--fs,1.05rem);line-height:1.6;padding:.8rem .5rem;text-align:right;color:var(--gutter);user-select:none;overflow:hidden;border-right:2px solid rgba(125,106,82,.35);white-space:pre}
+.campo{position:relative;overflow:hidden}
+.campo pre,.campo textarea{position:absolute;inset:0;margin:0;padding:.8rem 1rem;font-family:var(--f-code);font-size:var(--fs,1.05rem);line-height:1.6;white-space:pre;tab-size:4;overflow:auto;border:0}
+.campo pre{color:var(--code-ink);pointer-events:none}
+.campo textarea{background:transparent;color:transparent;caret-color:var(--code-ink);resize:none;outline:none}
+.campo textarea::selection{background:rgba(240,162,58,.4);color:transparent}
+.t-kw{color:var(--t-kw);font-weight:600}.t-str{color:var(--t-str)}.t-num{color:var(--t-num)}.t-com{color:var(--t-com);font-style:italic}.t-fn{color:var(--t-fn);font-weight:600}
+.botoes{display:flex;gap:.8rem;margin:.9rem 0;flex-wrap:wrap}
+.saida-rotulo{font-family:var(--f-title);color:var(--panel-ink);font-size:1.05rem;margin:.2rem 0 .35rem}
+.saida{margin:0;min-height:80px;max-height:220px;overflow:auto;background:var(--console-bg);color:var(--console-ink);font-family:var(--f-code);font-size:var(--fs,1rem);
+  border:3px solid var(--outline);border-radius:10px;padding:.8rem 1rem;white-space:pre-wrap;word-break:break-word}
+.saida .erro{color:#ffb3a6}
+.saida .vazio{color:#a8927a;font-style:italic}
+.veredito{margin-top:1rem;display:none;grid-template-columns:auto 1fr;gap:1rem;align-items:center;background:var(--paper);color:var(--paper-ink);border:3px solid var(--outline);border-radius:12px;padding:.9rem 1.1rem}
+.veredito.mostrar{display:grid}
+.carimbo{font-family:var(--f-maquina);font-size:1.15rem;border:4px double currentColor;padding:.3rem .7rem;transform:rotate(-6deg);white-space:nowrap}
+.veredito.ok .carimbo{color:var(--green)}
+.veredito.nao .carimbo{color:var(--red)}
+.veredito p{margin:0;font-weight:600}
+.veredito .btn{grid-column:1 / -1;justify-self:start}
+}
+}
+
+/* ---------- PROFESSOR ---------- */
+.prof-wrap{max-width:1100px;margin:1.5rem auto 3rem;padding:0 1rem}
+.cartao{background:var(--paper);color:var(--paper-ink);border:3px solid var(--outline);border-radius:14px;padding:1.3rem 1.5rem;box-shadow: none;font-weight:400;font-size:1.8rem;margin:0 0 .4rem}
+.cartao h3{font-family:var(--f-title);font-weight:400;font-size:1.35rem;margin:0 0 .6rem}
+.cartao p{margin:.2rem 0 1rem;color:var(--paper-soft);font-weight:600;max-width:65ch}
+.login{max-width:430px;margin:3rem auto}
+.login input{width:100%;border:3px solid var(--outline);border-radius:10px;padding:.6rem .8rem;margin:.3rem 0 1rem;background:#fffaf0;color:#23160e}
+.prof-grade{display:grid;grid-template-columns:1.2fr 1fr;gap:1.2rem;margin-top:1.2rem}
+@media (max-width:860px){.prof-grade{grid-template-columns:1fr}}
+.tabela{width:100%;border-collapse:collapse;font-weight:700}
+.tabela td{padding:.5rem .3rem;border-bottom:2px dashed var(--paper-line);vertical-align:middle}
+.tabela td:last-child{text-align:right}
+.tabela .cod{font-family:var(--f-maquina);letter-spacing:1px}
+.tabela button{font-weight:800;border:2px solid var(--outline);background:var(--paper-2);border-radius:8px;padding:.2rem .6rem;color:var(--paper-ink)}
+.lista-acoes{display:grid;gap:.8rem}
+.tag{display:inline-block;font-size:.8rem;font-weight:800;padding:.05rem .5rem;border-radius:6px;background:var(--paper-2);border:2px solid var(--paper-line);margin-left:.3rem}
+
+/* ---------- MANUAL ---------- */
+.manual-layout{max-width:1320px;margin:1.5rem auto 3rem;padding:0 1rem;display:grid;grid-template-columns:270px minmax(0,1fr);gap:1.4rem;align-items:start}
+@media (max-width:900px){.manual-layout{grid-template-columns:1fr}.sumario{position:static!important}}
+.sumario{position:sticky;top:5.5rem}
+.sumario h2{font-family:var(--f-title);font-weight:400;margin:0 0 .6rem;font-size:1.45rem}
+.caps{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.caps>li{border-radius:10px;border:2px dashed var(--paper-line);padding:.45rem .6rem;font-weight:800}
+.caps>li.ativo{border:2px solid var(--outline);background:var(--paper-2)}
+.caps>li.trancado{color:var(--paper-soft);font-weight:700}
+.caps small{display:block;font-weight:600;font-size:.8rem}
+.caps ul{list-style:none;margin:.55rem 0 0;padding:0;display:grid;gap:.35rem}
+.caps ul button{display:flex;align-items:center;gap:.6rem;width:100%;background:none;border:2px solid transparent;border-radius:10px;padding:.2rem .3rem;color:var(--paper-ink);font-weight:800;text-align:left}
+.caps ul button:hover{border-color:var(--outline);background:rgba(255,250,240,.55)}
+.caps ul svg{width:34px;height:34px;flex:none;border:3px solid var(--outline);border-radius:14px;padding:1.3rem 1.6rem;margin-bottom:1.6rem}
+.cap-topo span{font-family:var(--f-maquina);color:var(--accent)}
+.cap-topo h2{font-family:var(--f-title);font-weight:400;font-size:clamp(1.9rem,4vw,2.8rem);margin:.1rem 0 .3rem;color:var(--panel-ink);line-height:1.05}
+.cap-topo p{margin:0;max-width:65ch;font-weight:600;opacity:.9}
+.secao-m{position:relative;background:var(--paper);color:var(--paper-ink);border:3px solid var(--outline);border-radius:8px;padding:1.6rem 1.7rem 1.4rem;margin-bottom:1.8rem;box-shadow: none;scroll-margin-top:5.5rem}
+.secao-m::before{content:"";position:absolute;top:-14px;left:50%;width:120px;height:26px;margin-left:-60px;background:rgba(240,215,150,.75);border:1px solid rgba(0,0,0,.15);transform:rotate(-2deg)}
+.secao-m h3{font-family:var(--f-title);font-weight:400;font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .8rem;color:var(--red);line-height:1.1}
+.secao-m h3.com-ic{display:flex;gap:.9rem;align-items:center}
+.secao-m h3 .ic-g{width:54px;height:54px;flex:none;transform:rotate(-4deg);font-family:var(--f-maquina);font-size:.95rem;color:var(--paper-soft)}
+.secao-m>p,.secao-m .rolagem{max-width:70ch}
+.secao-m p{margin:0 0 1rem}
+.secao-m ul{margin:0 0 1rem;padding-left:1.3rem}
+.fala{display:grid;grid-template-columns:76px 1fr;gap:1rem;align-items:start;margin:.3rem 0 1.3rem}
+.fala svg{width:76px;height:76px;border-radius:50%;border:3px solid var(--outline);background:#e3b86a}
+.fala .bal{position:relative;background:#fffaf0;color:#23160e;border:3px solid var(--outline);border-radius:16px;padding:.7rem 1rem;font-weight:700;max-width:62ch}
+.fala .bal::before{content:"";position:absolute;left:-14px;top:22px;border:7px solid transparent;border-right:9px solid var(--outline)}
+.fala .quem{display:block;font-family:var(--f-title);font-weight:400;color:var(--red);font-size:1rem}
+.exemplo-m{margin:1rem 0 1.4rem}
+.exemplo-m .leg{font-weight:700;margin:0 0 .5rem}
+.restaurar{background:none;border:none;color:var(--panel-ink);text-decoration:underline;font-weight:700}
+.olho{background:#f8dccd;color:#3a160e;border:3px solid var(--outline);border-left-width:10px;border-left-color:var(--red);border-radius:10px;padding:.8rem 1rem;margin:1rem 0 1.3rem;font-weight:600}
+.olho b{display:block;font-family:var(--f-title);font-weight:400;font-size:1.15rem;color:#9e2c20}
+.olho ul{margin:.3rem 0 0}
+.quiz{background:var(--paper-2);border:3px solid var(--outline);border-radius:12px;padding:1rem 1.1rem;margin:1.2rem 0 .4rem}
+.quiz h4{margin:0 0 .5rem;font-family:var(--f-title);font-weight:400;font-size:1.2rem}
+.quiz h4 small{font-family:var(--f-body);font-weight:800;color:var(--paper-soft);font-size:.85rem;margin-left:.4rem}
+.quiz p{margin:0 0 .7rem;font-weight:700}
+.quiz pre{margin:0 0 .8rem;background:var(--code-bg);color:var(--code-ink);border:3px solid var(--outline);border-radius:10px;padding:.6rem .9rem;font-family:var(--f-code);overflow-x:auto}
+.opcoes{display:flex;flex-wrap:wrap;gap:.6rem}
+.op{border:3px solid var(--outline);border-radius:10px;background:#fffaf0;color:#23160e;padding:.4rem .9rem;font-family:var(--f-code);font-weight:600;box-shadow:0 3px 0 var(--outline)}
+.op:disabled{cursor:default}
+.op.certa{background:var(--green);color:#fff}
+.op.errada{background:#f3b4a8}
+.fb{margin:.8rem 0 0;font-weight:700}
+.rolagem{overflow-x:auto;margin:0 0 1rem}
+.cola{background:var(--code-bg);color:var(--code-ink);border:3px solid var(--outline);border-radius:10px;padding:1rem 1.2rem;font-family:var(--f-code);font-size:1.02rem;line-height:1.6;overflow-x:auto;margin:0 0 1.2rem}
+.link-manual{background:none;border:none;padding:0;color:var(--blue);font-weight:800;text-decoration:underline;text-underline-offset:3px;margin:0 0 1rem}
+
+/* projeção de código de acesso */
+#projecao{position:fixed;inset:0;z-index:90;background:rgba(5,6,12,.93);display:grid;place-items:center;text-align:center;padding:2rem;cursor:pointer}
+#projecao p{margin:0;color:#cfc3aa;font-weight:700;font-size:clamp(1rem,2.5vw,1.6rem)}
+#projecao strong{display:block;font-family:var(--f-maquina);color:#ffcf7a;font-size:clamp(2.5rem,10vw,7rem);letter-spacing:.08em;margin:.6rem 0}
+
+/* ---------- MODO AULA (slides) ---------- */
+.aula{max-width:1280px;margin:1rem auto 2rem;padding:0 1rem;--fs:1.25rem}
+.aula-barra{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem}
+.aula-barra .dir{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.slide{background:var(--paper);color:var(--paper-ink);border:4px solid var(--outline);border-radius:16px;padding:clamp(1.2rem,3vw,2.5rem);min-height:62vh;
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;box-shadow: none;font-weight:400;font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.05;margin:0 0 1rem;color:var(--red)}
+.slide p,.slide li{font-size:clamp(1.1rem,2vw,1.55rem);line-height:1.45;font-weight:600}
+.slide p{margin:0 0 1rem}
+.slide .maquina{font-family:var(--f-maquina);font-weight:400}
+.slide .bancada{--altura:210px}
+.notas{margin-top:1rem;background:#fff4c9;color:#3a2a10;border:3px dashed #b58a2a;border-radius:12px;padding:1rem 1.2rem;font-weight:600}
+.notas b{font-family:var(--f-title);font-weight:400;font-size:1.15rem}
+.tipos{width:100%;border-collapse:collapse;font-size:clamp(1rem,1.8vw,1.3rem)}
+.tipos td,.tipos th{border-bottom:2px dashed var(--paper-line);padding:.45rem .4rem;text-align:left}
+.tipos th{font-family:var(--f-title);font-weight:400;color:var(--paper-soft)}
+/* visualizador de variáveis */
+.visu{display:grid;gap:1rem}
+.visu-cod{background:var(--code-bg);color:var(--code-ink);border:3px solid var(--outline);border-radius:10px;padding:.7rem 0;font-family:var(--f-code);font-size:var(--fs,1.05rem);overflow-x:auto}
+.visu-cod div{padding:.1rem 1rem;border-left:6px solid transparent;white-space:pre}
+.visu-cod div.agora{background:rgba(240,162,58,.22);border-left-color:var(--accent)}
+.caixas{display:flex;gap:1rem;flex-wrap:wrap;min-height:120px;align-items:flex-end}
+.caixa{min-width:150px;border:3px solid var(--outline);border-radius:10px;background:#c9975c;padding:.4rem .6rem .6rem;text-align:center;box-shadow:0 4px 0 var(--outline)}
+.caixa .rot{font-family:var(--f-code);font-weight:600;color:#23160e;font-size:1rem}
+.caixa .val{background:#fffaf0;border:2px solid var(--outline);border-radius:6px;padding:.3rem .5rem;font-family:var(--f-code);font-size:1.15rem;color:#23160e;margin-top:.3rem}
+.caixa .tp{font-size:.8rem;font-weight:800;color:#23160e;margin-top:.25rem}
+.caixa.mudou{background:var(--console-bg);color:var(--console-ink);border:3px solid var(--outline);border-radius:10px;padding:.6rem .9rem;min-height:2.6em;white-space:pre}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="lumi" viewBox="0 0 120 120">
+    <line x1="60" y1="24" x2="60" y2="10" stroke="#2a1810" stroke-width="3"/>
+    <circle cx="60" cy="9" r="6" fill="#f2ae33" stroke="#2a1810" stroke-width="3"/>
+    <rect x="22" y="44" width="10" height="20" rx="5" fill="#2b4676" stroke="#2a1810" stroke-width="3"/>
+    <rect x="88" y="44" width="10" height="20" rx="5" fill="#2b4676" stroke="#2a1810" stroke-width="3"/>
+    <rect x="28" y="24" width="64" height="52" rx="18" fill="#eadcbc" stroke="#2a1810" stroke-width="3"/>
+    <rect x="36" y="32" width="48" height="34" rx="10" fill="#1f3a4d" stroke="#2a1810" stroke-width="2.5"/>
+    <ellipse cx="50" cy="47" rx="5" ry="7" fill="#7ff0d4"/><ellipse cx="70" cy="47" rx="5" ry="7" fill="#7ff0d4"/>
+    <path d="M52 58 q8 5 16 0" fill="none" stroke="#7ff0d4" stroke-width="3" stroke-linecap="round"/>
+    <rect x="38" y="78" width="44" height="26" rx="10" fill="#3f7d52" stroke="#2a1810" stroke-width="3"/>
+    <circle cx="60" cy="90" r="5" fill="#f2ae33" stroke="#2a1810" stroke-width="2"/>
+    <rect x="32" y="104" width="56" height="12" rx="6" fill="#4a3a30" stroke="#2a1810" stroke-width="3"/>
+  </symbol>
+  <symbol id="p-helena" viewBox="0 0 120 120">
+    <rect width="120" height="120" fill="#a9d1b6"/>
+    <rect x="52" y="72" width="16" height="16" fill="#8d5a3b"/>
+    <path d="M16 122 q4-36 44-38 q40 2 44 38z" fill="#3f7d52" stroke="#2a1810" stroke-width="3"/>
+    <path d="M49 86 l11 13 l11-13" fill="#fbf0d6" stroke="#2a1810" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="60" cy="19" r="13" fill="#2b1a14" stroke="#2a1810" stroke-width="3"/>
+    <ellipse cx="60" cy="52" rx="26" ry="29" fill="#8d5a3b" stroke="#2a1810" stroke-width="3"/>
+    <path d="M33 52 q1-29 27-30 q26 1 27 30 q-9-14-27-15 q-18 1-27 15z" fill="#2b1a14"/>
+    <circle cx="49" cy="55" r="7.5" fill="#fff" fill-opacity=".25" stroke="#2a1810" stroke-width="2.5"/>
+    <circle cx="71" cy="55" r="7.5" fill="#fff" fill-opacity=".25" stroke="#2a1810" stroke-width="2.5"/>
+    <path d="M56.5 55 h7" stroke="#2a1810" stroke-width="2.5"/>
+    <circle cx="49" cy="55" r="2.3" fill="#2a1810"/><circle cx="71" cy="55" r="2.3" fill="#2a1810"/>
+    <path d="M53 69 q7 4 14 0" fill="none" stroke="#2a1810" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="p-caio" viewBox="0 0 120 120">
+    <rect width="120" height="120" fill="#f2c47e"/>
+    <rect x="52" y="72" width="16" height="16" fill="#e0ac7e"/>
+    <path d="M16 122 q4-36 44-38 q40 2 44 38z" fill="#5a7a99" stroke="#2a1810" stroke-width="3"/>
+    <rect x="70" y="98" width="16" height="12" rx="2" fill="#4a6682" stroke="#2a1810" stroke-width="2.5"/>
+    <ellipse cx="60" cy="54" rx="26" ry="28" fill="#e0ac7e" stroke="#2a1810" stroke-width="3"/>
+    <path d="M35 58 q2 27 25 29 q23-2 25-29 q-5 13-25 13 q-20 0-25-13z" fill="#6b4226" stroke="#2a1810" stroke-width="2.5"/>
+    <path d="M54 72 q6 3 12 0" fill="none" stroke="#f3d2b0" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M44 51 h9 M67 51 h9" stroke="#2a1810" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="49" cy="57" r="2.5" fill="#2a1810"/><circle cx="71" cy="57" r="2.5" fill="#2a1810"/>
+    <path d="M33 46 q1-25 27-25 q26 0 27 25z" fill="#2b4676" stroke="#2a1810" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M58 45 q22-3 40 4 q-2 6-9 6 q-15-4-31-3z" fill="#1f3358" stroke="#2a1810" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="60" cy="31" r="4" fill="#f2ae33" stroke="#2a1810" stroke-width="2"/>
+  </symbol>
+  <symbol id="p-bia" viewBox="0 0 120 120">
+    <rect width="120" height="120" fill="#f5b9a0"/>
+    <g fill="#3a2218" stroke="#2a1810" stroke-width="2.5">
+      <circle cx="35" cy="45" r="14"/><circle cx="45" cy="29" r="14"/><circle cx="60" cy="23" r="15"/><circle cx="75" cy="29" r="14"/><circle cx="85" cy="45" r="14"/><circle cx="31" cy="62" r="12"/><circle cx="89" cy="62" r="12"/>
+    </g>
+    <rect x="52" y="72" width="16" height="16" fill="#c68a5e"/>
+    <path d="M16 122 q4-36 44-38 q40 2 44 38z" fill="#c63b2b" stroke="#2a1810" stroke-width="3"/>
+    <path d="M50 88 q2 10 -2 18 M70 88 q-2 10 2 18" fill="none" stroke="#fbf0d6" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="60" cy="55" rx="24" ry="27" fill="#c68a5e" stroke="#2a1810" stroke-width="3"/>
+    <path d="M38 48 q6-14 22-14 q16 0 22 14 q-10-7-22-7 q-12 0-22 7z" fill="#3a2218"/>
+    <path d="M29 58 q0-42 31-42 q31 0 31 42" fill="none" stroke="#f2ae33" stroke-width="6"/>
+    <rect x="22" y="50" width="13" height="20" rx="6" fill="#f2ae33" stroke="#2a1810" stroke-width="3"/>
+    <rect x="85" y="50" width="13" height="20" rx="6" fill="#f2ae33" stroke="#2a1810" stroke-width="3"/>
+    <circle cx="50" cy="56" r="3" fill="#2a1810"/><circle cx="70" cy="56" r="3" fill="#2a1810"/>
+    <circle cx="44" cy="65" r="4" fill="#e8786a" opacity=".6"/><circle cx="76" cy="65" r="4" fill="#e8786a" opacity=".6"/>
+    <path d="M54 68 q6 3 12 -1" fill="none" stroke="#2a1810" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="p-otavio" viewBox="0 0 120 120">
+    <rect width="120" height="120" fill="#aec3e8"/>
+    <rect x="52" y="72" width="16" height="16" fill="#f0c9a0"/>
+    <path d="M16 122 q4-36 44-38 q40 2 44 38z" fill="#27365a" stroke="#2a1810" stroke-width="3"/>
+    <path d="M48 85 l12 22 l12-22" fill="#fffaf0" stroke="#2a1810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M56 90 h8 l-2 5 l3 15 l-5 5 l-5-5 l3-15z" fill="#c63b2b" stroke="#2a1810" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse cx="60" cy="53" rx="25" ry="28" fill="#f0c9a0" stroke="#2a1810" stroke-width="3"/>
+    <path d="M34 50 q-1-27 27-28 q26 1 25 26 q-6-12-20-14 q-2 6-14 8 q-10 1-18 8z" fill="#6b4a2b" stroke="#2a1810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M44 49 q5-4 10 0 M66 49 q5-4 10 0" fill="none" stroke="#2a1810" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="49" cy="55" r="2.5" fill="#2a1810"/><circle cx="71" cy="55" r="2.5" fill="#2a1810"/>
+    <path d="M47 65 q6-5 13-1 q7-4 13 1 q-6 3-13 1 q-7 2-13-1z" fill="#6b4a2b"/>
+    <path d="M49 70 q11 9 22 0" fill="#fffaf0" stroke="#2a1810" stroke-width="2.5" stroke-linejoin="round"/>
+  </symbol>
+
+
+<symbol id="p-dalva" viewBox="0 0 120 120">
+  <rect width="120" height="120" fill="#e3b86a"/>
+  <rect x="52" y="72" width="16" height="16" fill="#b87a52"/>
+  <path d="M16 122 q4-36 44-38 q40 2 44 38z" fill="#b8925a" stroke="#2a1810" stroke-width="3"/>
+  <path d="M40 88 l20 22 l20-22 l-8-6 l-12 14 l-12-14z" fill="#9c7a46" stroke="#2a1810" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M33 62 q-4-28 27-30 q31 2 27 30 q-1 12-6 18 l-3-22 h-36 l-3 22 q-5-6-6-18z" fill="#cfc8bd" stroke="#2a1810" stroke-width="2.5"/>
+  <ellipse cx="60" cy="56" rx="23" ry="26" fill="#b87a52" stroke="#2a1810" stroke-width="3"/>
+  <path d="M36 40 q2-26 24-26 q22 0 24 26z" fill="#3a2a20" stroke="#2a1810" stroke-width="3"/>
+  <rect x="37" y="33" width="46" height="6" fill="#c63b2b"/>
+  <path d="M20 42 q40-12 80 0 q-4 7-40 7 q-36 0-40-7z" fill="#3a2a20" stroke="#2a1810" stroke-width="3"/>
+  <path d="M43 52 q6-7 12-2" fill="none" stroke="#2a1810" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M66 52 h10" stroke="#2a1810" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="49" cy="58" r="2.6" fill="#2a1810"/><circle cx="71" cy="58" r="2.6" fill="#2a1810"/>
+  <path d="M51 70 q9 5 16-2" fill="none" stroke="#2a1810" stroke-width="2.5" stroke-linecap="round"/>
+</symbol>
+<symbol id="ic-print" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#f0a23a"/><path d="M8 16 h6 l12-7 v22 l-12-7 h-6z" fill="#fffaf0" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><path d="M11 24 l2 7 h4 l-2-7" fill="#fffaf0" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><path d="M30 15 q3 5 0 10 M33 12 q5 8 0 16" fill="none" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+<symbol id="ic-variaveis" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#3c7a50"/><rect x="8" y="6" width="24" height="29" rx="2" fill="#c9975c" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><rect x="11" y="10" width="18" height="10" fill="#dcb07a" stroke="#1a100a" stroke-width="2"/><rect x="11" y="22" width="18" height="10" fill="#dcb07a" stroke="#1a100a" stroke-width="2"/><rect x="16" y="13" width="8" height="3.5" fill="#fffaf0" stroke="#1a100a" stroke-width="1.5"/><rect x="16" y="25" width="8" height="3.5" fill="#fffaf0" stroke="#1a100a" stroke-width="1.5"/></symbol>
+<symbol id="ic-tipos" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#2b4676"/><path d="M7 12 h19 l8 8 l-8 8 h-19z" fill="#fffaf0" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="27" cy="20" r="2.2" fill="#2b4676"/><path d="M11 17 h9 M11 21 h11 M11 25 h6" stroke="#1a100a" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="ic-erros" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#d23a2a"/><path d="M24 24 l9 9" stroke="#1a100a" stroke-width="6" stroke-linecap="round"/><path d="M24 24 l9 9" stroke="#8a5a32" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="17" r="10" fill="#fffaf0" stroke="#1a100a" stroke-width="3"/><path d="M17 11 v7" stroke="#d23a2a" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="22.5" r="1.8" fill="#d23a2a"/></symbol>
+<symbol id="ic-resumo" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#6b4d36"/><rect x="9" y="7" width="22" height="28" rx="2" fill="#c9975c" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><rect x="12" y="11" width="16" height="21" fill="#fffaf0" stroke="#1a100a" stroke-width="1.5"/><rect x="15" y="4.5" width="10" height="5" rx="1.5" fill="#9aa0aa" stroke="#1a100a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><path d="M15 16 h10 M15 20 h10 M15 24 h7" stroke="#1a100a" stroke-width="1.8" stroke-linecap="round"/><path d="M23 27 l2 2 l4-5" fill="none" stroke="#3c7a50" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<pattern id="chuva-p" width="26" height="40" patternUnits="userSpaceOnUse"><line x1="8" y1="0" x2="2" y2="16" stroke="#a9bdf0" stroke-opacity=".55" stroke-width="1.6"/><line x1="21" y1="18" x2="15" y2="34" stroke="#a9bdf0" stroke-opacity=".35" stroke-width="1.3"/></pattern>
+<filter id="estatica"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="4"/><feColorMatrix values="0 0 0 0 .8  0 0 0 0 .85  0 0 0 0 .9  0 0 0 1.4 -.35"/></filter>
+<radialGradient id="vinheta-g" cx=".5" cy=".45" r=".75"><stop offset=".45" stop-color="#03040c" stop-opacity="0"/><stop offset="1" stop-color="#03040c" stop-opacity=".75"/></radialGradient>
+</defs>
+</svg>
+
+<!-- ================= INTRODUÇÃO EM QUADRINHOS ================= -->
+<div id="intro" role="dialog" aria-modal="true" aria-label="Introdução do caso em quadrinhos">
+  <div class="hq">
+    <!-- página 1 -->
+    <div class="pagina" data-pag="0">
+      <div class="q largo">
+        <svg viewBox="0 0 800 300" role="img" aria-label="A escola à noite, sob chuva, com uma única janela acesa">
+          <rect width="800" height="300" fill="#0b1026"/>
+          <rect width="800" height="300" fill="url(#chuva-p)" opacity=".7" class="chuva"/>
+          <path d="M0 300 V190 h120 v-30 h60 v30 h140 V120 l60-40 l60 40 v70 h140 v-30 h60 v30 h160 v110z" fill="#05070f"/>
+          <circle cx="440" cy="120" r="24" fill="#d9d2bd" stroke="#05070f" stroke-width="5"/>
+          <path d="M440 120 v-16 M440 120 l-12 -2" stroke="#05070f" stroke-width="3" stroke-linecap="round"/>
+          <g fill="#1a2140"><rect x="150" y="215" width="26" height="30"/><rect x="200" y="215" width="26" height="30"/><rect x="250" y="215" width="26" height="30"/><rect x="560" y="215" width="26" height="30"/><rect x="660" y="215" width="26" height="30"/></g>
+          <rect x="610" y="215" width="26" height="30" fill="#f0a23a"/>
+          <rect x="610" y="215" width="26" height="30" fill="#ffd27a" class="luz"/>
+          <rect width="800" height="300" fill="#dfe8ff" class="relampago"/>
+          <rect width="800" height="300" fill="url(#vinheta-g)"/>
+        </svg>
+        <div class="legenda">Véspera da feira de ciências. 21h38.</div>
+      </div>
+      <div class="q">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Lumi sozinho na bancada do laboratório escuro">
+          <rect width="400" height="300" fill="#0e1328"/>
+          <path d="M250 0 h60 l-90 300 h-60z" fill="#8fa3d6" opacity=".12"/>
+          <rect x="0" y="210" width="400" height="90" fill="#1d1510"/><rect x="0" y="200" width="400" height="16" fill="#3d2417"/>
+          <ellipse cx="200" cy="205" rx="80" ry="10" fill="#7ff0d4" opacity=".12"/>
+          <use href="#lumi" x="130" y="72" width="140" height="140"/>
+          <rect width="400" height="300" fill="url(#vinheta-g)"/>
+        </svg>
+        <div class="legenda">No laboratório, Lumi aguardava a grande apresentação.</div>
+      </div>
+      <div class="q">
+        <svg viewBox="0 0 400 300" role="img" aria-label="A porta do laboratório se abre e uma silhueta aparece contra a luz do corredor">
+          <rect width="400" height="300" fill="#0a0d1d"/>
+          <path d="M150 40 h110 v220 h-110z" fill="#f4d9a0"/>
+          <path d="M150 260 h110 l90 40 h-260z" fill="#f4d9a0" opacity=".35"/>
+          <path d="M150 40 l-50 20 v230 l50 -30z" fill="#2a1a10" stroke="#000" stroke-width="3"/>
+          <ellipse cx="205" cy="104" rx="20" ry="23" fill="#000"/>
+          <path d="M163 262 q0-104 20-128 q22-10 44 0 q20 24 20 128z" fill="#000"/>
+          <rect x="222" y="170" width="14" height="10" fill="#f0a23a" opacity=".9"/>
+          <rect width="400" height="300" fill="url(#vinheta-g)"/>
+        </svg>
+        <div class="legenda baixo">21h44. A porta se abriu.</div>
+        <div class="onoma" style="right:18px;top:18px">CLIC</div>
+      </div>
+    </div>
+    <!-- página 2 -->
+    <div class="pagina" data-pag="1">
+      <div class="q">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Close no rosto de Lumi, com a tela falhando">
+          <rect width="400" height="300" fill="#0b0f22"/>
+          <rect x="60" y="40" width="280" height="220" rx="50" fill="#eadcbc" stroke="#000" stroke-width="6"/>
+          <rect x="90" y="70" width="220" height="160" rx="30" fill="#10222e" stroke="#000" stroke-width="5"/>
+          <ellipse cx="160" cy="140" rx="20" ry="28" fill="#ff5a4a"/><ellipse cx="240" cy="140" rx="20" ry="28" fill="#7ff0d4"/>
+          <rect x="90" y="118" width="220" height="7" fill="#7ff0d4" opacity=".5"/><rect x="90" y="160" width="220" height="4" fill="#ff5a4a" opacity=".5"/>
+          <text x="200" y="208" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="16" fill="#7ff0d4">COMANDO REC_</text>
+          <rect width="400" height="300" fill="url(#vinheta-g)"/>
+        </svg>
+        <div class="legenda">Uma luz estranha piscou no painel de Lumi.</div>
+      </div>
+      <div class="q">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Monitor de segurança com a imagem chiada e a mensagem sinal perdido">
+          <rect width="400" height="300" fill="#07080d"/>
+          <rect x="40" y="30" width="320" height="220" rx="16" fill="#1c1c22" stroke="#000" stroke-width="5"/>
+          <rect x="58" y="48" width="284" height="184" fill="#333"/>
+          <rect x="58" y="48" width="284" height="184" filter="url(#estatica)"/>
+          <rect x="120" y="120" width="160" height="40" fill="#000" opacity=".8"/>
+          <text x="200" y="147" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="20" fill="#ff5a4a">SINAL PERDIDO</text>
+          <text x="330" y="224" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="14" fill="#fff">CAM 03  21:47:03</text>
+          <circle cx="76" cy="66" r="6" fill="#ff3b2b"/>
+          <rect width="400" height="300" fill="url(#vinheta-g)"/>
+        </svg>
+        <div class="legenda baixo">21h47. As câmeras apagaram.</div>
+      </div>
+      <div class="q largo">
+        <svg viewBox="0 0 800 300" role="img" aria-label="Na manhã seguinte, a bancada vazia com marcas de rodas levando até a porta">
+          <rect width="800" height="300" fill="#c7b893"/>
+          <path d="M560 0 h120 l-60 190 h-120z" fill="#fff4d6" opacity=".45"/>
+          <rect x="0" y="190" width="800" height="110" fill="#6b5a45"/><rect x="80" y="160" width="360" height="34" fill="#5c3420" stroke="#000" stroke-width="4"/>
+          <rect x="200" y="96" width="100" height="64" rx="10" fill="none" stroke="#c63b2b" stroke-width="4" stroke-dasharray="10 8"/>
+          <g fill="#3b2f25" opacity=".7"><rect x="330" y="230" width="40" height="8" rx="3"/><rect x="410" y="240" width="40" height="8" rx="3"/><rect x="490" y="250" width="40" height="8" rx="3"/><rect x="570" y="258" width="40" height="8" rx="3"/><rect x="650" y="266" width="40" height="8" rx="3"/></g>
+          <rect x="730" y="40" width="70" height="150" fill="#3d2417" stroke="#000" stroke-width="4"/>
+          <rect width="800" height="300" fill="url(#vinheta-g)" opacity=".5"/>
+        </svg>
+        <div class="legenda">Na manhã seguinte, a bancada estava vazia.</div>
+        <div class="balao" style="right:22%;top:14%">Cadê o Lumi?!</div>
+      </div>
+    </div>
+    <!-- página 3 -->
+    <div class="pagina" data-pag="2">
+      <div class="q largo">
+        <svg viewBox="0 0 800 360" role="img" aria-label="Mesa da agência com a pasta confidencial e as fotos dos quatro suspeitos na penumbra">
+          <rect width="800" height="360" fill="#0d1022"/>
+          <ellipse cx="400" cy="250" rx="360" ry="140" fill="#f0a23a" opacity=".16"/>
+          <rect x="0" y="250" width="800" height="110" fill="#3d2417"/>
+          <g transform="rotate(-3 400 230)">
+            <rect x="260" y="150" width="280" height="130" fill="#d6b77a" stroke="#000" stroke-width="4"/>
+            <text x="400" y="222" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="30" fill="#c63b2b" transform="rotate(-6 400 222)">CONFIDENCIAL</text>
+          </g>
+          <g stroke="#000" stroke-width="3">
+            <g transform="rotate(-8 110 150)"><rect x="50" y="80" width="120" height="140" fill="#f8f1e2"/><use href="#p-helena" x="60" y="90" width="100" height="100"/></g>
+            <g transform="rotate(5 250 90)"><rect x="190" y="20" width="120" height="140" fill="#f8f1e2"/><use href="#p-caio" x="200" y="30" width="100" height="100"/></g>
+            <g transform="rotate(-4 550 90)"><rect x="490" y="20" width="120" height="140" fill="#f8f1e2"/><use href="#p-bia" x="500" y="30" width="100" height="100"/></g>
+            <g transform="rotate(7 690 150)"><rect x="630" y="80" width="120" height="140" fill="#f8f1e2"/><use href="#p-otavio" x="640" y="90" width="100" height="100"/></g>
+          </g>
+          <rect width="800" height="360" fill="#05060f" opacity=".35"/>
+          <rect width="800" height="360" fill="url(#vinheta-g)"/>
+        </svg>
+        <div class="legenda">Quatro suspeitos. Nenhuma testemunha. Três minutos sem câmeras.</div>
+        <div class="legenda baixo">A agência PyDetetive precisa de um novo detetive. Você.</div>
+      </div>
+    </div>
+  </div>
+  <div class="hq-controles">
+    <span id="hq-pagina">Página 1 de 3</span>
+    <div class="dir">
+      <button class="pular" id="hq-pular" hidden>Pular introdução</button>
+      <button class="btn" id="hq-avancar">Continuar ▶</button>
+    </div>
+  </div>
+</div>
+
+<header class="topo" id="topo">
+  <div class="marca">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="#bfe3f0" fill-opacity=".25" stroke="#f0a23a" stroke-width="4"/><path d="M24 24 l11 11" stroke="#f0a23a" stroke-width="6" stroke-linecap="round"/></svg>
+    PyDetetive
+  </div>
+  <nav class="abas" aria-label="Telas">
+    <button class="aba" data-ir="inicio" aria-current="page">Início</button>
+    <button class="aba" data-ir="quadro">Quadro do caso</button>
+    <button class="aba" data-ir="manual">Manual</button>
+    <button class="aba" data-ir="desafio">Missões</button>
+  </nav>
+  <span class="creditos" id="creditos" title="Créditos da agência">🪙 0 créditos</span>
+  <button class="mini" id="tema" aria-label="Alternar entre modo noite e modo projeção">🌙 Noite</button>
+  <button class="mini" data-ir="professor">Professor</button>
+</header>
+
+<main>
+<!-- ================= INÍCIO ================= -->
+<section class="tela ativa" id="inicio" aria-label="Início">
+  <div class="cena-wrap">
+    <svg class="cena" viewBox="0 0 1200 560" role="img" aria-label="Escritório da agência numa noite de tempestade, com um cartaz de desaparecido do robô Lumi">
+      <defs>
+        <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070b1f"/><stop offset="1" stop-color="#1c2a55"/></linearGradient>
+        <radialGradient id="brilho" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffc861" stop-opacity=".7"/><stop offset="1" stop-color="#ffc861" stop-opacity="0"/></radialGradient>
+        <linearGradient id="mesa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4526"/><stop offset="1" stop-color="#5c3420"/></linearGradient>
+        <clipPath id="vidro"><rect x="854" y="86" width="236" height="200"/></clipPath>
+        <pattern id="fita" width="150" height="34" patternUnits="userSpaceOnUse"><rect width="150" height="34" fill="#e8c12e"/><text x="6" y="24" font-family="Lilita One, Trebuchet MS, sans-serif" font-size="19" fill="#111">NÃO ULTRAPASSE</text></pattern>
+      </defs>
+      <!-- janela com tempestade -->
+      <rect x="838" y="70" width="268" height="232" rx="14" fill="#3d2417" stroke="#0d0806" stroke-width="5"/>
+      <g clip-path="url(#vidro)">
+        <rect x="854" y="86" width="236" height="200" fill="url(#ceu)"/>
+        <circle cx="1040" cy="128" r="24" fill="#8f94a8"/>
+        <path d="M950 120 q20-26 50-12 q30-14 48 10 q26 0 26 20 h-140 q-4-18 16-18z" fill="#2a3150"/>
+        <path d="M858 170 q16-20 40-8 q24-12 40 8 z" fill="#232a47"/>
+        <path d="M854 286 v-44 l24-16 l24 16 v-10 h26 v-18 l30 -22 l30 22 v28 h22 v-16 l34-20 l34 20 v60z" fill="#050814"/>
+        <rect x="936" y="236" width="8" height="10" fill="#f0a23a"/>
+        <rect x="820" y="40" width="300" height="280" fill="url(#chuva-p)" class="chuva"/>
+        <rect x="854" y="86" width="236" height="200" fill="#dfe8ff" class="relampago"/>
+      </g>
+      <path d="M972 86 v200 M854 186 h236" stroke="#3d2417" stroke-width="10"/>
+      <rect x="826" y="296" width="292" height="18" rx="6" fill="#4a2a18" stroke="#0d0806" stroke-width="4"/>
+      <path d="M1052 296 l6-30 h28 l6 30z" fill="#8f2a1e" stroke="#0d0806" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M1072 266 q-20-30 -6-52 M1072 266 q14-26 30-30" fill="none" stroke="#2c5a3a" stroke-width="7" stroke-linecap="round"/>
+
+      <!-- cartaz de desaparecido -->
+      <g transform="rotate(-4 190 200)">
+        <rect x="92" y="70" width="200" height="266" fill="#e6d8b4" stroke="#0d0806" stroke-width="4"/>
+        <text x="192" y="110" text-anchor="middle" font-family="Lilita One, Trebuchet MS, sans-serif" font-size="30" textLength="170" lengthAdjust="spacingAndGlyphs" fill="#c63b2b">DESAPARECIDO</text>
+        <rect x="122" y="124" width="140" height="130" fill="#cdb68a" stroke="#0d0806" stroke-width="3"/>
+        <use href="#lumi" x="132" y="128" width="120" height="120"/>
+        <text x="192" y="284" text-anchor="middle" font-family="Lilita One, Trebuchet MS, sans-serif" font-size="28" fill="#23160e">Lumi</text>
+        <text x="192" y="306" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="13" fill="#5e4430">visto pela última vez</text>
+        <text x="192" y="323" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="13" fill="#5e4430">às 21h40</text>
+        <circle cx="192" cy="80" r="8" fill="#c63b2b" stroke="#0d0806" stroke-width="3"/>
+      </g>
+
+      <!-- mesa -->
+      <rect x="-10" y="420" width="1220" height="40" rx="8" fill="url(#mesa)" stroke="#0d0806" stroke-width="5"/>
+      <rect x="-10" y="456" width="1220" height="110" fill="#2e1a10" stroke="#0d0806" stroke-width="5"/>
+      <path d="M-10 488 h1220" stroke="#1e110a" stroke-width="3"/>
+      <g class="luz"><ellipse cx="930" cy="400" rx="280" ry="160" fill="url(#brilho)"/></g>
+      <g stroke="#0d0806" stroke-width="4" stroke-linejoin="round">
+        <rect x="150" y="386" width="200" height="16" rx="3" fill="#2c5a3a"/>
+        <rect x="160" y="370" width="190" height="16" rx="3" fill="#223a63"/>
+        <rect x="146" y="354" width="200" height="16" rx="3" fill="#c98a2c"/>
+        <rect x="146" y="402" width="210" height="20" rx="3" fill="#9e2c20"/>
+      </g>
+      <g transform="rotate(-25 470 400)">
+        <rect x="462" y="400" width="16" height="60" rx="7" fill="#4a2a18" stroke="#0d0806" stroke-width="4"/>
+        <circle cx="470" cy="370" r="34" fill="#bfe3f0" fill-opacity=".3" stroke="#d9912f" stroke-width="9"/>
+        <path d="M455 356 q8-10 20-10" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+      </g>
+      <path d="M612 376 h56 v38 q0 10-10 10 h-36 q-10 0-10-10z" fill="#d9ccaa" stroke="#0d0806" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M668 386 q18 0 18 14 q0 14-18 14" fill="none" stroke="#0d0806" stroke-width="4"/>
+      <text x="640" y="408" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600" font-size="16" fill="#223a63">py</text>
+      <g transform="rotate(6 760 400)">
+        <rect x="712" y="380" width="110" height="46" fill="#e6d8b4" stroke="#0d0806" stroke-width="3"/>
+        <path d="M722 394 h60 M722 405 h80 M722 416 h44" stroke="#8d7a63" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <g stroke="#0d0806" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="940" cy="420" rx="44" ry="10" fill="#223a63"/>
+        <path d="M940 414 l-30 -80 l56 -40" fill="none" stroke="#223a63" stroke-width="10"/>
+        <path d="M940 414 l-30 -80 l56 -40" fill="none" stroke="#0d0806" stroke-width="3"/>
+        <path d="M950 270 l52 -14 l20 62 l-54 20z" fill="#2c5a3a"/>
+      </g>
+      <path d="M972 332 l54 -20 l8 12 q-30 20 -56 22z" fill="#ffe3a0" class="luz"/>
+      <!-- fita de isolamento -->
+      <g transform="rotate(-4 920 480)"><rect x="640" y="462" width="620" height="34" fill="url(#fita)" stroke="#0d0806" stroke-width="3"/></g>
+      <rect x="-10" y="0" width="1220" height="560" fill="url(#vinheta-g)"/>
+    </svg>
+
+    <div class="placa-wrap">
+      <div class="correntes" aria-hidden="true"><span></span><span></span></div>
+      <div class="placa">
+        <h1>PyDetetive</h1>
+        <p>Nada desaparece sozinho.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="arquivo">
+    <article class="pasta">
+      <span class="carimbo-conf">CONFIDENCIAL</span>
+      <div>
+        <h2>O Caso Lumi</h2>
+        <p>Na véspera da feira de ciências, o robô da escola sumiu do laboratório sem deixar rastro. As câmeras apagaram por três minutos, e quatro pessoas tinham motivo. Cada pista só pode ser analisada com código.</p>
+      </div>
+      <div class="acoes">
+        <button class="btn" data-ir="quadro">Abrir o quadro do caso</button>
+        <button class="btn claro" data-ir="manual">Ler o manual do detetive</button>
+        <button class="btn verde" data-ir="desafio">Ir para as missões</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= QUADRO ================= -->
+<section class="tela" id="quadro" aria-label="Quadro do caso">
+  <div class="quadro-layout">
+    <div class="moldura">
+      <div class="cortica">
+        <svg class="barbantes" viewBox="0 0 160 100" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="80" y1="50" x2="24" y2="26"/><line x1="80" y1="50" x2="136" y2="26"/>
+          <line x1="80" y1="50" x2="24" y2="74"/><line x1="80" y1="50" x2="136" y2="74"/>
+          <line x1="80" y1="50" x2="80" y2="12"/><line x1="80" y1="50" x2="80" y2="88"/>
+        </svg>
+        <div class="item nota" style="left:50%;top:12%;--r:-2deg"><span class="alfinete"></span><b>O sumiço</b>Entre 21h40 e 21h50, laboratório de ciências.</div>
+        <div class="item foto" style="left:15%;top:26%;--r:-4deg"><span class="alfinete"></span>
+          <svg viewBox="0 0 120 120" role="img" aria-label="Retrato de Helena Martins"><use href="#p-helena"/></svg>
+          <strong>Helena Martins</strong><small>Professora de física</small><span class="selo">SUSPEITA</span></div>
+        <div class="item foto" style="left:85%;top:26%;--r:3deg"><span class="alfinete"></span>
+          <svg viewBox="0 0 120 120" role="img" aria-label="Retrato de Caio Ribeiro"><use href="#p-caio"/></svg>
+          <strong>Caio Ribeiro</strong><small>Técnico do laboratório</small><span class="selo">SUSPEITO</span></div>
+        <div class="item foto grande" style="left:50%;top:50%;--r:1deg"><span class="alfinete"></span>
+          <svg viewBox="0 0 120 120" role="img" aria-label="Foto do robô Lumi" style="background:#cdb68a"><use href="#lumi"/></svg>
+          <strong>Lumi</strong><small>Robô do projeto da escola</small><span class="selo alvo">DESAPARECIDO</span></div>
+        <div class="item foto" style="left:15%;top:74%;--r:3deg"><span class="alfinete"></span>
+          <svg viewBox="0 0 120 120" role="img" aria-label="Retrato de Bia Nogueira"><use href="#p-bia"/></svg>
+          <strong>Bia Nogueira</strong><small>Ex-integrante da equipe</small><span class="selo">SUSPEITA</span></div>
+        <div class="item foto" style="left:85%;top:74%;--r:-3deg"><span class="alfinete"></span>
+          <svg viewBox="0 0 120 120" role="img" aria-label="Retrato de Otávio Leal"><use href="#p-otavio"/></svg>
+          <strong>Otávio Leal</strong><small>Empresa de robótica</small><span class="selo">SUSPEITO</span></div>
+        <div class="item nota bloqueada" id="nota-pista" style="left:50%;top:88%;--r:2deg"><span class="alfinete"></span><b>Pista trancada</b>Conclua a fase 1 para revelar.</div>
+      </div>
+    </div>
+
+    <aside class="painel">
+      <h2>Fases do caso</h2>
+      <ol class="fases" id="lista-fases"></ol>
+      <div class="codigo-acesso">
+        <label for="campo-codigo">Código de acesso</label>
+        <div><input id="campo-codigo" autocomplete="off" placeholder="Digite o código"><button class="btn" id="btn-codigo">Abrir</button></div>
+        <p class="msg" id="msg-codigo" role="status"></p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= MANUAL ================= -->
+<section class="tela" id="manual" aria-label="Manual do detetive">
+  <div class="manual-layout">
+    <aside class="painel sumario"><h2>Manual do detetive</h2><ul class="caps" id="caps"></ul></aside>
+    <div id="manual-conteudo"></div>
+  </div>
+</section>
+
+<!-- ================= MISSÕES ================= -->
+<section class="tela" id="desafio" aria-label="Missões">
+  <div class="desafio-layout">
+    <article class="ficha">
+      <div class="missoes-nav" id="missoes-nav"><span>Fase 1</span></div>
+      <h2 id="m-titulo"></h2>
+      <div id="m-texto"></div>
+      <button class="link-manual" id="m-manual"></button>
+      <div class="missao">
+        <h3>Sua missão</h3>
+        <ol id="m-lista"></ol>
+      </div>
+      <p class="recompensa" id="m-recompensa"></p>
+      <div class="dica" id="m-dica"></div>
+    </article>
+
+    <div class="bancada">
+      <div class="bancada-topo">
+        <span>Seu código</span>
+        <span class="motor" data-motor>Preparando o Python…</span>
+      </div>
+      <div id="editor-missao"></div>
+      <div class="botoes">
+        <button class="btn claro" id="executar" data-precisa-motor disabled>▶ Executar</button>
+        <button class="btn verde" id="verificar" data-precisa-motor disabled>Entregar pista</button>
+      </div>
+      <div class="saida-rotulo">O que apareceu na tela</div>
+      <pre class="saida" id="saida" aria-live="polite"><span class="vazio">Execute o código para ver o resultado aqui.</span></pre>
+      <div class="veredito" id="veredito" role="status">
+        <span class="carimbo" id="carimbo"></span>
+        <p id="veredito-texto"></p>
+        <button class="btn" id="proxima" hidden>Próxima missão</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROFESSOR: ENTRADA ================= -->
+<section class="tela" id="professor" aria-label="Área do professor">
+  <div class="prof-wrap">
+    <div class="cartao login" id="prof-login">
+      <h2>Área do professor</h2>
+      <p>Digite a senha do professor para abrir o painel da turma.</p>
+      <label for="senha-prof"><b>Senha</b></label>
+      <input type="password" id="senha-prof" autocomplete="off">
+      <button class="btn" id="btn-entrar">Entrar</button>
+      <p class="msg" id="msg-login" role="status"></p>
+    </div>
+
+    <div id="prof-painel" hidden>
+      <div class="cartao">
+        <h2>Painel do professor</h2>
+        <p>A ferramenta não tem servidor, então cada fase é aberta por um código de acesso. Projete o código quando a turma puder avançar. Os alunos digitam no quadro do caso.</p>
+      </div>
+      <div class="prof-grade">
+        <div class="cartao">
+          <h3>Códigos de acesso das fases</h3>
+          <table class="tabela" id="tabela-codigos"></table>
+        </div>
+        <div class="cartao">
+          <h3>Aula</h3>
+          <div class="lista-acoes">
+            <button class="btn verde" id="iniciar-aula">Iniciar modo aula: Fase 1</button>
+            <button class="btn claro" data-ir="manual">Projetar o manual do detetive</button>
+            <button class="btn claro" data-ir="quadro">Projetar o quadro do caso</button>
+            <button class="btn claro" id="rever-intro">Rever a introdução</button>
+            <button class="btn vermelho" id="reiniciar">Apagar progresso deste computador</button>
+          </div>
+          <p style="margin-top:1rem">Dica: use o botão 🌙/☀️ no topo para o modo projeção, que fica mais legível em sala clara.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MODO AULA ================= -->
+<section class="tela" id="aula" aria-label="Modo aula">
+  <div class="aula">
+    <div class="aula-barra">
+      <button class="mini" id="sair-aula">✕ Sair do modo aula</button>
+      <div class="dir">
+        <button class="mini" id="notas-toggle" aria-pressed="false">Notas do professor</button>
+        <button class="btn claro" id="slide-ant">◀</button>
+        <span id="slide-num" style="font-weight:800"></span>
+        <button class="btn" id="slide-prox">▶</button>
+      </div>
+    </div>
+    <div class="slide" id="slide"></div>
+    <div class="notas" id="notas" hidden></div>
+  </div>
+</section>
+</main>
+
+<div id="projecao" hidden><div><p id="proj-rotulo"></p><strong id="proj-codigo"></strong><p>Clique para fechar</p></div></div>
+
+<script>
+/* =================== estado =================== */
+const CHAVE = 'pydetetive:estado';
+function ler(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function gravar(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+const PADRAO = {quiz:{}, introVista:false, creditos:0, feitas:{}, dicas:{}, codigos:{}, liberadas:[1], rascunhos:{}};
+let E; try { E = Object.assign({}, PADRAO, JSON.parse(ler(CHAVE) || '{}')); } catch(e){ E = {...PADRAO}; }
+const salvar = () => gravar(CHAVE, JSON.stringify(E));
+
+const SENHA_PROFESSOR = 'lumi2026';
+const FASES = [
+  {n:1, nome:'O arquivo do caso', tema:'Variáveis e tipos'},
+  {n:2, nome:'A linha do tempo', tema:'Entrada e cálculos', codigo:'AMPULHETA'},
+  {n:3, nome:'Os álibis', tema:'Condicionais', codigo:'GUARDA-CHUVA'},
+  {n:4, nome:'As câmeras', tema:'Laços', codigo:'LANTERNA'},
+  {n:5, nome:'Mensagens cifradas', tema:'Listas e textos', codigo:'ESPELHO'},
+  {n:6, nome:'A revelação', tema:'Funções', codigo:'CHAVE-MESTRA'}
+];
+
+/* =================== navegação =================== */
+const telas = document.querySelectorAll('.tela');
+function ir(id){
+  if (id === 'desafio') montarMissao(missaoAtual);
+  if (id === 'quadro') montarQuadro();
+  if (id === 'manual') montarManual();
+  telas.forEach(t => t.classList.toggle('ativa', t.id === id));
+  document.querySelectorAll('.aba').forEach(a => a.setAttribute('aria-current', a.dataset.ir === id ? 'page' : 'false'));
+  window.scrollTo({top:0});
+}
+document.querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => ir(b.dataset.ir)));
+
+/* =================== tema =================== */
+const raiz = document.documentElement, btnTema = document.getElementById('tema');
+function aplicarTema(t){ raiz.dataset.theme = t; btnTema.textContent = t === 'light' ? '☀️ Projeção' : '🌙 Noite'; }
+aplicarTema(ler('pydetetive:tema') || 'dark');
+btnTema.addEventListener('click', () => { const t = raiz.dataset.theme === 'light' ? 'dark' : 'light'; aplicarTema(t); gravar('pydetetive:tema', t); });
+
+/* =================== créditos =================== */
+const credEl = document.getElementById('creditos');
+function mostrarCreditos(anim){
+  credEl.textContent = `🪙 ${E.creditos} ${E.creditos === 1 ? 'crédito' : 'créditos'}`;
+  if (anim){ credEl.classList.remove('ganhou'); void credEl.offsetWidth; credEl.classList.add('ganhou'); }
+}
+mostrarCreditos();
+
+/* =================== intro em quadrinhos =================== */
+const intro = document.getElementById('intro'), paginas = [...intro.querySelectorAll('.pagina')];
+let pag = 0, quadro = 0;
+function mostrarIntro(){
+  pag = 0; quadro = 0; intro.hidden = false; document.getElementById('topo').hidden = true;
+  document.getElementById('hq-pular').hidden = !E.introVista;
+  intro.querySelectorAll('.q').forEach(q => q.classList.remove('visivel'));
+  atualizarIntro();
+}
+function atualizarIntro(){
+  paginas.forEach((p,i) => p.classList.toggle('ativa', i === pag));
+  const qs = paginas[pag].querySelectorAll('.q');
+  qs.forEach((q,i) => { if (i <= quadro) requestAnimationFrame(() => q.classList.add('visivel')); });
+  document.getElementById('hq-pagina').textContent = `Página ${pag+1} de ${paginas.length}`;
+  const ultimo = pag === paginas.length - 1 && quadro === qs.length - 1;
+  document.getElementById('hq-avancar').textContent = ultimo ? 'Aceitar o caso' : 'Continuar ▶';
+  intro.scrollTo({top: 0});
+}
+function avancarIntro(){
+  const qs = paginas[pag].querySelectorAll('.q');
+  if (quadro < qs.length - 1){ quadro++; atualizarIntro(); const q = qs[quadro]; setTimeout(() => q.scrollIntoView({behavior:'smooth', block:'nearest'}), 50); return; }
+  if (pag < paginas.length - 1){ pag++; quadro = 0; atualizarIntro(); return; }
+  fecharIntro();
+}
+function fecharIntro(){ E.introVista = true; salvar(); intro.hidden = true; document.getElementById('topo').hidden = false; ir('inicio'); }
+document.getElementById('hq-avancar').addEventListener('click', avancarIntro);
+document.getElementById('hq-pular').addEventListener('click', fecharIntro);
+document.addEventListener('keydown', e => { if (!intro.hidden && (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') && document.activeElement.id !== 'hq-pular'){ e.preventDefault(); avancarIntro(); } });
+mostrarIntro();
+
+/* =================== editor reutilizável =================== */
+const RE = /(#[^\n]*)|([fFrRbB]?(?:"(?:[^"\\\n]|\\.)*"?|'(?:[^'\\\n]|\\.)*'?))|(\b\d+(?:\.\d+)?\b)|(\b(?:if|elif|else|for|while|in|def|return|and|or|not|True|False|None|import|from|try|except|finally|break|continue|pass|class|with|as|lambda|is)\b)|(\b(?:print|input|int|float|str|bool|len|range|type|list|dict|round|sum|max|min|abs)\b)/g;
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function colorir(src){
+  let out = '', ult = 0;
+  src.replace(RE, (m, com, str, num, kw, fn, idx) => {
+    out += esc(src.slice(ult, idx));
+    out += `<span class="${com ? 't-com' : str ? 't-str' : num ? 't-num' : kw ? 't-kw' : 't-fn'}">${esc(m)}</span>`;
+    ult = idx + m.length; return m;
+  });
+  return out + esc(src.slice(ult)) + '\n ';
+}
+function criarEditor(alvo, inicial, aoMudar){
+  alvo.innerHTML = '<div class="editor"><div class="linhas" aria-hidden="true"></div><div class="campo"><pre aria-hidden="true"></pre><textarea spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Editor de código Python"></textarea></div></div>';
+  const ta = alvo.querySelector('textarea'), pre = alvo.querySelector('pre'), ln = alvo.querySelector('.linhas');
+  const sinc = () => { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; ln.scrollTop = ta.scrollTop; };
+  const upd = () => { pre.innerHTML = colorir(ta.value); ln.textContent = Array.from({length: ta.value.split('\n').length}, (_,i) => i+1).join('\n'); sinc(); };
+  ta.addEventListener('input', () => { upd(); aoMudar && aoMudar(ta.value); });
+  ta.addEventListener('scroll', sinc);
+  ta.addEventListener('keydown', e => { if (e.key === 'Tab'){ e.preventDefault(); ta.setRangeText('    ', ta.selectionStart, ta.selectionEnd, 'end'); upd(); aoMudar && aoMudar(ta.value); } });
+  ta.value = inicial; upd();
+  return {get valor(){ return ta.value; }, set valor(v){ ta.value = v; upd(); }};
+}
+
+/* =================== motor Python =================== */
+const PYODIDE = 'https://cdn.jsdelivr.net/npm/pyodide@0.26.4/';
+const SKULPT = ['https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js','https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js'];
+let motor = null, py = null;
+function carregarScript(src){ return new Promise((ok, falha) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = falha; document.head.appendChild(s); }); }
+function comPrazo(p, ms){ return Promise.race([p, new Promise((_, f) => setTimeout(() => f(new Error('tempo')), ms))]); }
+let motorTxt = 'Preparando o Python…', motorOk = false;
+function estadoMotor(txt, pronto){
+  if (txt !== undefined){ motorTxt = txt; motorOk = !!pronto; } txt = motorTxt; pronto = motorOk;
+  document.querySelectorAll('[data-motor]').forEach(m => { m.textContent = txt; m.classList.toggle('pronto', !!pronto); });
+  document.querySelectorAll('[data-precisa-motor]').forEach(b => b.disabled = !pronto);
+}
+(async function prepararMotor(){
+  try { await carregarScript(PYODIDE + 'pyodide.js'); py = await comPrazo(loadPyodide({indexURL: PYODIDE}), 30000); motor = 'pyodide'; }
+  catch(e){
+    try { for (const s of SKULPT) await carregarScript(s); motor = 'skulpt'; }
+    catch(e2){ estadoMotor('Sem conexão com o Python', false); return; }
+  }
+  estadoMotor('Python pronto', true);
+})();
+
+async function rodar(codigo){
+  let saida = '';
+  const pedir = p => { const r = window.prompt(p || 'O programa pediu uma informação:') ?? ''; saida += (p || '') + r + '\n'; return r; };
+  try {
+    if (motor === 'pyodide'){
+      py.setStdout({batched: s => { saida += s + '\n'; }});
+      py.setStdin({stdin: () => pedir('')});
+      const ns = py.globals.get('dict')();
+      py.runPython("import js as _js\ndef input(msg=''):\n    r = _js.prompt(str(msg))\n    r = '' if r is None else str(r)\n    print(str(msg) + r)\n    return r\n", {globals: ns});
+      await py.runPythonAsync(codigo, {globals: ns}); ns.destroy();
+    } else {
+      Sk.configure({ output: s => { saida += s; },
+        read: f => { if (!Sk.builtinFiles || !Sk.builtinFiles.files[f]) throw 'Arquivo não encontrado: ' + f; return Sk.builtinFiles.files[f]; },
+        inputfun: p => pedir(p), inputfunTakesPrompt: true, __future__: Sk.python3 });
+      await Sk.misceval.asyncToPromise(() => Sk.importMainWithBody('<codigo>', false, codigo, true));
+    }
+    return {saida, erro: null};
+  } catch(e){ return {saida, erro: traduzirErro(String(e && e.message || e), e)}; }
+}
+function traduzirErro(msg, e){
+  const fim = msg.trim().split('\n').pop();
+  const tipo = (fim.match(/(\w+Error)/) || [])[1] || 'Erro';
+  let linha = null; const mL = [...msg.matchAll(/line (\d+)/g)]; if (mL.length) linha = mL[mL.length-1][1];
+  if (e && e.traceback && e.traceback[0]) linha = e.traceback[0].lineno;
+  const onde = linha ? ` na linha ${linha}` : '';
+  const nome = (fim.match(/name '([^']+)'/) || [])[1];
+  const dicas = {
+    NameError: `O Python não conhece o nome "${nome || '?'}"${onde}. Confira se você criou essa variável antes de usá-la, se digitou o nome igualzinho ou se esqueceu as aspas de um texto.`,
+    SyntaxError: `Tem algo escrito fora das regras do Python${onde}. Confira se todas as aspas e parênteses foram abertos e fechados.`,
+    IndentationError: `O recuo (os espaços no começo da linha) está errado${onde}.`,
+    TypeError: `Você misturou tipos que não combinam${onde}, como somar um texto com um número.`,
+    ValueError: `Um valor não pôde ser convertido${onde}. Por exemplo: int("abc") não vira número.`,
+    ZeroDivisionError: `Divisão por zero${onde}. Nem o melhor detetive consegue isso.`
+  };
+  return {tipo, texto: dicas[tipo] || `Algo deu errado${onde}.`, original: fim};
+}
+function mostrarSaida(el, {saida, erro}){
+  el.innerHTML = '';
+  if (saida) el.append(document.createTextNode(saida));
+  if (erro){ const s = document.createElement('span'); s.className = 'erro'; s.textContent = (saida ? '\n' : '') + `🔎 ${erro.tipo}: ${erro.texto}\n(${erro.original})`; el.append(s); }
+  if (!saida && !erro) el.innerHTML = '<span class="vazio">O programa rodou, mas nada apareceu na tela.</span>';
+}
+
+/* =================== missões da fase 1 =================== */
+const MISSOES = [
+  { id:'f1m1', secao:'print', titulo:'O cabeçalho do caso',
+    texto:['Todo arquivo da agência começa com um cabeçalho. O computador só mostra algo na tela quando pedimos, e o comando para isso é o <code>print()</code>.',
+           'Textos em Python ficam sempre entre aspas.'],
+    passos:['Mostre na tela a frase <code>CASO LUMI: CONFIDENCIAL</code>.'],
+    inicial:'# Missão 1: o cabeçalho do caso\n\n', recompensa:10,
+    dica:{custo:5, texto:'Coloque o texto entre aspas dentro dos parênteses: print("seu texto aqui").'},
+    checar(cod, r){
+      if (!/print\s*\(/.test(cod)) return [false,'Ainda não','Nada foi pedido para aparecer na tela. Use o print().'];
+      if (!r.saida.toUpperCase().includes('CASO LUMI')) return [false,'Quase','O texto na tela não é o cabeçalho pedido. Confira se escreveu CASO LUMI: CONFIDENCIAL.'];
+      return [true,'Pista aceita','Arquivo aberto. Agora vamos às fichas dos suspeitos.'];
+    }},
+  { id:'f1m2', secao:'variaveis', titulo:'Abra a primeira ficha',
+    texto:['A agência recebeu a lista de quem estava na escola naquela noite. Para não perder nenhum dado, guardamos cada informação numa <strong>variável</strong>: uma gaveta com um nome, onde fica um valor para usar depois.'],
+    passos:['Crie uma variável chamada <code>suspeito</code> com o texto <code>"Caio Ribeiro"</code>.','Mostre essa variável na tela usando <code>print()</code>.'],
+    inicial:'# Missão 2: abra a primeira ficha\n\n', recompensa:10,
+    dica:{custo:5, texto:'Primeiro a gaveta recebe o valor: nome = "Ana". Depois, mostre a gaveta sem aspas: print(nome).'},
+    checar(cod, r){
+      if (!/^\s*suspeito\s*=\s*["']Caio Ribeiro["']/m.test(cod)) return [false,'Ainda não','Não encontrei a variável suspeito com o texto "Caio Ribeiro". Confira o nome da variável e as aspas.'];
+      if (!/print\s*\(\s*suspeito\s*\)/.test(cod)) return [false,'Quase','A variável existe, mas precisa aparecer na tela com print(suspeito), sem aspas dentro do print.'];
+      if (!r.saida.includes('Caio Ribeiro')) return [false,'Quase','O nome não apareceu na tela. Verifique o seu print.'];
+      return [true,'Pista aceita','Ficha de Caio Ribeiro aberta. Mas uma ficha só com o nome não diz muita coisa.'];
+    }},
+  { id:'f1m3', secao:'tipos', titulo:'Complete a ficha',
+    texto:['Cada informação tem um <strong>tipo</strong>. Nomes e cargos são textos (<code>str</code>). Idades são números inteiros (<code>int</code>) e vão <strong>sem aspas</strong>.',
+           'Um único <code>print</code> pode mostrar várias coisas, separadas por vírgula.'],
+    passos:['Crie a variável <code>idade</code> com o número <code>34</code>.','Crie a variável <code>cargo</code> com o texto <code>"Técnico do laboratório"</code>.','Mostre <code>suspeito</code>, <code>idade</code> e <code>cargo</code> com um único <code>print</code>.'],
+    inicial:'# Missão 3: complete a ficha\nsuspeito = "Caio Ribeiro"\n\n', recompensa:15,
+    dica:{custo:10, texto:'Números vão sem aspas: idade = 34. Para mostrar tudo junto: print(suspeito, idade, cargo).'},
+    checar(cod, r){
+      if (/idade\s*=\s*["']/.test(cod)) return [false,'Quase','Com aspas, 34 vira texto. Idade é um número: escreva idade = 34, sem aspas.'];
+      if (!/^\s*idade\s*=\s*34\s*$/m.test(cod)) return [false,'Ainda não','Não encontrei a variável idade com o número 34.'];
+      if (!/^\s*cargo\s*=\s*["'].+["']/m.test(cod)) return [false,'Ainda não','Falta a variável cargo, com o texto entre aspas.'];
+      if (!/print\s*\(\s*suspeito\s*,\s*idade\s*,\s*cargo\s*\)/.test(cod)) return [false,'Quase','As variáveis estão certas. Agora mostre as três num único print, separadas por vírgula.'];
+      return [true,'Fase concluída','Ficha completa. Uma nova pista apareceu no quadro do caso.'];
+    }}
+];
+let missaoAtual = MISSOES.findIndex(m => !E.feitas[m.id]); if (missaoAtual < 0) missaoAtual = MISSOES.length - 1;
+let editorMissao = null;
+const $ = id => document.getElementById(id);
+
+function montarMissao(i){
+  missaoAtual = i; const m = MISSOES[i];
+  const nav = $('missoes-nav'); nav.innerHTML = '<span>Fase 1</span>';
+  MISSOES.forEach((mm, j) => {
+    const b = document.createElement('button'); b.className = 'chip' + (E.feitas[mm.id] ? ' feita' : '') + (j === i ? ' atual' : '');
+    b.textContent = j + 1; b.setAttribute('aria-label', `Missão ${j+1}`);
+    b.disabled = j > 0 && !E.feitas[MISSOES[j-1].id];
+    b.addEventListener('click', () => montarMissao(j)); nav.append(b);
+  });
+  $('m-titulo').textContent = m.titulo;
+  $('m-texto').innerHTML = m.texto.map(t => `<p>${t}</p>`).join('');
+  const sm = MANUAL_F1.find(x => x.id === m.secao); $('m-manual').textContent = `📖 Rever no manual: ${sm.curto}`; $('m-manual').onclick = () => { ir('manual'); irSecao(m.secao); };
+  $('m-lista').innerHTML = m.passos.map(t => `<li>${t}</li>`).join('');
+  $('m-recompensa').textContent = E.feitas[m.id] ? '✔ Missão resolvida.' : `Recompensa: 🪙 ${m.recompensa} créditos`;
+  montarDica(m);
+  editorMissao = criarEditor($('editor-missao'), E.rascunhos[m.id] ?? m.inicial, v => { E.rascunhos[m.id] = v; salvar(); });
+  $('saida').innerHTML = '<span class="vazio">Execute o código para ver o resultado aqui.</span>';
+  $('veredito').classList.remove('mostrar');
+}
+function montarDica(m){
+  const d = $('m-dica');
+  if (E.dicas[m.id]){ d.innerHTML = `<div class="dica-texto">💡 ${esc(m.dica.texto)}</div>`; return; }
+  const pode = E.creditos >= m.dica.custo;
+  d.innerHTML = `<button class="btn claro" id="comprar-dica" ${pode ? '' : 'disabled'}>💡 Comprar dica (🪙 ${m.dica.custo})</button>
+    <small>${pode ? 'A dica fica liberada para sempre nesta missão.' : 'Créditos insuficientes. Resolva missões para ganhar mais.'}</small>`;
+  if (pode) $('comprar-dica').addEventListener('click', () => { E.creditos -= m.dica.custo; E.dicas[m.id] = true; salvar(); mostrarCreditos(true); montarDica(m); });
+}
+function veredito(ok, carimbo, texto, temProxima){
+  const v = $('veredito'); v.classList.remove('mostrar','ok','nao'); void v.offsetWidth;
+  v.classList.add('mostrar', ok ? 'ok' : 'nao'); $('carimbo').textContent = carimbo; $('veredito-texto').textContent = texto;
+  $('proxima').hidden = !temProxima;
+}
+$('executar').addEventListener('click', async () => { $('veredito').classList.remove('mostrar'); mostrarSaida($('saida'), await rodar(editorMissao.valor)); });
+$('verificar').addEventListener('click', async () => {
+  const m = MISSOES[missaoAtual], cod = editorMissao.valor, r = await rodar(cod); mostrarSaida($('saida'), r);
+  if (r.erro) return veredito(false,'Ainda não','O código tem um erro. Leia a mensagem acima: ela diz em que linha está o problema.');
+  const [ok, carimbo, texto] = m.checar(cod, r);
+  let extra = '';
+  if (ok && !E.feitas[m.id]){ E.feitas[m.id] = true; E.creditos += m.recompensa; salvar(); mostrarCreditos(true); extra = ` Você ganhou ${m.recompensa} créditos.`; montarDica(m); $('m-recompensa').textContent = '✔ Missão resolvida.'; }
+  veredito(ok, carimbo, texto + extra, ok && missaoAtual < MISSOES.length - 1);
+  if (ok) montarMissaoNav();
+});
+function montarMissaoNav(){ const chips = document.querySelectorAll('#missoes-nav .chip'); MISSOES.forEach((mm,j) => { chips[j].classList.toggle('feita', !!E.feitas[mm.id]); chips[j].disabled = j > 0 && !E.feitas[MISSOES[j-1].id]; }); }
+$('proxima').addEventListener('click', () => montarMissao(missaoAtual + 1));
+
+/* =================== quadro e códigos =================== */
+function faseConcluida(){ return MISSOES.every(m => E.feitas[m.id]); }
+function montarQuadro(){
+  const nota = $('nota-pista');
+  if (faseConcluida()){ nota.className = 'item nota anonima'; nota.innerHTML = '<span class="alfinete"></span><b>Mensagem anônima</b>Nem tudo que sai andando sai sozinho.'; }
+  const ul = $('lista-fases'); ul.innerHTML = '';
+  FASES.forEach(f => {
+    const aberta = E.liberadas.includes(f.n), li = document.createElement('li');
+    li.className = f.n === 1 ? 'atual' : aberta ? 'aberta' : 'trancada';
+    const icone = f.n === 1 ? (faseConcluida() ? '⭐' : '🔍') : aberta ? '🔓' : '🔒';
+    li.innerHTML = `<span class="n">${f.n}</span><span>${f.nome}<small>${f.tema}${aberta && f.n > 1 ? ' (em produção)' : ''}</small></span><span aria-label="${aberta ? 'Aberta' : 'Trancada'}">${icone}</span>`;
+    ul.append(li);
+  });
+}
+$('btn-codigo').addEventListener('click', tentarCodigo);
+$('campo-codigo').addEventListener('keydown', e => { if (e.key === 'Enter') tentarCodigo(); });
+function tentarCodigo(){
+  const v = $('campo-codigo').value.trim().toUpperCase(), msg = $('msg-codigo');
+  const f = FASES.find(x => x.codigo === v);
+  if (!f){ msg.className = 'msg nao'; msg.textContent = 'Código inválido. Confira com o professor.'; return; }
+  if (!E.liberadas.includes(f.n)){ E.liberadas.push(f.n); salvar(); }
+  msg.className = 'msg ok'; msg.textContent = `Fase ${f.n} aberta: ${f.nome}.`; $('campo-codigo').value = ''; montarQuadro();
+}
+
+/* =================== professor =================== */
+let profLogado = false;
+try { profLogado = sessionStorage.getItem('pydetetive:prof') === '1'; } catch(e){}
+function mostrarPainel(){ $('prof-login').hidden = profLogado; $('prof-painel').hidden = !profLogado; }
+mostrarPainel();
+function entrarProf(){
+  if ($('senha-prof').value === SENHA_PROFESSOR){ profLogado = true; try { sessionStorage.setItem('pydetetive:prof','1'); } catch(e){} mostrarPainel(); }
+  else { $('msg-login').className = 'msg nao'; $('msg-login').textContent = 'Senha incorreta.'; }
+}
+$('btn-entrar').addEventListener('click', entrarProf);
+$('senha-prof').addEventListener('keydown', e => { if (e.key === 'Enter') entrarProf(); });
+const tab = $('tabela-codigos');
+FASES.forEach(f => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>Fase ${f.n}<br><small>${f.nome}</small></td><td class="cod">${f.codigo || '<span class="tag">aberta</span>'}</td><td>${f.codigo ? '<button>Projetar</button>' : ''}</td>`;
+  if (f.codigo) tr.querySelector('button').addEventListener('click', () => { $('proj-rotulo').textContent = `Código de acesso da Fase ${f.n}: ${f.nome}`; $('proj-codigo').textContent = f.codigo; $('projecao').hidden = false; });
+  tab.append(tr);
+});
+$('projecao').addEventListener('click', () => $('projecao').hidden = true);
+$('rever-intro').addEventListener('click', mostrarIntro);
+$('reiniciar').addEventListener('click', () => {
+  if (!confirm('Apagar créditos, missões e fases abertas deste computador? A introdução aparecerá de novo.')) return;
+  E = JSON.parse(JSON.stringify(PADRAO)); salvar(); mostrarCreditos(); missaoAtual = 0; mostrarIntro();
+});
+
+/* =================== modo aula (slides da fase 1) =================== */
+const SLIDES = [
+  { titulo:'Fase 1: O arquivo do caso', unico:true,
+    html:`<p class="maquina">Véspera da feira de ciências. 21h47. As câmeras apagaram por três minutos. Quando voltaram, Lumi tinha sumido.</p>
+          <p>Hoje vocês entram para a agência. Antes de investigar, todo detetive precisa aprender a registrar informações. E nós vamos fazer isso em Python.</p>`,
+    nota:'<b>Abertura (5 min).</b> Relembre a intro em quadrinhos. Pergunta disparadora: "Se vocês fossem investigar, que informações anotariam primeiro?" Anote no quadro as respostas da turma: elas viram as variáveis da aula.' },
+  { titulo:'O computador só faz o que mandamos',
+    html:`<p>Para mostrar algo na tela, usamos o comando <code>print()</code>.</p><p>Textos ficam sempre <strong>entre aspas</strong>. Sem aspas, o Python acha que é o nome de alguma coisa.</p>`,
+    codigo:'print("Agência PyDetetive")\nprint("Caso: Lumi desaparecido")',
+    nota:'<b>Demonstração (5 min).</b> Execute ao vivo. Depois, apague as aspas de propósito e execute de novo para mostrar o erro. Pergunte: "O que o Python está tentando dizer?"' },
+  { titulo:'Variáveis: as gavetas do arquivo', visu:true,
+    html:`<p>Uma variável é uma gaveta com etiqueta. O <code>=</code> significa <strong>guarde isto aqui</strong>.</p><p>Se guardarmos outra coisa na mesma gaveta, o valor antigo é substituído.</p>`,
+    nota:'<b>Visualizador (7 min).</b> Avance linha por linha e peça para a turma prever o que vai acontecer antes de cada clique. O ponto-chave é a linha 3: o valor de suspeito é trocado.' },
+  { titulo:'Cada pista tem um tipo',
+    html:`<table class="tipos"><tr><th>Tipo</th><th>O que guarda</th><th>Exemplo do caso</th></tr>
+          <tr><td><code>str</code></td><td>texto</td><td><code>"Helena Martins"</code></td></tr>
+          <tr><td><code>int</code></td><td>número inteiro</td><td><code>41</code></td></tr>
+          <tr><td><code>float</code></td><td>número com vírgula</td><td><code>1.68</code></td></tr>
+          <tr><td><code>bool</code></td><td>verdadeiro ou falso</td><td><code>True</code></td></tr></table>`,
+    codigo:'nome = "Helena Martins"\nidade = 41\naltura = 1.68\nestava_na_escola = True\n\nprint(type(nome))\nprint(type(idade))\nprint(type(altura))\nprint(type(estava_na_escola))',
+    nota:'<b>Tipos (8 min).</b> Chame atenção para o ponto no 1.68: em Python usamos ponto, não vírgula. Pergunte qual seria o tipo de "41", com aspas, e execute para conferir.' },
+  { titulo:'Detetive de erros',
+    html:`<p>Errar faz parte da investigação. O Python sempre diz <strong>o tipo do erro</strong> e <strong>em que linha</strong> ele está.</p><p class="maquina">Este código tem dois problemas. Quem encontra?</p>`,
+    codigo:'suspeito = "Bia Nogueira"\nprint(Suspeito)\nprint("Caso Lumi)',
+    nota:'<b>Erros (5 min).</b> Deixe a turma apontar os erros antes de executar: letra maiúscula em Suspeito (o Python diferencia) e aspas não fechadas. Corrija um de cada vez, executando entre as correções.' },
+  { titulo:'Agora é com vocês', unico:true,
+    html:`<p>Abram o <strong>PyDetetive</strong> e resolvam as missões da Fase 1.</p>
+          <p>Cada missão resolvida vale créditos. Com créditos, vocês compram dicas, mas pensem bem antes de gastar.</p>
+          <p class="maquina">Quem completar a fase vai revelar uma nova pista no quadro do caso.</p>`,
+    nota:'<b>Prática (20 min) e fechamento (5 min).</b> Circule pela sala. Nos 5 minutos finais, projete o quadro do caso e leia a mensagem anônima com a turma, sem explicar: é o gancho para a próxima aula. Na aula 2, projete o código da Fase 2 pelo painel do professor.' }
+];
+const VISU = { linhas:['suspeito = "Caio Ribeiro"','idade = 34','suspeito = "Bia Nogueira"','print(suspeito)'],
+  passos:[{}, {suspeito:['"Caio Ribeiro"','str']}, {suspeito:['"Caio Ribeiro"','str'], idade:['34','int']}, {suspeito:['"Bia Nogueira"','str'], idade:['34','int']}, {suspeito:['"Bia Nogueira"','str'], idade:['34','int'], _saida:'Bia Nogueira'}] };
+let slideAtual = 0;
+function montarVisu(host){
+  host.innerHTML = `<div class="visu"><div class="visu-cod">${VISU.linhas.map(l => `<div>${colorir(l).replace(/\n $/,'')}</div>`).join('')}</div><div class="caixas"></div><div class="visu-saida"></div><div class="botoes" style="margin:0"><button class="btn vp">Próxima linha</button><button class="btn claro vr">Recomeçar</button></div></div>`;
+  const q = c => host.querySelector(c); let p = 0;
+  const desenhar = ant => {
+    host.querySelectorAll('.visu-cod div').forEach((d,i) => d.classList.toggle('agora', i === p - 1));
+    const est = VISU.passos[p], cx = q('.caixas'); cx.innerHTML = '';
+    Object.keys(est).filter(k => k[0] !== '_').forEach(k => { const mudou = !ant || !ant[k] || ant[k][0] !== est[k][0];
+      cx.insertAdjacentHTML('beforeend', `<div class="caixa${mudou ? ' mudou' : ''}"><div class="rot">${k}</div><div class="val">${esc(est[k][0])}</div><div class="tp">${est[k][1]}</div></div>`); });
+    if (!cx.children.length) cx.innerHTML = '<p style="margin:0;font-size:1.1rem">Nenhuma gaveta criada ainda.</p>';
+    q('.visu-saida').textContent = est._saida || ' ';
+    q('.vp').disabled = p === VISU.passos.length - 1; };
+  desenhar(null);
+  q('.vp').addEventListener('click', () => { const ant = VISU.passos[p]; p++; desenhar(ant); });
+  q('.vr').addEventListener('click', () => { p = 0; desenhar(null); });
+}
+function montarSlide(){
+  const s = SLIDES[slideAtual], el = $('slide');
+  el.className = 'slide' + (s.unico ? ' unico' : '');
+  let dir = '';
+  if (s.codigo) dir = `<div class="bancada"><div class="bancada-topo"><span>Código ao vivo</span><span class="motor${motor ? ' pronto' : ''}" data-motor>${motor ? 'Python pronto' : 'Preparando o Python…'}</span></div><div id="ed-slide"></div><div class="botoes"><button class="btn claro" id="exec-slide" data-precisa-motor ${motor ? '' : 'disabled'}>▶ Executar</button></div><pre class="saida" id="saida-slide"><span class="vazio">A saída aparece aqui.</span></pre></div>`;
+  if (s.visu) dir = '<div class="visu-host"></div>';
+  el.innerHTML = `<div><h2>${s.titulo}</h2>${s.html}</div>${dir}`;
+  $('slide-num').textContent = `${slideAtual+1} / ${SLIDES.length}`;
+  $('notas').innerHTML = s.nota;
+  $('slide-ant').disabled = slideAtual === 0; $('slide-prox').disabled = slideAtual === SLIDES.length - 1;
+  if (s.codigo){ const ed = criarEditor($('ed-slide'), s.codigo); $('exec-slide').addEventListener('click', async () => mostrarSaida($('saida-slide'), await rodar(ed.valor))); }
+  if (s.visu) montarVisu(el.querySelector('.visu-host'));
+}
+$('iniciar-aula').addEventListener('click', () => { slideAtual = 0; montarSlide(); ir('aula'); });
+$('sair-aula').addEventListener('click', () => ir('professor'));
+$('slide-ant').addEventListener('click', () => { if (slideAtual > 0){ slideAtual--; montarSlide(); } });
+$('slide-prox').addEventListener('click', () => { if (slideAtual < SLIDES.length - 1){ slideAtual++; montarSlide(); } });
+$('notas-toggle').addEventListener('click', e => { const n = $('notas'); n.hidden = !n.hidden; e.currentTarget.setAttribute('aria-pressed', String(!n.hidden)); });
+document.addEventListener('keydown', e => {
+  if (!$('aula').classList.contains('ativa') || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight') $('slide-prox').click(); if (e.key === 'ArrowLeft') $('slide-ant').click();
+});
+
+/* =================== manual do detetive =================== */
+const MANUAL_F1 = [
+  { id:'print', curto:'print()', titulo:'print(): fazendo o computador falar', sub:'Arquivo 1.1',
+    blocos:[
+      {t:'fala', html:'Primeira regra da agência, novato: o computador é o assistente mais obediente e mais literal do mundo. Ele faz <u>exatamente</u> o que você manda. Nem mais, nem menos.'},
+      {t:'p', html:'Para o computador mostrar algo na tela, usamos o comando <code>print()</code>. Tudo que estiver dentro dos parênteses aparece. Um <code>print</code> por linha, e ele obedece de cima para baixo.'},
+      {t:'exemplo', legenda:'Execute, depois troque as frases e execute de novo.', codigo:'print("Bom dia, detetive!")\nprint("O Lumi continua desaparecido.")'},
+      {t:'p', html:'Textos vão <strong>entre aspas</strong>. Números não precisam, e o Python até faz a conta. Dá também para mostrar várias coisas de uma vez, separando por vírgula:'},
+      {t:'exemplo', legenda:'Repare na diferença entre a primeira e a segunda linha.', codigo:'print(2 + 3)\nprint("2 + 3")\nprint("Suspeitos:", 4)'},
+      {t:'olho', html:'<ul><li><code>Print</code> com P maiúsculo não existe. O Python diferencia maiúsculas de minúsculas.</li><li>Abriu aspas ou parênteses? Feche. Senão, erro na certa.</li></ul>'},
+      {t:'quiz', id:'q-print', pergunta:'O que aparece na tela?', codigo:'print("10 + 5")', opcoes:['15','10 + 5','"10 + 5"','Erro'], certa:1,
+        explica:'Entre aspas é texto. O Python mostra exatamente o que está escrito, sem calcular e sem as aspas.'}
+    ]},
+  { id:'variaveis', curto:'variáveis', titulo:'Variáveis: as gavetas do arquivo', sub:'Arquivo 1.2',
+    blocos:[
+      {t:'fala', html:'Detetive que não anota nada esquece tudo. Aqui na agência, a gente anota em <strong>variáveis</strong>.'},
+      {t:'p', html:'Imagine o arquivo da agência cheio de gavetas. Cada gaveta tem uma <strong>etiqueta</strong> (o nome da variável) e guarda <strong>uma coisa</strong> (o valor). Depois, basta chamar a etiqueta para pegar o que está lá dentro.'},
+      {t:'exemplo', legenda:'Crie uma gaveta nova chamada horario e mostre-a na tela.', codigo:'suspeito = "Helena Martins"\nsala = "Laboratório 7"\nprint(suspeito)\nprint(sala)'},
+      {t:'p', html:'Atenção: o <code>=</code> aqui <strong>não</strong> é o igual da matemática. Leia como <em>"guarde isto aqui"</em>. E se você guardar outra coisa na mesma gaveta, o valor antigo vai embora. Avance linha por linha e veja as gavetas mudarem:'},
+      {t:'visu'},
+      {t:'p', html:'As etiquetas seguem algumas regras:'},
+      {t:'tabela', html:'<table class="tipos"><tr><th>Etiqueta</th><th>Vale?</th><th>Por quê</th></tr><tr><td><code>nome_suspeito</code></td><td>✔</td><td>use _ no lugar do espaço</td></tr><tr><td><code>nome suspeito</code></td><td>✖</td><td>espaço não pode</td></tr><tr><td><code>suspeito2</code></td><td>✔</td><td>número no fim pode</td></tr><tr><td><code>2suspeito</code></td><td>✖</td><td>não pode começar com número</td></tr><tr><td><code>Suspeito</code> e <code>suspeito</code></td><td>⚠</td><td>são duas gavetas diferentes</td></tr></table>'},
+      {t:'olho', html:'<code>print(suspeito)</code> abre a gaveta e mostra o que tem dentro. <code>print("suspeito")</code> mostra a palavra "suspeito". As aspas mudam tudo.'},
+      {t:'quiz', id:'q-var', pergunta:'O que aparece na tela?', codigo:'pista = "pegadas"\npista = "luvas"\nprint(pista)', opcoes:['pegadas','luvas','pegadas luvas','Erro'], certa:1,
+        explica:'A segunda linha guardou "luvas" na mesma gaveta, e "pegadas" foi substituído.'}
+    ]},
+  { id:'tipos', curto:'tipos de dados', titulo:'Tipos: cada pista tem um formato', sub:'Arquivo 1.3',
+    blocos:[
+      {t:'fala', html:'Pistas chegam em formatos diferentes: um nome, uma idade, uma altura, um sim ou não. O Python também separa tudo por <strong>tipo</strong>, e confundir os tipos já arruinou muita investigação.'},
+      {t:'tabela', html:'<table class="tipos"><tr><th>Tipo</th><th>O que guarda</th><th>Exemplo do caso</th></tr><tr><td><code>str</code></td><td>texto (sempre entre aspas)</td><td><code>"Helena Martins"</code></td></tr><tr><td><code>int</code></td><td>número inteiro</td><td><code>41</code></td></tr><tr><td><code>float</code></td><td>número com casas decimais</td><td><code>1.68</code></td></tr><tr><td><code>bool</code></td><td>verdadeiro ou falso</td><td><code>True</code> ou <code>False</code></td></tr></table>'},
+      {t:'p', html:'O comando <code>type()</code> revela o tipo de qualquer valor. É a lupa do Python:'},
+      {t:'exemplo', codigo:'nome = "Helena Martins"\nidade = 41\naltura = 1.68\nestava_na_escola = True\nprint(type(nome))\nprint(type(idade))\nprint(type(altura))\nprint(type(estava_na_escola))'},
+      {t:'p', html:'E por que isso importa? Porque <strong>o tipo decide o que dá para fazer</strong>. Com números, o <code>+</code> soma. Com textos, o <code>+</code> cola um no outro:'},
+      {t:'exemplo', legenda:'Adivinhe o resultado antes de executar.', codigo:'print(34 + 1)\nprint("34" + "1")'},
+      {t:'olho', html:'<ul><li>Casas decimais usam <strong>ponto</strong>: <code>1.68</code>, nunca <code>1,68</code>.</li><li><code>True</code> e <code>False</code> começam com letra maiúscula.</li><li><code>34</code> é número, <code>"34"</code> é texto. Parecem iguais, mas não são.</li></ul>'},
+      {t:'quiz', id:'q-tipo', pergunta:'Qual é o tipo deste valor?', codigo:'"34"', opcoes:['int','str','float','bool'], certa:1,
+        explica:'Está entre aspas, então é texto (str), mesmo que só tenha números dentro.'}
+    ]},
+  { id:'erros', curto:'mensagens de erro', titulo:'Detetive de erros', sub:'Arquivo 1.4',
+    blocos:[
+      {t:'fala', html:'Todo detetive erra. O bom detetive <strong>lê a pista que o erro deixa</strong>. E o Python sempre deixa pistas.'},
+      {t:'p', html:'Quando algo dá errado, o Python para o programa e deixa um recado com duas informações valiosas: <strong>o tipo do erro</strong> e <strong>a linha</strong> onde ele aconteceu. Os três mais comuns nesta fase:'},
+      {t:'tabela', html:'<table class="tipos"><tr><th>Erro</th><th>O que significa</th><th>Causa mais comum</th></tr><tr><td><code>NameError</code></td><td>nome desconhecido</td><td>variável não criada, digitada diferente, ou texto sem aspas</td></tr><tr><td><code>SyntaxError</code></td><td>escrita fora das regras</td><td>aspas ou parênteses sem fechar</td></tr><tr><td><code>TypeError</code></td><td>tipos que não combinam</td><td><code>"Idade: " + 34</code></td></tr></table>'},
+      {t:'exemplo', legenda:'Este código tem dois erros. Execute, leia o recado, conserte um e execute de novo.', codigo:'suspeito = "Bia Nogueira"\nprint(Suspeito)\nprint("Caso Lumi)'},
+      {t:'olho', html:'Leia a mensagem inteira antes de mudar qualquer coisa. Chutar correções costuma criar erros novos.'},
+      {t:'quiz', id:'q-erro', pergunta:'Se a variável nome nunca foi criada, que erro este código causa?', codigo:'print(nome)', opcoes:['NameError','SyntaxError','TypeError','Nenhum'], certa:0,
+        explica:'O Python procura uma gaveta chamada nome e não encontra: NameError.'}
+    ]},
+  { id:'resumo', curto:'ficha-resumo', titulo:'Ficha-resumo da Fase 1', sub:'Para consultar durante as missões',
+    blocos:[
+      {t:'cola', codigo:'print("texto")          # mostra na tela\nprint("Idade:", 34)     # várias coisas com vírgula\n\nsuspeito = "Caio"       # guarda na gaveta (str)\nidade = 34              # número inteiro (int)\naltura = 1.75           # decimal com ponto (float)\npresente = True         # verdadeiro/falso (bool)\n\nprint(suspeito)         # mostra o conteúdo da gaveta\nprint(type(idade))      # revela o tipo'},
+      {t:'fala', html:'Leu tudo? Então chega de teoria. Tem um robô desaparecido esperando por você.'},
+      {t:'ir-missoes'}
+    ]}
+];
+
+function montarManual(){
+  const caps = $('caps'); caps.innerHTML = '';
+  FASES.forEach(f => {
+    const li = document.createElement('li');
+    if (f.n === 1){
+      li.className = 'ativo';
+      li.innerHTML = `Capítulo 1<small>${f.nome}</small><ul>${MANUAL_F1.map(sx => `<li><button data-secao="${sx.id}"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#ic-${sx.id}"/></svg>${sx.curto}</button></li>`).join('')}</ul>`;
+      li.querySelectorAll('button').forEach(b => b.addEventListener('click', () => irSecao(b.dataset.secao)));
+    } else {
+      const aberta = E.liberadas.includes(f.n);
+      li.className = 'trancado';
+      li.innerHTML = `${aberta ? '🔓' : '🔒'} Capítulo ${f.n}<small>${f.tema}${aberta ? ' (em produção)' : ': abre junto com a fase'}</small>`;
+    }
+    caps.append(li);
+  });
+  const alvo = $('manual-conteudo'); let k = 0; const blocos = [];
+  let html = `<div class="cap-topo"><span>Capítulo 1</span><h2>O arquivo do caso</h2><p>Tudo o que um detetive precisa saber antes de abrir a primeira ficha: mostrar informações, guardar pistas e entender os recados do Python.</p></div>`;
+  MANUAL_F1.forEach(sx => {
+    html += `<section class="secao-m" id="sec-${sx.id}"><h3 class="com-ic"><svg class="ic-g" viewBox="0 0 40 40" aria-hidden="true"><use href="#ic-${sx.id}"/></svg><span><small>${sx.sub}</small>${sx.titulo}</span></h3>`;
+    sx.blocos.forEach(b => { blocos.push(b); html += blocoHTML(b, k++); });
+    html += '</section>';
+  });
+  alvo.innerHTML = html;
+  alvo.querySelectorAll('[data-k]').forEach(el => montarBloco(el, blocos[+el.dataset.k]));
+  alvo.querySelectorAll('[data-ir]').forEach(b => b.addEventListener('click', () => ir(b.dataset.ir)));
+  estadoMotor();
+}
+function irSecao(id){ const el = document.getElementById('sec-' + id); if (el) setTimeout(() => el.scrollIntoView({behavior:'smooth', block:'start'}), 30); }
+function blocoHTML(b, k){
+  switch (b.t){
+    case 'fala': return `<div class="fala"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#p-dalva"/></svg><div class="bal"><span class="quem">Inspetora Dalva</span>${b.html}</div></div>`;
+    case 'p': return `<p>${b.html}</p>`;
+    case 'olho': return `<div class="olho"><b>👁️ Olho vivo</b>${b.html}</div>`;
+    case 'tabela': return `<div class="rolagem">${b.html}</div>`;
+    case 'cola': return `<pre class="cola">${colorir(b.codigo).replace(/\n $/,'')}</pre>`;
+    case 'ir-missoes': return `<button class="btn verde" data-ir="desafio">Ir para as missões</button>`;
+    case 'exemplo': return `<div class="exemplo-m" data-k="${k}"></div>`;
+    case 'visu': return `<div class="exemplo-m" data-k="${k}"></div>`;
+    case 'quiz': return `<div class="quiz" data-k="${k}"></div>`;
+  }
+  return '';
+}
+function montarBloco(el, b){
+  if (b.t === 'visu') return montarVisu(el);
+  if (b.t === 'exemplo'){
+    const n = b.codigo.split('\n').length;
+    el.innerHTML = `${b.legenda ? `<p class="leg">${b.legenda}</p>` : ''}<div class="bancada" style="--altura:${Math.max(n + 1, 3) * 27 + 30}px"><div class="bancada-topo"><span>Teste você mesmo</span><span class="motor" data-motor></span></div><div class="ed"></div><div class="botoes"><button class="btn claro" data-precisa-motor>▶ Executar</button><button class="restaurar">Restaurar exemplo</button></div><pre class="saida"><span class="vazio">A saída aparece aqui.</span></pre></div>`;
+    const ed = criarEditor(el.querySelector('.ed'), b.codigo), out = el.querySelector('.saida');
+    el.querySelector('[data-precisa-motor]').addEventListener('click', async () => mostrarSaida(out, await rodar(ed.valor)));
+    el.querySelector('.restaurar').addEventListener('click', () => { ed.valor = b.codigo; out.innerHTML = '<span class="vazio">A saída aparece aqui.</span>'; });
+    return;
+  }
+  if (b.t === 'quiz'){
+    const resp = E.quiz[b.id];
+    el.innerHTML = `<h4>🔍 Teste rápido<small>${resp ? (resp === 'ok' ? 'respondido: +2 créditos ganhos' : 'respondido') : 'vale 🪙 2 créditos na primeira tentativa'}</small></h4><p>${b.pergunta}</p>${b.codigo ? `<pre>${colorir(b.codigo).replace(/\n $/,'')}</pre>` : ''}<div class="opcoes">${b.opcoes.map((o,i) => `<button class="op" data-i="${i}">${esc(o)}</button>`).join('')}</div><p class="fb" aria-live="polite"></p>`;
+    const botoes = el.querySelectorAll('.op'), fb = el.querySelector('.fb');
+    const revelar = escolhida => {
+      botoes.forEach((bt,i) => { bt.disabled = true; if (i === b.certa) bt.classList.add('certa'); else if (i === escolhida) bt.classList.add('errada'); });
+      fb.textContent = (escolhida === b.certa ? 'Isso mesmo! ' : 'Não foi dessa vez. ') + b.explica;
+    };
+    if (resp) revelar(resp === 'ok' ? b.certa : -1);
+    botoes.forEach(bt => bt.addEventListener('click', () => {
+      const i = +bt.dataset.i, ok = i === b.certa;
+      E.quiz[b.id] = ok ? 'ok' : 'erro';
+      if (ok){ E.creditos += 2; mostrarCreditos(true); }
+      salvar(); revelar(i);
+      el.querySelector('h4 small').textContent = ok ? '+2 créditos!' : 'respondido';
+    }));
+  }
+}
+
+montarQuadro();
+</script>
+</body>
+</html>
