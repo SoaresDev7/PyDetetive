@@ -42,15 +42,18 @@ somente na área do professor, não para os alunos.
 
 ## 5. Controlar o que os alunos veem
 
-- **Liberar aula:** a aula só aparece na aba *Aulas* do aluno depois que você a libera.
-- **Fases:** cada fase pode ter um código de acesso. O aluno digita o código para
-  desbloquear a fase.
+- **Liberar aula:** a aula só aparece na aba *Aulas da turma* do aluno depois que você a libera
+  na área **Planos de aula**.
+- **Fases:** na aba **Turma e códigos** estão os códigos de acesso de cada fase. Use o
+  botão **Projetar** para mostrar o código na tela da turma no momento certo. O aluno
+  digita o código no quadro do caso para desbloquear a fase.
+- **Apagar progresso deste computador:** zera o progresso salvo neste navegador (use com cuidado).
 
-Libere a aula no momento em que for abordá-la com a turma.
+Libere a aula e a fase no momento em que for abordá-las com a turma.
 
 ## 6. Criar desafios personalizados
 
-Na aba **Novo desafio** você escreve enunciado, código inicial, saída esperada e
+Na aba **Criar desafio** você escreve enunciado, código inicial, saída esperada e
 critérios. O sistema gera um código para você passar aos alunos:
 
 - **Código curto (até 5 caracteres):** funciona apenas no seu navegador, ou seja, para
