@@ -39,5 +39,4 @@ Veja o guia completo em [INSTRUCOES_PROFESSOR.md](INSTRUCOES_PROFESSOR.md).
 ## Estrutura do projeto
 
 - `index.html`: o jogo inteiro (HTML, CSS e JavaScript em um único arquivo).
-- `iniciar.bat` / `iniciar.sh`: sobem um servidor local na porta 8000.
 - `INSTRUCOES_PROFESSOR.md`: guia de uso para o professor.
