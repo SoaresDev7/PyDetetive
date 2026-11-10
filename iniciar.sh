@@ -1,14 +1,14 @@
 #!/bin/bash
-# Script para iniciar o servidor PyDetetive
+# Sobe um servidor local do PyDetetive na porta 8000 (Linux / macOS).
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$SCRIPT_DIR"
+echo "Iniciando PyDetetive..."
+echo "Acesse: http://localhost:8000"
+echo "Pressione Ctrl+C para parar o servidor."
+echo
 
-echo "🚀 Iniciando PyDetetive..."
-echo "📂 Diretório: $(pwd)"
-echo "🌐 Acesse: http://localhost:8000"
-echo ""
-echo "Pressione Ctrl+C para parar o servidor"
-echo ""
-
-python -m http.server 8000
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 -m http.server 8000
+else
+  exec python -m http.server 8000
+fi

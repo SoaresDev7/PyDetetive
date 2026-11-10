@@ -4,8 +4,7 @@
   "description": "Plataforma gamificada para ensino de Python - Descubra quem levou o robô Lumi!",
   "main": "index.html",
   "scripts": {
-    "serve": "python -m http.server 8000",
-    "test": "echo \"Testes não configurados ainda\""
+    "serve": "python -m http.server 8000"
   },
   "keywords": [
     "python",
@@ -17,6 +16,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/devsoares05/PyDetetive"
+    "url": "https://github.com/SoaresDev7/pydetetive"
   }
 }
