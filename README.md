@@ -25,30 +25,6 @@ navegador moderno e conexão com a internet (o interpretador Python é carregado
 
 Veja o guia completo em [INSTRUCOES_PROFESSOR.md](INSTRUCOES_PROFESSOR.md).
 
-## Como executar
-
-### Opção 1: pelo link online (recomendado para a turma)
-
-Veja a seção "Publicar no GitHub Pages" no guia do professor. Depois de publicado,
-basta enviar o link aos alunos.
-
-### Opção 2: no próprio computador
-
-**Windows:** dê dois cliques em `iniciar.bat`. Se aparecer "Python não foi encontrado",
-instale o Python pela [página oficial](https://www.python.org/downloads/) marcando
-a opção *Add python.exe to PATH*, ou pela Microsoft Store, e tente de novo.
-
-**Linux / macOS:** no terminal, dentro da pasta do projeto, execute:
-
-```bash
-./iniciar.sh
-```
-
-Depois abra <http://localhost:8000> no navegador. Para parar o servidor, pressione `Ctrl+C`.
-
-Também funciona abrir `index.html` diretamente no navegador, mas o servidor local
-evita problemas de armazenamento em alguns navegadores.
-
 ## Limitações conhecidas
 
 - O progresso fica salvo **no navegador de cada pessoa**. Trocar de computador ou
