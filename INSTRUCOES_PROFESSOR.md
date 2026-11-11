@@ -9,20 +9,7 @@ definida em `index.html` (constante `SENHA_PROFESSOR`).
 > projeto é público, qualquer pessoa pode ler o código-fonte; a senha serve só para
 > evitar acessos acidentais.
 
-## 2. Publicar no GitHub Pages
-
-1. No GitHub, abra o repositório e vá em **Settings → Pages**.
-2. Em **Source**, escolha **Deploy from a branch**, branch **main** e pasta **/ (root)**.
-3. Clique em **Save**. Em alguns minutos o jogo fica disponível no endereço
-   `https://<usuario>.github.io/<nome-do-repositorio>/`.
-
-Observações:
-
-- No plano gratuito do GitHub, o Pages exige que o repositório seja **público**.
-- Para atualizar o jogo, basta fazer commit na branch `main`. A publicação é refeita
-  automaticamente.
-
-## 3. Planejar uma aula
+## 2. Planejar uma aula
 
 A área **Planos de aula** traz um plano completo para cada uma das 6 aulas:
 
@@ -34,13 +21,13 @@ A área **Planos de aula** traz um plano completo para cada uma das 6 aulas:
 
 Leia o plano antes de liberar a aula para os alunos.
 
-## 4. Projetar os slides
+## 3. Projetar os slides
 
 Dentro do plano, abra os **slides** da aula. Eles podem ser projetados direto da
 ferramenta, sem precisar criar apresentação do zero. As notas do professor aparecem
 somente na área do professor, não para os alunos.
 
-## 5. Controlar o que os alunos veem
+## 4. Controlar o que os alunos veem
 
 - **Liberar aula:** a aula só aparece na aba *Aulas da turma* do aluno depois que você a libera
   na área **Planos de aula**.
@@ -51,12 +38,12 @@ somente na área do professor, não para os alunos.
 
 Libere a aula e a fase no momento em que for abordá-las com a turma.
 
-## 6. Dicas de aplicação
+## 5. Dicas de aplicação
 
 - Peça que os alunos instalem ou abram o jogo antes da aula, para não perder tempo.
 - Deixe a turma trabalhar em duplas, e peça que quem termina primeiro explique sua solução.
 
-## 7. Problemas comuns
+## 6. Problemas comuns
 
 | Problema | O que fazer |
 |---|---|
