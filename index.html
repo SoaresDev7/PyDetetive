@@ -371,15 +371,6 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
 .form-campo textarea{min-height:80px;font-family:var(--f-code);resize:vertical}
 .form-duplo{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
 @media (max-width:640px){.form-duplo{grid-template-columns:1fr}}
-.linha-desafio{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;border-bottom:2px dashed var(--paper-line);padding:.5rem 0}
-.linha-desafio small{display:block;color:var(--paper-soft);font-weight:600}
-#codigo-desafio{min-height:90px;font-size:.85rem;word-break:break-all}
-.importar{max-width:1290px;margin:0 auto 3rem;background:var(--panel);border:3px solid var(--outline);border-radius:14px;padding:1rem 1.2rem;color:var(--panel-ink)}
-.importar h3{font-family:var(--f-title);font-weight:400;margin:0 0 .4rem}
-.importar p{margin:0 0 .6rem;font-weight:600}
-.importar textarea{width:100%;min-height:70px;font-family:var(--f-code);font-size:.85rem;border:3px solid var(--outline);border-radius:10px;padding:.5rem;background:#fffaf0;color:#23160e}
-.importar .msg{color:var(--panel-ink)}
-.codigo-curto{font-family:var(--f-maquina);font-size:1.6rem;letter-spacing:.35em;text-align:center;color:var(--red);background:#fffaf0;padding:.5rem}
 
 /* ---------- FICHA DA MISSÃO (versão legível) ---------- */
 .ficha{background:var(--paper);padding:1.5rem 1.6rem 1.6rem;background-image:none;border-radius:14px}
@@ -847,13 +838,6 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
       </div>
     </div>
   </div>
-<div class="importar">
-  <h3>Adicionar desafio do professor</h3>
-  <p>Cole aqui o código que o professor enviou. O desafio aparece como uma nova missão.</p>
-  <textarea id="importar-codigo" aria-label="Código do desafio" placeholder="Cole o código começando por PYD1:"></textarea>
-  <div class="botoes" style="margin:.6rem 0 0"><button class="btn claro" id="importar-btn">Adicionar desafio</button></div>
-  <p class="msg" id="importar-msg" role="status"></p>
-</div>
 </section>
 
 <!-- ================= AULAS DA TURMA (alunos) ================= -->
@@ -886,7 +870,6 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
         <nav class="abas-prof" aria-label="Seções do painel">
           <button class="aba-prof" data-aba="codigos" aria-current="page">Turma e códigos</button>
           <button class="aba-prof" data-aba="aulas" aria-current="false">Planos de aula</button>
-          <button class="aba-prof" data-aba="desafios" aria-current="false">Criar desafio</button>
         </nav>
       </div>
 
@@ -918,35 +901,6 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
         <div id="plano-aula" class="cartao" hidden></div>
       </div>
 
-      <div class="painel-aba" data-painel="desafios" hidden>
-        <div class="prof-grade">
-          <div class="cartao">
-            <h3>Novo desafio</h3>
-            <p>Crie um exercício próprio. Ele é entregue por código: você gera o código e envia aos alunos quando quiser.</p>
-            <div class="form-campo"><label for="d-titulo">Título</label><input id="d-titulo" maxlength="80" placeholder="Ex.: O recibo falso"></div>
-            <div class="form-campo"><label for="d-enunciado">Enunciado (o que o aluno deve fazer)</label><textarea id="d-enunciado" placeholder="Ex.: Crie a variável recibo com o texto 'Caio' e mostre-a na tela."></textarea></div>
-            <div class="form-campo"><label for="d-passos">Passos (um por linha)</label><textarea id="d-passos" style="min-height:70px"></textarea></div>
-            <div class="form-campo"><label for="d-inicial">Código inicial (opcional)</label><textarea id="d-inicial"></textarea></div>
-            <div class="form-duplo">
-              <div class="form-campo"><label for="d-saida">Saída esperada (trecho que deve aparecer)</label><input id="d-saida" placeholder="Ex.: Caio"></div>
-              <div class="form-campo"><label for="d-exigir">Trecho obrigatório no código (opcional)</label><input id="d-exigir" placeholder='Ex.: print('></div>
-            </div>
-            <div class="form-duplo">
-              <div class="form-campo"><label for="d-recompensa">Recompensa (créditos)</label><input id="d-recompensa" type="number" min="0" max="50" value="10"></div>
-              <div class="form-campo"><label for="d-custo">Custo da dica (créditos)</label><input id="d-custo" type="number" min="0" max="30" value="5"></div>
-            </div>
-            <div class="form-campo"><label for="d-dica">Dica</label><input id="d-dica" placeholder="Ex.: Use o print com o nome da variável."></div>
-            <button class="btn" id="d-salvar">Salvar desafio</button>
-            <p class="msg" id="d-msg" role="status"></p>
-          </div>
-          <div class="cartao">
-            <h3>Seus desafios</h3>
-            <div id="lista-desafios"></div>
-            <div class="form-campo" style="margin-top:1rem"><label for="codigo-curto">Código curto (5 caracteres)</label><input id="codigo-curto" readonly placeholder="Clique em Gerar código" class="codigo-curto"></div>
-            <div class="form-campo"><label for="codigo-desafio">Código completo (para enviar sem servidor)</label><textarea id="codigo-desafio" readonly placeholder="Clique em Gerar código no desafio desejado"></textarea></div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -977,7 +931,7 @@ code{font-family:var(--f-code);font-size:.9em;background:rgba(42,24,16,.1);paddi
 const CHAVE = 'pydetetive:estado';
 function ler(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
 function gravar(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
-const PADRAO = {quiz:{}, introVista:false, creditos:0, feitas:{}, dicas:{}, codigos:{}, liberadas:[1], rascunhos:{}, aulasLiberadas:[], desafiosProf:[], desafiosImportados:[]};
+const PADRAO = {quiz:{}, introVista:false, creditos:0, feitas:{}, dicas:{}, codigos:{}, liberadas:[1], rascunhos:{}, aulasLiberadas:[]};
 let E; try { E = Object.assign({}, PADRAO, JSON.parse(ler(CHAVE) || '{}')); } catch(e){ E = {...PADRAO}; }
 const salvar = () => gravar(CHAVE, JSON.stringify(E));
 
@@ -1359,10 +1313,9 @@ let faseMissao = 1, missaoId = null, editorMissao = null;
 const $ = id => document.getElementById(id);
 const faseLiberada = n => E.liberadas.includes(n);
 const feitaMissao = m => !!E.feitas[m.id];
-function todasMissoes(){ return MISSOES.concat((E.desafiosImportados || []).map(desafioParaMissao)); }
+function todasMissoes(){ return MISSOES; }
 function missoesDoGrupo(g){ return todasMissoes().filter(m => m.fase === g); }
 function podeAbrirMissao(m, grupo){
-  if (m.fase === 'extra') return true;
   const i = grupo.indexOf(m);
   return i === 0 || feitaMissao(grupo[i - 1]);
 }
@@ -1396,13 +1349,6 @@ function montarNavFases(){
     b.addEventListener('click', () => montarMissao(primeiraPendente(f.n).id));
     box.append(b);
   });
-  if (missoesDoGrupo('extra').length){
-    const b = document.createElement('button');
-    b.className = 'fase-chip extra' + (faseMissao === 'extra' ? ' atual' : '');
-    b.innerHTML = '<span class="fn">Extra</span><span class="fnome">Desafios do professor</span>';
-    b.addEventListener('click', () => montarMissao(primeiraPendente('extra').id));
-    box.append(b);
-  }
 }
 function montarNavMissoes(){
   const box = $('missoes-nav'); box.innerHTML = '';
@@ -1424,7 +1370,7 @@ function montarMissao(id){
   if (!m) return;
   faseMissao = m.fase; missaoId = m.id;
   montarNavFases(); montarNavMissoes();
-  $('m-fase').textContent = m.fase === 'extra' ? 'Desafio do professor' : `Fase ${m.fase} · ${FASES.find(f => f.n === m.fase).nome}`;
+  $('m-fase').textContent = `Fase ${m.fase} · ${FASES.find(f => f.n === m.fase).nome}`;
   $('m-titulo').textContent = m.titulo;
   $('m-texto').innerHTML = m.texto.map(t => `<p>${t}</p>`).join('');
   $('m-lista').innerHTML = m.passos.map(t => `<li>${t}</li>`).join('');
@@ -1455,21 +1401,6 @@ $('verificar').addEventListener('click', async () => {
 });
 $('proxima').addEventListener('click', () => { const p = proximaMissaoId(); if (p) montarMissao(p); });
 function faseConcluida(n = 1){ return MISSOES.filter(m => m.fase === n).every(m => E.feitas[m.id]); }
-
-/* desafios do professor: viram missões extras ao serem importados */
-function desafioParaMissao(d){
-  return {
-    id: 'c-' + d.id, fase: 'extra', secao: null, titulo: d.titulo,
-    texto: [esc(d.enunciado)], passos: d.passos.map(esc),
-    inicial: d.inicial, recompensa: d.recompensa,
-    dica: {custo: d.custo, texto: d.dica},
-    checar(cod, r){
-      if (d.exigir && !cod.includes(d.exigir)) return [false, 'Quase', `Ainda falta usar "${d.exigir}" no seu código.`];
-      if (d.saidaEsperada && !r.saida.includes(d.saidaEsperada)) return [false, 'Quase', 'A saída ainda não é a que a agência pediu. Compare com o enunciado.'];
-      return [true, 'Pista aceita', 'Desafio concluído.'];
-    }
-  };
-}
 
 /* =================== quadro e códigos =================== */
 function montarQuadro(){
@@ -1918,95 +1849,7 @@ document.querySelectorAll('.aba-prof').forEach(b => b.addEventListener('click', 
   document.querySelectorAll('.aba-prof').forEach(x => x.setAttribute('aria-current', x === b ? 'page' : 'false'));
   document.querySelectorAll('.painel-aba').forEach(p => { p.hidden = p.dataset.painel !== b.dataset.aba; });
   if (b.dataset.aba === 'aulas') montarListaAulas();
-  if (b.dataset.aba === 'desafios') montarListaDesafios();
 }));
-
-/* desafios criados pelo professor: viram código de texto para enviar aos alunos */
-const PREFIXO_DESAFIO = 'PYD1:';
-function b64enc(s){ const bytes = new TextEncoder().encode(s); let bin = ''; bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin); }
-function b64dec(s){ const bin = atob(s); return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))); }
-function normalizarDesafio(o){
-  if (!o || typeof o !== 'object') return null;
-  const txt = (v, max) => typeof v === 'string' ? v.trim().slice(0, max) : '';
-  const num = (v, min, max, padrao) => { const n = parseInt(v, 10); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : padrao; };
-  const titulo = txt(o.titulo, 80), enunciado = txt(o.enunciado, 800);
-  const saidaEsperada = txt(o.saidaEsperada, 200), exigir = txt(o.exigir, 100);
-  if (!titulo || !enunciado || (!saidaEsperada && !exigir)) return null;
-  return {
-    id: txt(o.id, 40) || String(Date.now()),
-    titulo, enunciado,
-    passos: Array.isArray(o.passos) ? o.passos.map(p => txt(p, 200)).filter(Boolean).slice(0, 6) : [],
-    inicial: typeof o.inicial === 'string' ? o.inicial.slice(0, 2000) : '',
-    saidaEsperada, exigir,
-    recompensa: num(o.recompensa, 0, 50, 10),
-    custo: num(o.custo, 0, 30, 5),
-    dica: txt(o.dica, 300) || 'Releia o enunciado e teste uma parte de cada vez.'
-  };
-}
-function codificarDesafio(d){ return PREFIXO_DESAFIO + b64enc(JSON.stringify(d)); }
-const ALFABETO_CODIGO = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; /* sem 0, O, 1, I, L para não confundir */
-function gerarCodigoCurto(){
-  const usados = new Set(E.desafiosProf.map(d => d.codigo));
-  let c;
-  do {
-    c = Array.from(crypto.getRandomValues(new Uint8Array(5)), b => ALFABETO_CODIGO[b % ALFABETO_CODIGO.length]).join('');
-  } while (usados.has(c));
-  return c;
-}
-function montarListaDesafios(){
-  const box = $('lista-desafios'); box.innerHTML = '';
-  if (!E.desafiosProf.length){ box.innerHTML = '<p>Nenhum desafio criado ainda.</p>'; return; }
-  E.desafiosProf.forEach((d, i) => {
-    if (!d.codigo){ d.codigo = gerarCodigoCurto(); salvar(); }
-    const row = document.createElement('div'); row.className = 'linha-desafio';
-    row.innerHTML = `<span><strong>${esc(d.titulo)}</strong><small>Código ${esc(d.codigo)} · ${d.recompensa} créditos · ${d.passos.length} passo(s)</small></span><span class="acoes-aula"><button class="btn claro" data-gerar="${i}">Gerar código</button><button class="btn vermelho" data-excluir="${i}">Excluir</button></span>`;
-    box.append(row);
-  });
-  box.querySelectorAll('[data-gerar]').forEach(b => b.addEventListener('click', () => {
-    const d = E.desafiosProf[+b.dataset.gerar];
-    $('codigo-curto').value = d.codigo; $('codigo-desafio').value = codificarDesafio(d);
-    $('codigo-curto').select();
-  }));
-  box.querySelectorAll('[data-excluir]').forEach(b => b.addEventListener('click', () => {
-    if (!confirm('Excluir este desafio?')) return;
-    E.desafiosProf.splice(+b.dataset.excluir, 1); salvar();
-    $('codigo-curto').value = ''; $('codigo-desafio').value = ''; montarListaDesafios();
-  }));
-}
-$('d-salvar').addEventListener('click', () => {
-  const msg = $('d-msg');
-  const d = normalizarDesafio({
-    titulo: $('d-titulo').value, enunciado: $('d-enunciado').value,
-    passos: $('d-passos').value.split('\n'), inicial: $('d-inicial').value,
-    saidaEsperada: $('d-saida').value, exigir: $('d-exigir').value,
-    recompensa: $('d-recompensa').value, custo: $('d-custo').value, dica: $('d-dica').value
-  });
-  if (!d){ msg.className = 'msg nao'; msg.textContent = 'Preencha título, enunciado e pelo menos a saída esperada ou um trecho obrigatório.'; return; }
-  d.codigo = gerarCodigoCurto(); E.desafiosProf.push(d); salvar();
-  ['d-titulo','d-enunciado','d-passos','d-inicial','d-saida','d-exigir','d-dica'].forEach(id => $(id).value = '');
-  msg.className = 'msg ok'; msg.textContent = 'Desafio salvo. Gere o código quando quiser entregá-lo à turma.';
-  montarListaDesafios();
-});
-
-/* importação de desafios */
-$('importar-btn').addEventListener('click', () => {
-  const msg = $('importar-msg'), txt = $('importar-codigo').value.trim().toUpperCase();
-  let obj = null, achouLocal = null;
-  if (txt.length <= 5){
-    achouLocal = E.desafiosProf.find(d => d.codigo === txt);
-    if (!achouLocal){ msg.className = 'msg nao'; msg.textContent = 'Código curto não encontrado neste computador. Peça ao professor o código completo (começa com PYD1:).'; return; }
-    obj = achouLocal;
-  } else {
-    try { if (txt.startsWith(PREFIXO_DESAFIO)) obj = normalizarDesafio(JSON.parse(b64dec(txt.slice(PREFIXO_DESAFIO.length)))); } catch(e){ obj = null; }
-    if (!obj){ msg.className = 'msg nao'; msg.textContent = 'Código inválido. Copie o código inteiro enviado pelo professor.'; return; }
-  }
-  if (E.desafiosImportados.some(d => d.id === obj.id)){ msg.className = 'msg nao'; msg.textContent = 'Este desafio já está na sua lista de missões.'; return; }
-  E.desafiosImportados.push(obj); salvar();
-  $('importar-codigo').value = '';
-  msg.className = 'msg ok'; msg.textContent = `Desafio "${obj.titulo}" adicionado.`;
-  missaoId = 'c-' + obj.id; faseMissao = 'extra';
-  ir('desafio');
-});
 
 /* =================== manual do detetive =================== */
 const MANUAL_F1 = [

@@ -51,30 +51,15 @@ somente na área do professor, não para os alunos.
 
 Libere a aula e a fase no momento em que for abordá-las com a turma.
 
-## 6. Criar desafios personalizados
-
-Na aba **Criar desafio** você escreve enunciado, código inicial, saída esperada e
-critérios. O sistema gera um código para você passar aos alunos:
-
-- **Código curto (até 5 caracteres):** funciona apenas no seu navegador, ou seja, para
-  desafios criados e aplicados no mesmo computador.
-- **Código completo (começa com `PYD1:`):** é longo, mas funciona em qualquer
-  computador. Use este para enviar aos alunos quando eles usarem outro aparelho.
-
-Para o aluno importar um desafio, ele cola o código em **Adicionar desafio do professor**
-na aba de missões. O desafio aparece como uma nova missão.
-
-## 7. Dicas de aplicação
+## 6. Dicas de aplicação
 
 - Peça que os alunos instalem ou abram o jogo antes da aula, para não perder tempo.
-- Deixe a turma trabalhar em duplas. Quem termina primeiro pode criar um desafio para
-  os colegas.
+- Deixe a turma trabalhar em duplas, e peça que quem termina primeiro explique sua solução.
 
-## 8. Problemas comuns
+## 7. Problemas comuns
 
 | Problema | O que fazer |
 |---|---|
 | O código não roda | Recarregue a página e confira a conexão com a internet (o Python é carregado na hora). |
 | Aluno perdeu o progresso | O progresso fica no navegador. Peça que ele use o mesmo computador e navegador. |
-| Desafio não encontrado | Use o código completo (`PYD1:`) em vez do curto. |
 | Aba travada | Código com laço infinito. Recarregue a página. |
