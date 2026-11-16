@@ -38,3 +38,4 @@ Veja o guia completo em [INSTRUCOES_PROFESSOR.md](INSTRUCOES_PROFESSOR.md).
 
 - `index.html`: o jogo inteiro (HTML, CSS e JavaScript em um único arquivo).
 - `INSTRUCOES_PROFESSOR.md`: guia de uso para o professor.
+- `PLANOS_DE_AULA.md`: plano de curso e planos das seis aulas, para consulta sem entrar no jogo.
